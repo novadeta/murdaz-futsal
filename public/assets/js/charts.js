@@ -16,7 +16,7 @@ if (document.querySelector("#chart-bars")) {
           borderRadius: 4,
           borderSkipped: false,
           backgroundColor: "#fff",
-          data: [450, 200, 100, 220, 500, 100, 400, 230, 500],
+          data: [100, 200, 100, 100, 500, 100, 400, 230, 100],
           maxBarThickness: 6,
         },
       ],
@@ -95,7 +95,7 @@ if(document.querySelector("#chart-line")){
         backgroundColor: gradientStroke1,
         borderWidth: 3,
         fill: true,
-        data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+        data: [50, 40, 300, 220, 500, 250, 400, 230, 100],
         maxBarThickness: 6
 
       }],
