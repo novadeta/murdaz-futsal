@@ -1,0 +1,33 @@
+{
+  "name": "murdaz-futsal",
+  "version": "1.0.1",
+  "description": "![version](https://img.shields.io/badge/version-1.0.1-blue.svg) [![GitHub issues open](https://img.shields.io/github/issues/creativetimofficial/argon-dashboard-tailwind.svg)](https://github.com/creativetimofficial/argon-dashboard-tailwind/issues?q=is%3Aopen+is%3Aissue) [![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/creativetimofficial/argon-dashboard-tailwind.svg)](https://github.com/creativetimofficial/argon-dashboard-tailwind/issues?q=is%3Aissue+is%3Aclosed)",
+  "scripts": {
+    "build": "tailwindcss build -i src/styles.css -o build/assets/css/argon-dashboard-tailwind.css"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.2",
+    "postcss": "^8.4.6",
+    "postcss-cli": "^9.1.0",
+    "tailwindcss": "^3.0.19"
+  },
+  "dependencies": {
+    "cli": "^1.0.1",
+    "highlight.js": "^11.4.0",
+    "tailwindcss-transforms": "^2.2.0"
+  },
+  "main": "postcss.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/novadeta/murdaz-futsal.git"
+  },
+  "keywords": [
+    "futsal"
+  ],
+  "author": "Ade Oktaviano Arrahman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/novadeta/murdaz-futsal/issues"
+  },
+  "homepage": "https://github.com/novadeta/murdaz-futsal#readme"
+}
