@@ -1,9 +1,15 @@
 <?php 
+  $title = "Login Akun";
   include_once "./layouts/main-header.php";
 ?>
   <body class="m-0 font-sans antialiased font-normal bg-white text-start text-base leading-default text-slate-500">
     <main class="mt-0 transition-all duration-200 ease-in-out">
-      <section>
+      <section class="relative">
+        <div class="absolute z-20 border left-8 top-8">
+            <a href="./index.php">
+              <span class="fa fa-close"></span>
+            </a>
+        </div>
         <div class="relative flex items-center min-h-screen p-0 overflow-hidden bg-center bg-cover">
           <div class="container z-1">
             <div class="flex flex-wrap -mx-3">

@@ -21,12 +21,6 @@ if (isset($_GET['page'])) {
       include $url . 'dashboard.php';
       break;
     // admin
-    case 'guest/login':
-      include './guest/login.php';
-      break;
-    case 'guest':
-      include './guest/index.php';
-      break; 
     case 'guest/dashboard':
       include 'guest/dashboard.php';
       break; 

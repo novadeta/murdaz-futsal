@@ -3,7 +3,7 @@
     protected $user = "root";
     protected $pass = "";
     protected $server = "localhost";
-    protected $database = "murzaz_futsal";
+    protected $database = "murdaz_futsal";
     public $connect = null; 
     public function __construct()
     {
