@@ -25,11 +25,14 @@ if (isset($_GET['page'])) {
       include 'guest/dashboard.php';
       break; 
     case 'guest/pemesanan':
-      include 'guest/pemesanan.php';
+      include 'guest/billing.php';
       break; 
-    case 'guest/pemesanan':
-      include 'guest/pemesanan/.php';
-      break; 
+    case 'guest/lapangan':
+      include 'guest/tables.php';
+      break;
+    case 'guest/profile':
+      include 'guest/profile.php';
+      break;  
     default:
       include $url . 'not-found.php';
       break;

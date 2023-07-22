@@ -2,12 +2,8 @@
   session_start();
   $title = 'Login Admin';
   include_once "../layouts/main-header.php";
-  include_once "../controller/UserController.php";
-  if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $model  = new UserController;
-    $data = $_POST;
-    $model->checkUser($data);
-  }
+  include_once "../core/UserController.php";
+  $role = '1';
 ?>
   <body class="m-0 font-sans antialiased font-normal bg-white text-start text-base leading-default text-slate-500">
     <main class="mt-0 transition-all duration-200 ease-in-out">
@@ -90,66 +86,42 @@
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script>
-  // let form = document.getElementById('login');
-  // form.addEventListener('submit', function(e){
-  //   e.preventDefault();
-  //   let formData = new FormData(this);
-  //   let xhr = new XMLHttpRequest();
-  //   xhr.open("POST", "../routes/user.php?action=checkuser",true)
-  //   xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
-  //   xhr.onreadystatechange = function (){
-  //     if (xhr.readyState === 4 && xhr.status == 200) {
-  //         var response = xhr.responseText;
-  //         console.log(response);
-  //         if (response.status === "success") {
-  //             // document.getElementById("result").innerHTML = response.message;
-  //             console.log(response);
-  //           } else {
-  //           // console.log(response.message);
-  //             // document.getElementById("result").innerHTML = "<span style='color: red;'>" + response.message + "</span>";
-  //         }
-  //     } else {
-  //         console.error(xhr);
-  //     }
-  //   }
-    
-  //   xhr.send(formData)
-  //   })
- 
-  $(document).ready(function (){
-    $('#login').submit(function (e){
-      e.preventDefault();
-      let formData = $(this).serialize();
-      $.ajax({
-        url: "../routes/user.php?action=checkuser",
-        type: "post",
-        data: formData,
-        success: function(response){
-          let dataParse =  JSON.parse(response)
-          if (dataParse.message === "success") {
-                    // Jika data valid, tampilkan pesan sukses
-                    Swal.fire({
-                      title: 'Berhasil Login',
-                      text : 'Berhasil Login',
-                      icon: 'success',
-
-                    })
-                    // $("#result").html(response.message);
-                } else {
-                  alert("yahh")
-                  console.log(response.message);
-                }
+    <script>
+      $(document).ready(function (){
+        $('#login').submit(function (e){
+          e.preventDefault();
+          let formData = $(this).serialize();
+          formData += "&role=<?= $role; ?>" 
+          $.ajax({
+            url: "../routes/user.php?action=checkuser",
+            type: "post",
+            data: formData,
+            success: function(response){
+              let dataParse =  JSON.parse(response)
+              console.log(response);
+              if (dataParse.status === "success") {
+                Swal.fire({
+                  title: 'Berhasil Login',
+                  text : 'Berhasil Login',
+                  icon: 'success',
+                }).then(e => {
+                  document.location.href = '../index.php?page=guest/dashboard'
+                })
+              }else {
+                Swal.fire({
+                  title: 'Username atau password salah',
+                  text : 'Pastikan masukkan username dan password dengan benar',
+                  icon: 'error',
+                  })
+              }
             },
-        error: function(xhr, status, error) {
-            // Tangani kesalahan jika ada
-            alert("yahh")
-            console.error(xhr.status);
-        }
+            error: function(xhr, status, error) {
+                console.log(xhr.status);
+            }
+          })
+        })
       })
-    })
-  })
-</script>
+    </script>
 </body>
 <?php 
   include_once "../layouts/main-footer.php"

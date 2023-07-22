@@ -1,22 +1,22 @@
 <?php 
-include_once "../controller/UserController.php";
+include_once "../core/UserController.php";
 session_start();
 $user = new UserController();
 $request = $_POST;
 $action = $_GET['action'];
 switch ($action) {
     case 'checkuser':
-        // $user->checkUser($request);
-        $_SESSION['username'] = "asds";
-        $json =  array(
-            'username' => 'ade',
-            'message' => 'success'
-        );
-        echo json_encode($json);
+        $result = $user->checkuser($request);
+        echo json_encode($result);
         break;
     
     default:
-        echo"data yang anda cari tidak ada";
+        header('HTTP/1.1 404 URL Not Found');
+        $json = array(
+            "code" => "404", 
+            "status" => 'error'
+        );
+        echo json_encode($json);
         break;
 }
 
