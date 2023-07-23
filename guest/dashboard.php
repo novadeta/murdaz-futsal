@@ -1,5 +1,5 @@
 <?php 
-  include_once "./layouts/guest-header.php"
+  include_once "./layouts/guest-header.php";
 ?>
 
     <main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
@@ -472,5 +472,5 @@
     </main>
 
 <?php 
-  include_once "./layouts/guest-footer.php"
+  include_once "./layouts/guest-footer.php";
 ?>

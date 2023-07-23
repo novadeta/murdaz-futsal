@@ -17,8 +17,20 @@ if (isset($_GET['page'])) {
     case 'dashboard':
       include $url . 'dashboard.php';
       break;
-    case 'dashboard':
-      include $url . 'dashboard.php';
+    case 'pemesanan/main':
+      include $url . 'booking-play.php';
+      break;
+    case 'pemesanan/waktu':
+      include $url . 'booking-time.php';
+      break;
+    case 'riwayat-pemesanan':
+      include $url . 'history-payment.php';
+      break;
+    case 'menunggu-pembayaran':
+      include $url . 'waiting-payment.php';
+      break;
+    case 'scan-qr':
+      include $url . 'scan-qr.php';
       break;
     // admin
     case 'guest/dashboard':

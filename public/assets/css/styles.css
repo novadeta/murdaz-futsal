@@ -1,0 +1,35 @@
+#drop + div{
+    overflow: hidden;
+    height :0;
+    transition: all .5s ease;
+}
+
+#drop.active + div{
+  height : 120px;
+  transition: all .5s ease;
+}
+#drop > .btn-dropdown{
+  transition: all .5s ease;
+}
+#drop.active > .btn-dropdown{
+  transform: rotate(90deg);
+  transition: all .5s ease;
+}
+
+#dropuser + div{
+    overflow: hidden;
+    height :0;
+    transition: all .5s ease;
+}
+
+#dropuser.active + div{
+  height : 70px;
+  transition: all .5s ease;
+}
+#dropuser > .btn-dropdown{
+  transition: all .5s ease;
+}
+#dropuser.active > .btn-dropdown{
+  transform: rotate(90deg);
+  transition: all .5s ease;
+}

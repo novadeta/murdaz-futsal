@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "description": "![version](https://img.shields.io/badge/version-1.0.1-blue.svg) [![GitHub issues open](https://img.shields.io/github/issues/creativetimofficial/argon-dashboard-tailwind.svg)](https://github.com/creativetimofficial/argon-dashboard-tailwind/issues?q=is%3Aopen+is%3Aissue) [![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/creativetimofficial/argon-dashboard-tailwind.svg)](https://github.com/creativetimofficial/argon-dashboard-tailwind/issues?q=is%3Aissue+is%3Aclosed)",
   "scripts": {
-    "build": "tailwindcss build -i src/style.css -o public/assets/css/output.css --watch"
+    "start": "npx tailwindcss -i ./pages/style.css -o ./public/assets/css/output.css --watch"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.2",

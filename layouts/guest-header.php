@@ -15,6 +15,7 @@
     <link href="<?= $url ?>/assets/css/nucleo-svg.css" rel="stylesheet" />
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <link href="<?= $url ?>/assets/css/guest.css" rel="stylesheet" />
+    <link href="<?= $url ?>/assets/css/styles.css" rel="stylesheet" />
   </head>
 
   <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
@@ -43,23 +44,26 @@
             </a>
           </li>
 
-          <li class="mt-0.5 w-full py-2.7">
-              <div class="dark:text-white dark:opacity-80  text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" >
+          <li class="mt-0.5 w-full py-2.7 ">
+              <div  id="drop" class="dark:text-white dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" >
                 <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
                   <i class="relative top-0 text-sm leading-normal text-orange-500 ni ni-calendar-grid-58"></i>
                 </div>
                 <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Pemesanan</span>
+                <div class="flex ml-12 btn-dropdown">
+                  <button class="group ease-in leading-pro text-xs rounded-3.5xl p-1.2 h-6.5 w-6.5 mx-0 my-auto inline-block cursor-pointer border-0 bg-transparent text-center align-middle font-bold  shadow-none transition-all dark:text-white"><i class="ni ease-bounce text-2xs  ni-bold-right transition-all duration-200" aria-hidden="true"></i></button>
+                </div>
               </div>
               <div class=" dark:text-white dark:opacity-80  text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors">
                 <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
                 </div>
                 <ul class="ml-1">
-                  <li class=" py-2 duration-300 opacity-100 pointer-events-none ease">
-                    <a href="index.php?page=guest/pemesanan">Data Pemesanan</a>
+                  <li class=" py-2 duration-300 opacity-100 pointer-events-none ease text-xs">
+                    <a href="index.php?page=guest/pemesanan" class="">Data Pemesanan</a>
                   </li>
-                  <li class=" py-2 duration-300 opacity-100 pointer-events-none ease">Buat Pesan</li>
-                  <li class=" py-2 duration-300 opacity-100 pointer-events-none ease">Buat Pesan</li>
-                  <li class=" py-2 duration-300 opacity-100 pointer-events-none ease">Buat Pesan</li>
+                  <li class=" py-2 duration-300 opacity-100 pointer-events-none ease text-xs">Buat Pesan</li>
+                  <li class=" py-2 duration-300 opacity-100 pointer-events-none ease text-xs">Buat Pesan</li>
+                  <li class=" py-2 duration-300 opacity-100 pointer-events-none ease text-xs">Buat Pesan</li>
                 </ul>
               </div>
           </li>
@@ -87,25 +91,15 @@
           </li>
 
           <li class="mt-0.5 w-full">
-            <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="./sign-in.php">
+            <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="./index.php?page=guest/logout">
               <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
                 <i class="relative top-0 text-sm leading-normal text-orange-500 ni ni-single-copy-04"></i>
               </div>
-              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Sign In</span>
-            </a>
-          </li>
-
-          <li class="mt-0.5 w-full">
-            <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="./sign-up.php">
-              <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                <i class="relative top-0 text-sm leading-normal text-cyan-500 ni ni-collection"></i>
-              </div>
-              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Sign Up</span>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Logout</span>
             </a>
           </li>
         </ul>
       </div>
-
     </aside>
 
     <!-- end sidenav -->

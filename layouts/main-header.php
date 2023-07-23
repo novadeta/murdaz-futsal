@@ -15,4 +15,5 @@
     <link href="<?= $url ?>/assets/css/nucleo-svg.css" rel="stylesheet" />
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <link href="<?= $url ?>/assets/css/guest.css" rel="stylesheet" />
+    <link href="<?= $url ?>/assets/css/styles.css" rel="stylesheet" />
   </head>
