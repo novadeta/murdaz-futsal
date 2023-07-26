@@ -51,6 +51,9 @@ if (isset($_GET['page'])) {
     case 'guest/profil':
       include 'guest/profile.php';
       break;  
+    case 'guest/logout':
+      include 'guest/logout.php';
+      break;  
     default:
       include $url . 'not-found.php';
       break;

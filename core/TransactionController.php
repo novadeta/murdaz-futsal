@@ -17,8 +17,8 @@ class UserController extends Database{
         }
         return true;
     }
-    public function create_user($username,$password){
-        $query = mysqli_query($this->connect, "insert into tbl_users(username,password) values('$username','$password','2')");
+    public function create_user($request){
+        $query = mysqli_query($this->connect, "insert into tbl_transactions values('$request[id_user]','$request[id_field]','$request[date]','$request[start_time]','$request[end_time]','$request[status]')");
     }
     public function show_user($id_user){
         $query = mysqli_query($this->connect, "delete from tbl_users where id_user = '$id_user' ");

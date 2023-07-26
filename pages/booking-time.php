@@ -1,4 +1,5 @@
 <?php 
+ $guest = 'styles.css';
   include_once "./layouts/main-header.php";
   include_once "./layouts/main-sidebar.php";
 ?>
@@ -177,7 +178,7 @@
       <!-- end cards -->
     </main>
   </div>
-</body>
+
 
 <?php 
   include_once "./layouts/main-footer.php";

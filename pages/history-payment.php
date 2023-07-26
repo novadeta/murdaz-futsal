@@ -66,12 +66,6 @@
       </div>
     </main>
   </div>
-  <script>
-    let dropuser = document.getElementById('dropuser')
-      dropuser.addEventListener('click', function(e){
-        this.classList.toggle('active')
-      })
-  </script>
-<?php 
+<?php
   include_once "./layouts/main-footer.php";
 ?>

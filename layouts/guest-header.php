@@ -14,6 +14,7 @@
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <link href="<?= $url ?>/assets/css/guest.css" rel="stylesheet" />
     <link href="<?= $url ?>/assets/css/styles.css" rel="stylesheet" />
+    <link href="<?= $url ?>/assets/css/output.css" rel="stylesheet" />
   </head>
 
   <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
