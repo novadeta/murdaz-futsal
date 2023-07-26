@@ -43,7 +43,7 @@
           </li>
 
           <li class="mt-0.5 w-full py-2.7 ">
-              <div  id="drop" class="dark:text-white dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" >
+              <div  id="drop" class="dark:text-white cursor-pointer text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" >
                 <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
                   <i class="relative top-0 text-sm leading-normal text-orange-500 fas fa-book"></i>
                 </div>

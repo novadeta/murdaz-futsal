@@ -11,6 +11,9 @@ if (isset($_GET['page'])) {
     case 'register':
       include $url . 'register.php';
       break;
+    case 'logout':
+      include $url . 'logout.php';
+      break;
     case 'dashboard':
       include $url . 'dashboard.php';
       break;

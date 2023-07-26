@@ -2,7 +2,6 @@
 
 
 var page = window.location.pathname.split("/").pop().split(".")[0];
-console.log(window.location.pathname.split("/").pop())
 var aux = window.location.pathname.split("/");
 // var to_build = (aux.includes('pages') || aux.includes('docs') ?'../':'./');
 var to_build = "http://localhost/futsal/public/"

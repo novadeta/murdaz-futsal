@@ -14,14 +14,27 @@ class UserController extends Database{
                 'message' => 'username dan password salah',
             ];
         }
-        $_SESSION['token'] = "halo";
+        $result = $query->fetch_assoc();
+        $_SESSION['username'] = $result['username'];
+        $_SESSION['password'] = $result['password'];
+        $_SESSION['role'] = $result['role'];
         return [
             'status' => 'success',
             'message' => 'selamat login',
         ];
     }
-    public function create_user($username,$password){
-        $query = mysqli_query($this->connect, "insert into tbl_users(username,password) values('$username','$password','2')");
+    public function create_user($request){
+        $query_mysql = "select * from tbl_users where username = '$request[username]'";
+        if($request['password'] !== $request['password2'])  return ['status' => 'not-match','message' => 'Pastikan password sama'];
+        $query = mysqli_query($this->connect, $query_mysql);
+        if ($query->num_rows > 0) {
+            return [
+                'status' => 'username-exists',
+                'message' => 'Username sudah ada'
+            ];
+        }
+        
+        $result = mysqli_query($this->connect, "insert into tbl_users(username,password,role) values('$request[username]','$request[password]','$request[role]')");
         return [
             'status' => 'success',
             'message' => 'Berhasil membuat akun',

@@ -19,7 +19,25 @@
                 </li>
             </ul>
             <div>
-                <a class="font-bold bg-forest text-white py-3.5 px-9 rounded-[10px] shadow-[0px_4px_15px_0px_rgba(0,0,0,0.20)]" href="index.php?page=login">Dashboard</a>
+                <?php 
+                session_start();
+                if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
+                        if ($_SESSION['role'] == "1") {
+                ?>
+                <a class="font-bold bg-forest text-white py-3.5 px-9 rounded-[10px] shadow-[0px_4px_15px_0px_rgba(0,0,0,0.20)]" href="index.php?page=guest/dashboard">Dashboard</a>
+                <?php
+                        }else{
+                ?>
+                <a class="font-bold bg-forest text-white py-3.5 px-9 rounded-[10px] shadow-[0px_4px_15px_0px_rgba(0,0,0,0.20)]" href="index.php?page=dashboard">Dashboard</a>
+                <?php
+                        }
+                }else {
+                ?>
+                <a class="font-bold bg-forest text-white py-3.5 px-9 rounded-[10px] shadow-[0px_4px_15px_0px_rgba(0,0,0,0.20)]" href="index.php?page=login">Login</a>
+                <?php                    
+                }
+                ?>
+                
             </div>
         </nav>
     </header>
@@ -32,10 +50,34 @@
                     <span>Murdaz Futsal</span>
                 </p>
                 <div class="flex justify-start gap-2">
-                    <a class="flex gap-2 justify-center items-center py-3 bg-forest font-bold text-white px-3 rounded-[5px] shadow-[0px_4px_15px_0px_rgba(0,0,0,0.20)]" href="">
-                        Masuk Sekarang
-                        <img class="text-black mt-1" src="./public/assets/img/arrow-circle.svg" alt="" srcset="">
-                    </a>
+                    
+                    <?php 
+                        if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
+                                if ($_SESSION['role'] == "1") {
+                        ?>
+                        <a class="flex gap-2 justify-center items-center py-3 bg-forest font-bold text-white px-3 rounded-[5px] shadow-[0px_4px_15px_0px_rgba(0,0,0,0.20)]" href="index.php?page=guest/dashboard">
+                            Masuk Sekarang
+                            <img class="text-black mt-1" src="./public/assets/img/arrow-circle.svg" alt="" srcset="">
+                        </a>
+                        <?php
+                                }else{
+                        ?>
+                        <a class="flex gap-2 justify-center items-center py-3 bg-forest font-bold text-white px-3 rounded-[5px] shadow-[0px_4px_15px_0px_rgba(0,0,0,0.20)]" href="index.php?page=dashboard">
+                            Masuk Sekarang
+                            <img class="text-black mt-1" src="./public/assets/img/arrow-circle.svg" alt="" srcset="">
+                        </a>
+                        <?php
+                                }
+                        }else {
+                        ?>
+                        <a class="flex gap-2 justify-center items-center py-3 bg-forest font-bold text-white px-3 rounded-[5px] shadow-[0px_4px_15px_0px_rgba(0,0,0,0.20)]" href="index.php?page=login">
+                            Masuk Sekarang
+                            <img class="text-black mt-1" src="./public/assets/img/arrow-circle.svg" alt="" srcset="">
+                        </a>
+                        <?php                    
+                        }
+                        ?>
+                        
                     <a class="flex gap-2 justify-center items-center relative px-3 before:ease-in before:duration-200 before:absolute before:left-0 before:w-20 before:h-full before:-z-10  hover:before:w-full before:border before:border-forest before:px-9 before:rounded-[5px] before:shadow-[0px_4px_15px_0px_rgba(0,0,0,0.20)] font-bold" href="#jadwal">
                         Jadwal Booking
                     </a>

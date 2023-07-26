@@ -28,4 +28,19 @@
         color:#fff;
         background: #007aff;
     }
+    #reader__scan_region img {
+        display :none;
+    }
+    #reader__scan_region  {
+        /* min-height: 400px !important; */
+    }
+    #reader{
+        @apply overflow-hidden  rounded-5 ;
+    }
+    #reader img{
+        display : none;
+    }    
+    #reader__dashboard_section{
+        @apply bg-[#5E72E4] text-white absolute bottom-0;
+    }
 }

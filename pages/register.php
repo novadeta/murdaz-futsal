@@ -1,6 +1,7 @@
 <?php 
   $title = "Register Akun";
   include_once "./layouts/main-header.php";
+  $role = "2";
 ?>
   <body class="m-0 font-sans antialiased font-normal bg-white text-start text-base leading-default text-slate-500">
     <main class="mt-0 transition-all duration-200 ease-in-out">
@@ -18,18 +19,18 @@
                     <p class="mb-0">Silahkan isi dengan benar</p>
                   </div>
                   <div class="flex-auto p-6">
-                    <form role="form">
+                    <form id="register" role="form">
                       <div class="mb-4">
-                        <input type="text" placeholder="Masukkan username" name="username" class="focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding p-3 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none" />
+                        <input type="text" name="username" placeholder="Masukkan username" name="username" class="focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding p-3 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none" />
                       </div>
                       <div class="mb-4">
-                        <input type="password" placeholder="Masukkan password"  name="password" class="focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding p-3 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none" />
+                        <input type="password" name="password" placeholder="Masukkan password"  name="password" class="focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding p-3 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none" />
                       </div>
                       <div class="mb-4">
-                        <input type="password" placeholder="Masukkan password ulang" name="password" class="focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding p-3 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none" />
+                        <input type="password" name="password2" placeholder="Masukkan password ulang" name="password" class="focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding p-3 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none" />
                       </div>
                       <div class="text-center">
-                        <button type="button" class="inline-block w-full px-16 py-3.5 mt-6 mb-0 font-bold leading-normal text-center text-white align-middle transition-all bg-blue-500 border-0 rounded-lg cursor-pointer hover:-translate-y-px active:opacity-85 hover:shadow-xs text-sm ease-in tracking-tight-rem shadow-md bg-150 bg-x-25">Buat Akun</button>
+                        <button type="submit" class="inline-block w-full px-16 py-3.5 mt-6 mb-0 font-bold leading-normal text-center text-white align-middle transition-all bg-blue-500 border-0 rounded-lg cursor-pointer hover:-translate-y-px active:opacity-85 hover:shadow-xs text-sm ease-in tracking-tight-rem shadow-md bg-150 bg-x-25">Buat Akun</button>
                       </div>
                     </form>
                   </div>
@@ -60,16 +61,16 @@
             <a href="javascript:;" target="_blank" class="mb-2 mr-4 text-slate-400 sm:mb-0 xl:mr-12"> Tentang Kita </a>
           </div>
           <div class="flex-shrink-0 w-full max-w-full mx-auto mt-2 mb-6 text-center lg:flex-0 lg:w-8/12">
-            <a href="javascript:;" target="_blank" class="mr-6 text-slate-400">
+            <a href="#" target="_blank" class="mr-6 text-slate-400">
               <span class="text-lg fab fa-instagram"></span>
             </a>
-            <a href="javascript:;" target="_blank" class="mr-6 text-slate-400">
+            <a href="#" target="_blank" class="mr-6 text-slate-400">
               <span class="text-lg fab fa-whatsapp"></span>
-            </a>
-            <a href="javascript:;" target="_blank" class="mr-6 text-slate-400">
+            </a>"
+            <a href="#" target="_blank" class="mr-6 text-slate-400">
               <span class="text-lg fab fa-twitter"></span>
             </a>
-            <a href="javascript:;" target="_blank" class="mr-6 text-slate-400">
+            <a href="#" target="_blank" class="mr-6 text-slate-400">
               <span class="text-lg fab fa-facebook"></span>
             </a>
           </div>
@@ -90,3 +91,45 @@
 <?php 
     include_once './layouts/main-footer.php'
 ?>
+ <script>
+    $(document).ready(function (){
+      $('#register').submit(function (e){
+        e.preventDefault();
+        let formData = $(this).serialize();
+        formData += "&role=<?= $role; ?>" 
+        $.ajax({
+          url: "./routes/user.php?action=createuser",
+          type: "post",
+          data: formData,
+          success: function(response){
+            console.log(response);
+            let dataParse =  JSON.parse(response)
+            if (dataParse.status === "success") {
+              Swal.fire({
+                title: 'Berhasil Membuat Akun',
+                text : 'Silahkan Login',
+                icon: 'success',
+              }).then(e => {
+                document.location.href = './index.php?page=login'
+              })
+            }else if(dataParse.status == "username-exists"){
+              Swal.fire({
+                title: 'Username sudah ada',
+                text : 'Username yang kamu masukkan sudah digunakan orang lain',
+                icon: 'error'
+                })
+            }else {
+              Swal.fire({
+                title: 'Password tidak sama',
+                text : dataParse.message,
+                icon: 'error'
+                })
+            }
+          },
+          error: function(xhr, status, error) {
+              console.log(xhr.status);
+          }
+        })
+      })
+    })
+</script>

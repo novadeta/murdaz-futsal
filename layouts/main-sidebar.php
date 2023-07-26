@@ -38,10 +38,10 @@
                 </div>
                 <ul class="ml-1">
                   <li class=" py-2 duration-300 opacity-100  ease text-xs">
-                    <a href="index.php?page=pemesanan/main" class="">Pesan Jam  Main</a>
+                    <a href="index.php?page=pemesanan/main" class="">Booking Lapangan</a>
                   </li>
                   <li class=" py-2 duration-300 opacity-100 ease text-xs">
-                    <a href="index.php?page=pemesanan/waktu" class="">Pesan Jam  </a>
+                    <a href="index.php?page=pemesanan/waktu" class="">Booking Jam  </a>
                   </li>
                 </ul>
               </div>
@@ -137,8 +137,8 @@
                   </li>
 
                   <li class="relative mb-2">
-                    <a class="dark:hover:bg-slate-900 ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg px-4 transition-colors duration-300 hover:bg-gray-200 hover:text-slate-700" href="javascript:;">
-                      <div class="flex py-1">
+                    <div class="flex py-1">
+<a class="dark:hover:bg-slate-900 ease py-1.2 clear-both block w-full whitespace-nowrap rounded-lg px-4 transition-colors duration-300 hover:bg-gray-200 hover:text-slate-700" href="javascript:;">
                         <div class="my-auto">
                           <img src="<?= $url ?>/assets/img/small-logos/logo-spotify.svg" class="inline-flex items-center justify-center mr-4 text-sm text-white bg-gradient-to-tl from-zinc-800 to-zinc-700 dark:bg-gradient-to-tl dark:from-slate-750 dark:to-gray-850 h-9 w-9 max-w-none rounded-xl" />
                         </div>
