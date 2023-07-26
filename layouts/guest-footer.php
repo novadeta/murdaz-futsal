@@ -1,5 +1,5 @@
   
-</body>
+
   <!-- plugin for charts  -->
   <script src="<?= $url ?>/assets/js/plugins/chartjs.min.js" async></script>
   <!-- plugin for scrollbar  -->
@@ -7,9 +7,10 @@
   <!-- main script file  -->
   <script src="<?= $url ?>/assets/js/guest.js" async></script>
   <script>
-    let e = document.getElementById('drop')
-      e.addEventListener('click', function(e){
+    let drop = document.getElementById('drop')
+      drop.addEventListener('click', function(e){
         this.classList.toggle('active')
       })
   </script>
+  </body>
 </html>

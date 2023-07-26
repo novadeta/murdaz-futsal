@@ -543,7 +543,7 @@
         
       </div>
     </main>
-
+</body>
 <?php 
 include_once "./layouts/guest-footer.php";
 ?>

@@ -1,7 +1,4 @@
 <?php 
-// if ($_SERVER['URI']) {
-//   # code...
-// }
 $url = './pages/';
 $page = '';
 if (isset($_GET['page'])) {
@@ -53,3 +50,4 @@ if (isset($_GET['page'])) {
   include $url . 'index.php';
 }
 ?>
+

@@ -82,8 +82,9 @@
           </div>
         </div>
       </div>
-    </footer>
-    </main>
+      </footer>
+      </main>
+    </body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
@@ -98,7 +99,6 @@
             data: formData,
             success: function(response){
               let dataParse =  JSON.parse(response)
-              console.log(response);
               if (dataParse.status === "success") {
                 Swal.fire({
                   title: 'Berhasil Login',
@@ -122,7 +122,7 @@
         })
       })
     </script>
-</body>
+
 <?php 
-  include_once "../layouts/main-footer.php"
+  include_once "../layouts/guest-footer.php"
 ?>

@@ -1,13 +1,14 @@
 <?php 
+  $guest = 'styles.css'; 
   include_once "./layouts/main-header.php";
   include_once "./layouts/main-sidebar.php";
+  var_dump($guest);
 ?>
 
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
   <div class="absolute w-full bg-blue-500 dark:hidden min-h-75"></div>
     <main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
 
-      <!-- cards -->
       <div class="w-full px-6 py-6 mx-auto">
 
         <div class="flex flex-wrap mt-6 -mx-3">
@@ -172,13 +173,15 @@
             </div>
           </div>
         </div>
-
       </div>
-      <!-- end cards -->
     </main>
   </div>
-</body>
-
+  <script>
+    let dropuser = document.getElementById('dropuser')
+      dropuser.addEventListener('click', function(e){
+        this.classList.toggle('active')
+      })
+  </script>
 <?php 
   include_once "./layouts/main-footer.php";
 ?>

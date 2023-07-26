@@ -24,7 +24,9 @@ module.exports = {
       transparent: colors.transparent,
       black: colors.black,
       white: colors.white,
-
+      forest : '#064610',
+      malachite : '#5AD78C',
+      secondary: '#818181',
       slate: {
         DEFAULT: colors.slate,
         50: "#f8fafc",
