@@ -34,7 +34,7 @@
       <div class="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full">
         <ul class="flex flex-col pl-0 mb-0">
           <li class="mt-0.5 w-full">
-            <a class="py-2.7 bg-blue-500/13 dark:text-white dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors" href="./index.php?page=guest/dashboard">
+            <a class="py-2.7 dark:text-white dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 text-slate-700 transition-colors" href="./index.php?page=guest/dashboard">
               <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
                 <i class="relative top-0 text-sm leading-normal text-blue-500 ni ni-tv-2"></i>
               </div>
@@ -45,7 +45,7 @@
           <li class="mt-0.5 w-full py-2.7 ">
               <div  id="drop" class="dark:text-white dark:opacity-80 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" >
                 <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
-                  <i class="relative top-0 text-sm leading-normal text-orange-500 ni ni-calendar-grid-58"></i>
+                  <i class="relative top-0 text-sm leading-normal text-orange-500 fas fa-book"></i>
                 </div>
                 <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Pemesanan</span>
                 <div class="flex ml-12 btn-dropdown">
@@ -56,12 +56,15 @@
                 <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
                 </div>
                 <ul class="ml-1">
-                  <li class=" py-2 duration-300 opacity-100 pointer-events-none ease text-xs">
+                  <li class=" py-2 duration-300 opacity-100  ease text-xs">
                     <a href="index.php?page=guest/pemesanan" class="">Data Pemesanan</a>
                   </li>
-                  <li class=" py-2 duration-300 opacity-100 pointer-events-none ease text-xs">Buat Pesan</li>
-                  <li class=" py-2 duration-300 opacity-100 pointer-events-none ease text-xs">Buat Pesan</li>
-                  <li class=" py-2 duration-300 opacity-100 pointer-events-none ease text-xs">Buat Pesan</li>
+                  <li class=" py-2 duration-300 opacity-100  ease text-xs">
+                    <a href="index.php?page=guest/booking" class="">Booking</a>
+                  </li>
+                  <li class=" py-2 duration-300 opacity-100  ease text-xs">
+                    <a href="index.php?page=guest/validasi" class="">Menunggu Validasi</a>
+                  </li>
                 </ul>
               </div>
           </li>

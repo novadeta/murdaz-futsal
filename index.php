@@ -36,10 +36,16 @@ if (isset($_GET['page'])) {
     case 'guest/pemesanan':
       include 'guest/billing.php';
       break; 
+    case 'guest/booking':
+      include 'guest/booking.php';
+      break; 
+    case 'guest/validasi':
+      include 'guest/validation.php';
+      break; 
     case 'guest/lapangan':
-      include 'guest/tables.php';
+      include 'guest/field.php';
       break;
-    case 'guest/profile':
+    case 'guest/profil':
       include 'guest/profile.php';
       break;  
     default:
