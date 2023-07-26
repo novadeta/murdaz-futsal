@@ -75,11 +75,13 @@
                   <input id="end_time" name="end_time" type="time" class="focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"></input>
               </div>
             </div>
-            <form dropzone action="/file-upload" class="dropzone focus:shadow-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-border px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" id="dropzone">
-              <div class="fallback">
-                <input name="file" type="file" multiple />
-              </div>
-            </form>
+            <label class="block mt-4" for="payment">Masukkan Bukti Pembayaran
+                <input name="payment" id="payment" class="block w-full text-sm text-slate-500 mt-4 file:mr-4 file:py-2 file:px-4
+                    file:rounded-full file:border-0
+                    file:text-sm file:font-semibold
+                    file:bg-[#5e72e3] file:text-white
+                    hover:file:bg-violet-100" name="payment" id="payment" type="file" multiple />
+            </label>
             <div class="flex flex-col w-1/5 items-start mx-auto mt-4">
                   <button id="button" type="submit" class="bg-blue-500 text-md w-full ease  mx-auto rounded-lg text-white px-3 py-2">Pesan</button>
               </div>
