@@ -7,14 +7,23 @@ class UserController extends Database{
         parent::__construct();
     }
     public function get_user($request = ""){
-        $query_mysql = "select * from tbl_users where username = '$request[username]'";
-        $query = mysqli_query($this->connect, $query_mysql);
-        if ($query->num_rows > 0) {
-            return [
-                'status' => 'username-exists',
-                'message' => 'Username sudah ada'
-            ];
+        if ($request) {
+            $query_mysql = "select * from tbl_users where username = '$request[username]'";
+            $query = mysqli_query($this->connect, $query_mysql);
+            if ($query->num_rows > 0) {
+                return [
+                    'data' => $query->fetch_assoc(),
+                    'status' => 'username-exists',
+                    'message' => 'Username sudah ada'
+                ];
+            }
         }
+        $query_mysql = "select * from tbl_users";
+        $query = mysqli_query($this->connect, $query_mysql);
+        while($row = mysqli_fetch_array($query)){
+            $result[] = $row; 
+        }
+        return $result;
     }
     public function checkuser($request){
         $query = mysqli_query($this->connect, "select * from tbl_users where username = '$request[username]' and password = '$request[password]' and role = '$request[role]'");

@@ -1,20 +1,23 @@
 <?php 
   $guest = 'styles.css';
+  include_once "./layouts/authorize.php";
   include_once "./layouts/main-header.php";
   include_once "./layouts/main-sidebar.php";
   include_once "./core/TransactionController.php";
-  include_once "./core/UserController.php";
   include_once "./core/FieldController.php";
   $transaction = new TransactionController();
+  $field = new FieldController();
+  $field_result = $field->get_field("Aktif");
   if($_SERVER["REQUEST_METHOD"] == "POST"){
     $request = $_POST;
+    // $file = $_FILES;
     $result = $transaction->create_transaction($request);
-      echo "
-      <script>
-          alert('Berhasil Menambah')
-          document.location.href = './index.php?page=pemesanan/main'
-      </script>
-      ";
+      // echo "
+      // <script>
+      //     alert('Berhasil Menambah')
+      //     document.location.href = './index.php?page=pemesanan/main'
+      // </script>
+      // ";
   }
 ?>
 
@@ -59,10 +62,11 @@
     </div>
     <div style="margin-top: 40px;" class="relative flex flex-col w-full mt-15 min-w-0 mb-0 break-words p-4 bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
         <h3 class="text-center mb-8">Form Pesan Booking</h3>
-        <form method="POST" class="w-1/2 mx-auto">
+        <form method="POST" class="w-1/2 mx-auto" enctype="multipart/form-data">
+            <input name="id_user" type="hidden" value="<?= $session_user['data']['id_user'];?>"  readonly>
             <div class="flex flex-col w-full items-start mx-auto" style="gap: 10px;">
                 <label for="date">Masukkan Tanggal Main</label>
-                <input id="date" name="date" type="date"  class="flat focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" value="<?= date('Y m d') ?>" />
+                <input id="date" name="date_play" type="date"  class="flat focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" value="<?= date('Y m d') ?>" />
             </div>
             <div class="flex justify-center mt-4" style="gap: 10px;">
               <div class="flex flex-col w-full items-start mx-auto" style="gap: 10px;">
@@ -74,12 +78,32 @@
                   <input id="end_time" name="end_time" type="time" class="time focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"></input>
               </div>
             </div>
+            <div class="flex flex-col w-full mt-4 items-start mx-auto" style="gap: 10px;">
+            <label for="price">Lapangan</label>
+            <select required name="id_field" id="field" class="focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none">
+                  <option value="">Silahkan Pilih</option>
+                    <?php 
+                      $no = 0;
+                      foreach ($field_result as $field) {
+                      ?>
+                          <option value="<?= $field['id_field'] ?>"><?= $field['field_name'] ?></option>
+
+                      <?php
+                      }
+                      ?>    
+                </select>
+            </div>
+            <div id="price" class="flex flex-col mt-4 w-full items-start mx-auto" style="gap: 10px;">
+              <label for="price">Harga</label>
+              <h4 for="price">Rp. 0</h4>
+              <input type="hidden" name="price" readonly>
+            </div>
             <label class="block mt-4" for="payment">Masukkan Bukti Pembayaran
                 <input name="payment" id="payment" class="block w-full text-sm text-slate-500 mt-4 file:mr-4 file:py-2 file:px-4
                     file:rounded-full file:border-0
                     file:text-sm file:font-semibold
                     file:bg-[#5e72e3] file:text-white
-                    hover:file:bg-violet-100" name="payment" id="payment" type="file" multiple />
+                    hover:file:bg-violet-100" name="payment" id="payment" type="file" multiple require />
             </label>
             <div class="flex flex-col w-1/5 items-start mx-auto mt-4">
                   <button id="button" type="submit" class="bg-blue-500 text-md w-full ease  mx-auto rounded-lg text-white px-3 py-2">Pesan</button>
@@ -195,4 +219,44 @@
         document.getElementById('date-booking').innerText = `${selectedDate[0].getDate()} ${month[selectedDate[0].getMonth()]} ${selectedDate[0].getFullYear()}`
       }
     });
+    let time = document.querySelectorAll('.time')
+    let price = document.getElementById('price')
+    function convertSecond(time){
+      const [hours,minutes,seconds] = time.split(":")
+      return  parseInt(hours * 3600) + parseInt(minutes * 60) + parseInt(seconds) 
+    }
+    function convertTime(time){
+      const housr = Math.floor(seconds / 3600)
+    }
+    flatpickr(".time", {
+      dateFormat: "H:i:s",
+      enableTime: true,
+      noCalendar: true,
+      time_24hr: true,
+      minTime: "08:00",
+      onChange: function(selected,str) {
+        let startTime = time[0].value + "0"
+        let endTime = time[1].value + "0"
+        let convertStartTime = convertSecond(startTime)
+        let convertEndTime = convertSecond(endTime)
+        let differenceTime = convertEndTime - convertStartTime
+        const hours = differenceTime / 3600
+        if (str > "08:00:00" &&  str < "17:59:00") {
+            let pricePerHours = 100000 * hours ;
+            (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
+            isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` : 
+            price.children[1].innerText = `Rp. ${pricePerHours}`
+            price.children[2].value = `${pricePerHours}`
+        }else if (str > "18:00:00" &&  str < "23:59:00") {
+            let pricePerHours = 120000 * hours ;
+            (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
+            isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` :
+             price.children[1].innerText = `Rp. ${pricePerHours}`
+             price.children[2].value = `${pricePerHours}`
+        }else{
+              price.children[1].innerText = `Rp. 0`
+              price.children[2].value = `0`
+        }
+      }
+  });
 </script>
