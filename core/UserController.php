@@ -1,9 +1,20 @@
 <?php 
-include_once "../services/database.php";
+$root = dirname(__DIR__);
+include_once "$root/services/database.php";
 class UserController extends Database{
     public function __construct()
     {
         parent::__construct();
+    }
+    public function get_user($request = ""){
+        $query_mysql = "select * from tbl_users where username = '$request[username]'";
+        $query = mysqli_query($this->connect, $query_mysql);
+        if ($query->num_rows > 0) {
+            return [
+                'status' => 'username-exists',
+                'message' => 'Username sudah ada'
+            ];
+        }
     }
     public function checkuser($request){
         $query = mysqli_query($this->connect, "select * from tbl_users where username = '$request[username]' and password = '$request[password]' and role = '$request[role]'");

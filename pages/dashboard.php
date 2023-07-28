@@ -3,7 +3,6 @@
   $guest = 'styles.css'; 
   include_once "./layouts/main-header.php";
   include_once "./layouts/main-sidebar.php";
-  var_dump($guest);
 ?>
 
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">

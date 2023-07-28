@@ -37,7 +37,7 @@ if (isset($_GET['page'])) {
       include 'guest/dashboard.php';
       break; 
     case 'guest/pemesanan':
-      include 'guest/billing.php';
+      include 'guest/data_booking.php';
       break; 
     case 'guest/booking':
       include 'guest/booking.php';
@@ -47,6 +47,9 @@ if (isset($_GET['page'])) {
       break; 
     case 'guest/lapangan':
       include 'guest/field.php';
+      break;
+    case 'guest/pengguna':
+      include 'guest/users.php';
       break;
     case 'guest/profil':
       include 'guest/profile.php';

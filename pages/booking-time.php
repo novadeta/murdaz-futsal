@@ -46,7 +46,7 @@
         <form action="" class="w-1/2 mx-auto">
             <div class="flex flex-col w-full items-start mx-auto" style="gap: 10px;">
                 <label for="time">Masukkan </label>
-                <input id="time" name="time" type="time" placeholder="08.00" class=" without_ampm focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"></input>
+                <input id="time" name="time" type="time" placeholder="08.00" class="time focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"></input>
             </div>
             <label class="block mt-4" for="payment">Masukkan Bukti Pembayaran
                 <input name="payment" id="payment" class="block w-full text-sm text-slate-500 mt-4 file:mr-4 file:py-2 file:px-4

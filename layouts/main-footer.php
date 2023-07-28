@@ -8,3 +8,15 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   </body>
 </html>
+<script>
+  flatpickr(".flat", {
+      dateFormat: "Y-m-d",
+      minDate: "today"
+    });
+  flatpickr(".time", {
+    dateFormat: "H:i:s",
+    enableTime: true,
+    noCalendar: true,
+    time_24hr: true
+  });
+</script>

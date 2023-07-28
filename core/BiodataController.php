@@ -1,6 +1,7 @@
 <?php 
-include_once "../services/database.php";
-class UserController extends Database{
+$root = dirname(__DIR__);
+include_once "$root/services/database.php";
+class BiodataController extends Database{
     public function __construct()
     {
         parent::__construct();

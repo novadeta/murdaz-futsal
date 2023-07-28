@@ -1,17 +1,22 @@
 <?php 
-include_once "../core/UserController.php";
+include_once "../core/FieldController.php";
 session_start();
-$user = new UserController();
+$field = new FieldController();
 $request = $_POST;
 $action = $_GET['action'];
 switch ($action) {
     case 'checkuser':
-        $result = $user->checkuser($request);
+        // $result = $field->checkuser($request);
         echo json_encode($result);
         break;
-    case 'createuser':
-        $result = $user->create_user($request);
-        echo json_encode($result);
+    case 'create_field':
+        $result = $field->create_field($request);
+        echo "
+        <script>
+            alert('Berhasil Menambah')
+            document.location.href = '../index.php?page=guest/lapangan'
+        </script>
+        ";
         break;
     default:
         header('HTTP/1.1 404 URL Not Found');

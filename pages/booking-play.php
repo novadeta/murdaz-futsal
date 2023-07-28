@@ -2,6 +2,20 @@
   $guest = 'styles.css';
   include_once "./layouts/main-header.php";
   include_once "./layouts/main-sidebar.php";
+  include_once "./core/TransactionController.php";
+  include_once "./core/UserController.php";
+  include_once "./core/FieldController.php";
+  $transaction = new TransactionController();
+  if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $request = $_POST;
+    $result = $transaction->create_transaction($request);
+      echo "
+      <script>
+          alert('Berhasil Menambah')
+          document.location.href = './index.php?page=pemesanan/main'
+      </script>
+      ";
+  }
 ?>
 
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
@@ -16,9 +30,13 @@
             <div class="border-black/12.5 dark:bg-slate-850 dark:shadow-dark-xl shadow-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
               <div class="border-black/12.5 mb-0 rounded-t-2xl border-b-0 border-solid p-6 pt-4 pb-0">
                 <h3 class="capitalize dark:text-white text-center">Jadwal Booking</h3>
-                <p class="mb-0 text-sm leading-normal dark:text-white dark:opacity-60 text-center">
+                <p id="date-booking" class=" mb-0 text-sm leading-normal py-2 px-2 rounded-3 text-white dark:opacity-60 text-center mx-auto bg-[#5E72E4]" style="width: 100px;">
                   <?= date("d M Y") ?>
                 </p>
+                <div class="mx-auto flex justify-center gap-5 my-5">
+                          <button class="py-2 px-3 bg-[#5E72E4] text-white shadow-sm rounded-2 font-semibold">Lapangan A</button>
+                          <button class="py-2 px-3 shadow-sm rounded-2">Lapangan B</button>
+                </div>
               </div>
               <div class="flex-auto p-4">
               <div class="relative flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
@@ -32,26 +50,7 @@
                             <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Status</th>
                           </tr>
                         </thead>
-                        <tbody>
-                          <tr>
-                            <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                              <div class="flex px-2 py-1">
-                                <div>
-                                  <img src="../assets/img/team-2.jpg" class="inline-flex items-center justify-center mr-4 text-white transition-all duration-200 ease-in-out text-sm h-9 w-9 rounded-xl" alt="user1" />
-                                </div>
-                                <div class="flex flex-col justify-center">
-                                  <p class="mb-0 font-semibold  leading-normal text-md">08.00</p>
-                                </div>
-                              </div>
-                            </td>
-                            <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                              <p class="mb-0 font-semibold leading-normal text-md">12.00</p>
-                            </td>
-                            <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
-                              <span class="bg-gradient-to-tl from-emerald-500 to-teal-400 px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Online</span>
-                            </td>
-                          </tr>
-                        </tbody>
+                        <tbody id="schedule-booking"></tbody>
                       </table>
                     </div>
                 </div>
@@ -60,19 +59,19 @@
     </div>
     <div style="margin-top: 40px;" class="relative flex flex-col w-full mt-15 min-w-0 mb-0 break-words p-4 bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
         <h3 class="text-center mb-8">Form Pesan Booking</h3>
-        <form action="" class="w-1/2 mx-auto">
+        <form method="POST" class="w-1/2 mx-auto">
             <div class="flex flex-col w-full items-start mx-auto" style="gap: 10px;">
                 <label for="date">Masukkan Tanggal Main</label>
-                <input id="date" name="date" type="date" placeholder="08.00" class=" without_ampm focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"></input>
+                <input id="date" name="date" type="date"  class="flat focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" value="<?= date('Y m d') ?>" />
             </div>
             <div class="flex justify-center mt-4" style="gap: 10px;">
               <div class="flex flex-col w-full items-start mx-auto" style="gap: 10px;">
                   <label for="start_time">Mulai Main</label>
-                  <input id="start" name="start_time" type="datetime-local" class="without_ampm focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"></input>
+                  <input id="start" name="start_time" type="time" class="time focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"></input>
               </div>
               <div class="flex flex-col w-full items-start mx-auto" style="gap: 10px;">
                   <label for="end_time">Akhir Main</label>
-                  <input id="end_time" name="end_time" type="time" class="focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"></input>
+                  <input id="end_time" name="end_time" type="time" class="time focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"></input>
               </div>
             </div>
             <label class="block mt-4" for="payment">Masukkan Bukti Pembayaran
@@ -98,3 +97,102 @@
 <?php 
   include_once "./layouts/main-footer.php";
 ?>
+
+<script>
+  let picker = document.getElementById('date-booking');
+  let schedule = document.getElementById('schedule-booking');
+  let month = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"]
+    window.onload = function () {
+      picker.innerText = new Date().getDate() 
+      picker.innerText += " " + month[new Date().getMonth()]
+      picker.innerText += " " + new Date().getFullYear()
+      $.ajax({
+        url: "./routes/transaction.php?action=get_transaction",
+        type: "POST",
+        data : {
+          date_play : "<?= date("Y-m-d") ?>",
+          id_field : "1"
+        },
+        success: function (data){
+          let dataParse = JSON.parse(data)
+          let status = null
+          for (let index = 0; index < dataParse.length; index++) {
+            (dataParse[index]["status"] == "0") ? status = 'Cancel' : dataParse[index]["status"] == "1" ? status = 'Pending' : dataParse[index]["status"] == "2" ? status = 'Goo' : dataParse[index]["status"] == "3" ? status = 'Sudah Bayar' : status = "Belum Diketahui"
+            let content = ` <tr>
+                                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                    <div class="flex px-2 py-1">
+                                      <div class="flex flex-col px-3 justify-center">
+                                        <p class="mb-0 font-semibold  leading-normal text-md">${dataParse[index]["start_time"].slice(0,5)}</p>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                    <p class="mb-0 font-semibold leading-normal text-md">${dataParse[index]["end_time"].slice(0,5)}</p>
+                                  </td>
+                                  <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
+                                    <span class="bg-gradient-to-tl ${status == 'Cancel' 
+                                      ? 'from-red-500 to-red-400' : status == "Pending" 
+                                      ? "from-yellow-500 to-yellow-400" : status == "2" 
+                                      ? "from-emerald-500 to-teal-400" : status == "3" 
+                                      ? "from-emerald-500 to-teal-400" : ""} px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                    ${status}
+                                    </span>
+                                  </td>
+                                </tr>`;
+          schedule.insertAdjacentHTML('beforeend',content);
+          }
+        }
+      })
+
+
+    };
+    flatpickr("#date-booking", {
+      dateFormat: "Y-m-d",
+      onChange: function (selectedDate,dateStr) {
+            console.log(schedule.children);
+        schedule.children.forEach(element => {
+          schedule.removeChild(schedule.firstElementChild)
+          schedule.removeChild(schedule.lastElementChild)
+          });
+        $.ajax({
+        url: "./routes/transaction.php?action=get_transaction",
+        type: "POST",
+        data : {
+          date_play : dateStr,
+          id_field : '1'
+        },
+        success: function (data){
+          let dataParse = JSON.parse(data)
+          let status = null
+          for (let index = 0; index < dataParse.length; index++) {
+            (dataParse[index]["status"] == "0") ? status = 'Cancel' : dataParse[index]["status"] == "1" ? status = 'Pending' : dataParse[index]["status"] == "2" ? status = 'Goo' : dataParse[index]["status"] == "3" ? status = 'Sudah Bayar' : status = "Belum Diketahui"
+            let content = ` <tr>
+                              <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                <div class="flex px-2 py-1">
+                                  <div class="flex flex-col px-3 justify-center">
+                                    <p class="mb-0 font-semibold  leading-normal text-md">${dataParse[index]["start_time"].slice(0,5)}</p>
+                                  </div>
+                                </div>
+                              </td>
+                              <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                <p class="mb-0 font-semibold leading-normal text-md">${dataParse[index]["end_time"].slice(0,5)}</p>
+                              </td>
+                              <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
+                                <span class="bg-gradient-to-tl ${status == 'Cancel' 
+                                  ? 'from-red-500 to-red-400' : status == "Pending" 
+                                  ? "from-yellow-500 to-yellow-400" : status == "2" 
+                                  ? "from-emerald-500 to-teal-400" : status == "3" 
+                                  ? "from-emerald-500 to-teal-400" : ""} px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                ${status}
+                                </span>
+                              </td>
+                            </tr>`;
+          schedule.insertAdjacentHTML('beforeend',content);
+          }
+        }
+      })
+        let splitDate = dateStr.split("-").reverse()
+        document.getElementById('date-booking').innerText = `${selectedDate[0].getDate()} ${month[selectedDate[0].getMonth()]} ${selectedDate[0].getFullYear()}`
+      }
+    });
+</script>

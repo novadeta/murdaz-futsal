@@ -68,8 +68,5 @@ html5QrcodeScanner.render(onScanSuccess, onScanFailure);
 //     URL.revokeObjectURL(blobUrl)
 //   }).catch(e => console.log(e))
 // }
-let dropuser = document.getElementById('dropuser')
-      dropuser.addEventListener('click', function(e){
-        this.classList.toggle('active')
-      })
+
 </script>
