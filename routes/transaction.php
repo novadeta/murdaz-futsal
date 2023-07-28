@@ -7,7 +7,7 @@ switch ($action) {
     case 'get_transaction':
         $result = $field->get_transaction($request);
         // echo $result;
-        echo json_encode($result);
+        echo var_dump($result);
         break;
     case 'create_field':
         $result = $field->create_transaction($request);

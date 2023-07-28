@@ -1,5 +1,5 @@
 <?php 
-  include_once './pages/authorize.php';
+  include_once './layouts/authorize.php';
   $guest = 'styles.css'; 
   include_once "./layouts/main-header.php";
   include_once "./layouts/main-sidebar.php";

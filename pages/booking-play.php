@@ -37,8 +37,13 @@
                   <?= date("d M Y") ?>
                 </p>
                 <div class="mx-auto flex justify-center gap-5 my-5">
-                          <button class="py-2 px-3 bg-[#5E72E4] text-white shadow-sm rounded-2 font-semibold">Lapangan A</button>
-                          <button class="py-2 px-3 shadow-sm rounded-2">Lapangan B</button>
+                <?php 
+                      $no = 0;
+                      foreach ($field_result as $field) {
+                    ?>
+                      <button onclick="changeField(this,<?= $field['id_field'] ?>)" class="btn_field py-2 px-3 bg-[#5E72E4] text-white shadow-sm rounded-2 font-semibold"><?= $field['field_name']; ?></button>
+                      <!-- <button class="btn_field py-2 px-3 shadow-sm rounded-2">Lapangan B</button> -->
+                  <?php }?>
                 </div>
               </div>
               <div class="flex-auto p-4">
@@ -125,10 +130,10 @@
 <script>
   let picker = document.getElementById('date-booking');
   let schedule = document.getElementById('schedule-booking');
-  let month = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"]
+  let months = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"]
     window.onload = function () {
       picker.innerText = new Date().getDate() 
-      picker.innerText += " " + month[new Date().getMonth()]
+      picker.innerText += " " + months[new Date().getMonth()]
       picker.innerText += " " + new Date().getFullYear()
       $.ajax({
         url: "./routes/transaction.php?action=get_transaction",
@@ -167,13 +172,56 @@
           }
         }
       })
-
-
     };
+    
+    function changeField(e,id_field){
+      let [date,month,year] = document.getElementById('date-booking').innerText.split(" ")
+      let numberMonth =  months.indexOf(month)+1
+      console.log(id_field);
+      $.ajax({
+      url: "./routes/transaction.php?action=get_transaction",
+      type: "POST",
+      data : {
+        date_play : `${year}-0${month}-${date}`,
+        id_field : `${id_field}`
+      },
+      success: function (data){
+        console.log(data);
+        let dataParse = JSON.parse(data)
+        let status = null
+        for (let index = 0; index < dataParse.length; index++) {
+          (dataParse[index]["status"] == "0") ? status = 'Cancel' : dataParse[index]["status"] == "1" ? status = 'Pending' : dataParse[index]["status"] == "2" ? status = 'Goo' : dataParse[index]["status"] == "3" ? status = 'Sudah Bayar' : status = "Belum Diketahui"
+          let content = ` <tr>
+                            <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                              <div class="flex px-2 py-1">
+                                <div class="flex flex-col px-3 justify-center">
+                                  <p class="mb-0 font-semibold  leading-normal text-md">${dataParse[index]["start_time"].slice(0,5)}</p>
+                                </div>
+                              </div>
+                            </td>
+                            <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                              <p class="mb-0 font-semibold leading-normal text-md">${dataParse[index]["end_time"].slice(0,5)}</p>
+                            </td>
+                            <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
+                              <span class="bg-gradient-to-tl ${status == 'Cancel' 
+                                ? 'from-red-500 to-red-400' : status == "Pending" 
+                                ? "from-yellow-500 to-yellow-400" : status == "2" 
+                                ? "from-emerald-500 to-teal-400" : status == "3" 
+                                ? "from-emerald-500 to-teal-400" : ""} px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                              ${status}
+                              </span>
+                            </td>
+                          </tr>`;
+        schedule.insertAdjacentHTML('beforeend',content);
+        }
+      }
+    })
+      
+    }
+
     flatpickr("#date-booking", {
       dateFormat: "Y-m-d",
       onChange: function (selectedDate,dateStr) {
-            console.log(schedule.children);
         schedule.children.forEach(element => {
           schedule.removeChild(schedule.firstElementChild)
           schedule.removeChild(schedule.lastElementChild)
@@ -182,10 +230,11 @@
         url: "./routes/transaction.php?action=get_transaction",
         type: "POST",
         data : {
-          date_play : dateStr,
+          date_play : "2023-07-28",
           id_field : '1'
         },
         success: function (data){
+          console.log(data);
           let dataParse = JSON.parse(data)
           let status = null
           for (let index = 0; index < dataParse.length; index++) {
@@ -216,9 +265,16 @@
         }
       })
         let splitDate = dateStr.split("-").reverse()
-        document.getElementById('date-booking').innerText = `${selectedDate[0].getDate()} ${month[selectedDate[0].getMonth()]} ${selectedDate[0].getFullYear()}`
+        document.getElementById('date-booking').innerText = `${selectedDate[0].getDate()} ${months[selectedDate[0].getMonth()]} ${selectedDate[0].getFullYear()}`
       }
     });
+
+
+
+
+
+
+
     let time = document.querySelectorAll('.time')
     let price = document.getElementById('price')
     function convertSecond(time){
