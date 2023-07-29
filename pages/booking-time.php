@@ -1,16 +1,26 @@
 <?php 
   $guest = 'styles.css';
+  include_once "./layouts/authorize.php";
   include_once "./layouts/main-header.php";
   include_once "./layouts/main-sidebar.php";
+  include_once "./core/TimeController.php";
+  $time = new TimeController();
+  $time_result = $time->show_time($session_user['data']['id_user']);
+  $date = date("h",strtotime($time_result['time']));
+  $convertDate = intval($date);
+  // var_dump($date);
+  // var_dump($time_result["time"]);
+  if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $request = $_POST;
+    $file = $_FILES;
+    $result = $time->create_time($request,$file);
+  }
 ?>
 
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
   <div class="absolute w-full bg-blue-500 dark:hidden min-h-75"></div>
     <main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
-
-      <!-- cards -->
       <div class="w-full px-6 py-6 mx-auto">
-
         <div class="flex flex-wrap mt-6 -mx-3 justify-center">
           <div class="w-full max-w-full px-3 mt-0 lg:w-7/12 lg:flex-none">
             <div class="border-black/12.5 dark:bg-slate-850 dark:shadow-dark-xl shadow-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
@@ -29,7 +39,7 @@
                             <td class="p-2 align-middle bg-transparent whitespace-nowrap shadow-transparent" colspan="3">
                               <div class="flex px-2 py-1 justify-center">
                                 <div class="flex flex-col justify-center">
-                                  <h2 class="mb-0 font-semibold text-center leading-normal text-md">3,45 Jam</h2>
+                                  <h2 class="mb-0 font-semibold text-center leading-normal text-md"><?= $convertDate; ?> Jam</h2>
                                 </div>
                               </div>
                             </td>
@@ -43,7 +53,8 @@
     </div>
     <div style="margin-top: 40px;" class="relative flex flex-col w-full mt-15 min-w-0 mb-0 break-words p-4 bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
         <h3 class="text-center mb-8">Form Pesan Jam</h3>
-        <form action="" class="w-1/2 mx-auto">
+        <form method="POST" class="w-1/2 mx-auto">
+            <input name="id_user" type="hidden" value="<?= $session_user['data']['id_user'];?>"  readonly>
             <div class="flex flex-col w-full items-start mx-auto" style="gap: 10px;">
                 <label for="time">Masukkan </label>
                 <input id="time" name="time" type="time" placeholder="08.00" class="time focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"></input>

@@ -19,7 +19,6 @@ class TransactionController extends Database{
             }
             return $result;
         }
-        
         $query = mysqli_query($this->connect, "select * from tbl_transactions ");
         while($row = mysqli_fetch_array($query)){
             $result[] = $row; 
@@ -41,19 +40,29 @@ class TransactionController extends Database{
             move_uploaded_file($fileTmp,$uploadPath);
             $query = mysqli_query($this->connect, "insert into tbl_transactions(id_user,id_field,date,date_play,start_time,end_time,price,status) values('$request[id_user]','$request[id_field]','$request[date]','$request[date_play]','$request[start_time]','$request[end_time]','$status')");
         }
-        var_dump($request);
         $status = "1";
         $query = mysqli_query($this->connect, "insert into tbl_transactions(id_user,id_field,date,date_play,start_time,end_time,price,status) values('$request[id_user]','$request[id_field]','$date','$request[date_play]','$request[start_time]','$request[end_time]','$request[price]','$status')");
         return ['message' => 'berhasil transaksi'];
     }
     public function show_transaction($request){
-        $query = mysqli_query($this->connect, "delete from tbl_users where id_user = '$request' ");
+        if (isset($request['status'])) {
+            $query = mysqli_query($this->connect, "select * from tbl_transactions where id_user = '$request[id_user]' and status = '$request[status]' ");
+            while($row = mysqli_fetch_array($query)){
+                $result[] = $row; 
+            }
+            return $result;
+        }
+        $query = mysqli_query($this->connect, "select * from tbl_transactions where id_user = '$request' ");
+        while($row = mysqli_fetch_array($query)){
+            $result[] = $row; 
+        }
+        return $result;
     }
     public function edit_transaction($request){
-        $query = mysqli_query($this->connect, "delete from tbl_users where id_user = '$request' ");
+        $query = mysqli_query($this->connect, "delete from tbl_transactions where id_user = '$request' ");
     }
     public function delete_transaction($request){  
-        $query = mysqli_query($this->connect, "delete from tbl_users where id_user = '$request' ");
+        $query = mysqli_query($this->connect, "delete from tbl_transactions where id_user = '$request' ");
     }
     
 

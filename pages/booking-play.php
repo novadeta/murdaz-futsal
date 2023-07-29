@@ -10,14 +10,14 @@
   $field_result = $field->get_field("Aktif");
   if($_SERVER["REQUEST_METHOD"] == "POST"){
     $request = $_POST;
-    // $file = $_FILES;
+    $file = $_FILES;
     $result = $transaction->create_transaction($request);
-      // echo "
-      // <script>
-      //     alert('Berhasil Menambah')
-      //     document.location.href = './index.php?page=pemesanan/main'
-      // </script>
-      // ";
+      echo "
+      <script>
+          alert('Berhasil Menambah')
+          document.location.href = './index.php?page=pemesanan/main'
+      </script>
+      ";
   }
 ?>
 
@@ -33,7 +33,7 @@
             <div class="border-black/12.5 dark:bg-slate-850 dark:shadow-dark-xl shadow-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
               <div class="border-black/12.5 mb-0 rounded-t-2xl border-b-0 border-solid p-6 pt-4 pb-0">
                 <h3 class="capitalize dark:text-white text-center">Jadwal Booking</h3>
-                <p id="date-booking" class=" mb-0 text-sm leading-normal py-2 px-2 rounded-3 text-white dark:opacity-60 text-center mx-auto bg-[#5E72E4]" style="width: 100px;">
+                <p id="date-booking" class=" mb-0 text-sm leading-normal py-2 px-2 rounded-3 text-white dark:opacity-60 text-center mx-auto bg-[#5E72E4]" style="width: 120px;">
                   <?= date("d M Y") ?>
                 </p>
                 <div class="mx-auto flex justify-center gap-5 my-5">
@@ -41,8 +41,7 @@
                       $no = 0;
                       foreach ($field_result as $field) {
                     ?>
-                      <button onclick="changeField(this,<?= $field['id_field'] ?>)" class="btn_field py-2 px-3 bg-[#5E72E4] text-white shadow-sm rounded-2 font-semibold"><?= $field['field_name']; ?></button>
-                      <!-- <button class="btn_field py-2 px-3 shadow-sm rounded-2">Lapangan B</button> -->
+                      <button onclick="changeField(this,<?= $field['id_field'] ?>)" class="btn-field text-slate-500 py-2 px-3  shadow-sm rounded-2 font-semibold"><?= $field['field_name']; ?></button>
                   <?php }?>
                 </div>
               </div>
@@ -99,8 +98,8 @@
                 </select>
             </div>
             <div id="price" class="flex flex-col mt-4 w-full items-start mx-auto" style="gap: 10px;">
-              <label for="price">Harga</label>
-              <h4 for="price">Rp. 0</h4>
+              <p>Harga</p>
+              <h4 >Rp. 0</h4>
               <input type="hidden" name="price" readonly>
             </div>
             <label class="block mt-4" for="payment">Masukkan Bukti Pembayaran
@@ -131,10 +130,13 @@
   let picker = document.getElementById('date-booking');
   let schedule = document.getElementById('schedule-booking');
   let months = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"]
+  let btnField = document.querySelectorAll('.btn-field')
     window.onload = function () {
       picker.innerText = new Date().getDate() 
       picker.innerText += " " + months[new Date().getMonth()]
       picker.innerText += " " + new Date().getFullYear()
+      btnField[0].classList.add("bg-[#5E72E4]")
+      btnField[0].classList.add("text-white")
       $.ajax({
         url: "./routes/transaction.php?action=get_transaction",
         type: "POST",
@@ -146,7 +148,70 @@
           let dataParse = JSON.parse(data)
           let status = null
           for (let index = 0; index < dataParse.length; index++) {
-            (dataParse[index]["status"] == "0") ? status = 'Cancel' : dataParse[index]["status"] == "1" ? status = 'Pending' : dataParse[index]["status"] == "2" ? status = 'Goo' : dataParse[index]["status"] == "3" ? status = 'Sudah Bayar' : status = "Belum Diketahui"
+            (dataParse[index]["status"] == "0") ? status = 'Batal' : 
+            (dataParse[index]["status"] == "1") ? status = 'Menunggu Pembayaran' : 
+            (dataParse[index]["status"] == "2") ? status = 'Sedang Ditinjau' : 
+            (dataParse[index]["status"] == "3") ? status = 'Berhasil' : 
+            status = "Belum Diketahui"
+            console.log(status);
+            let content = ` <tr>
+                                <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                  <div class="flex px-2 py-1">
+                                    <div class="flex flex-col px-3 justify-center">
+                                      <p class="mb-0 font-semibold  leading-normal text-md">${dataParse[index]["start_time"].slice(0,5)}</p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                  <p class="mb-0 font-semibold leading-normal text-md">${dataParse[index]["end_time"].slice(0,5)}</p>
+                                </td>
+                                <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
+                                  <span class="bg-gradient-to-tl ${status == 'Batal' 
+                                    ? 'from-red-500 to-red-400' : status == "Menunggu Pembayaran" 
+                                    ? "from-yellow-500 to-yellow-400" : status == "Sedang Ditinjau" 
+                                    ? "from-emerald-500 to-teal-400" : status == "Berhasil" 
+                                    ? "from-emerald-500 to-teal-400" : ""} px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                  ${status}
+                                  </span>
+                                </td>
+                              </tr>`;
+          schedule.insertAdjacentHTML('beforeend',content);
+          }
+        }
+      })
+    };
+    
+    function changeField(e,id_field){
+      btnField.forEach(btn => {
+        btn.classList.remove('bg-[#5E72E4]')
+        btn.classList.remove('text-white');
+        e.classList.add('bg-[#5E72E4]');
+        e.classList.add('text-white');
+      })
+      let [date,month,year] = document.getElementById('date-booking').innerText.split(" ")
+      let numberOfMonth =  months.indexOf(month)+1
+      schedule.children.forEach(element => {
+          schedule.removeChild(schedule.firstElementChild)
+          if (schedule.lastElementChild) {
+            schedule.removeChild(schedule.lastElementChild)
+          }
+        });
+      $.ajax({
+      url: "./routes/transaction.php?action=get_transaction",
+      type: "POST",
+      data : {
+        date_play : `${year}-${numberOfMonth}-${date}`,
+        id_field : `${id_field}`
+      },
+      success: function (data){
+          let dataParse = JSON.parse(data)
+          let status = null
+          for (let index = 0; index < dataParse.length; index++) {
+            (dataParse[index]["status"] == "0") ? status = 'Batal' : 
+            (dataParse[index]["status"] == "1") ? status = 'Menunggu Pembayaran' : 
+            (dataParse[index]["status"] == "2") ? status = 'Sedang Ditinjau' : 
+            (dataParse[index]["status"] == "3") ? status = 'Berhasil' : 
+            status = "Belum Diketahui"
             let content = ` <tr>
                                   <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                                     <div class="flex px-2 py-1">
@@ -159,10 +224,10 @@
                                     <p class="mb-0 font-semibold leading-normal text-md">${dataParse[index]["end_time"].slice(0,5)}</p>
                                   </td>
                                   <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
-                                    <span class="bg-gradient-to-tl ${status == 'Cancel' 
-                                      ? 'from-red-500 to-red-400' : status == "Pending" 
-                                      ? "from-yellow-500 to-yellow-400" : status == "2" 
-                                      ? "from-emerald-500 to-teal-400" : status == "3" 
+                                    <span class="bg-gradient-to-tl ${status == 'Batal' 
+                                      ? 'from-red-500 to-red-400' : status == "Menunggu Pembayaran" 
+                                      ? "from-yellow-500 to-yellow-400" : status == "Sedang Ditinjau" 
+                                      ? "from-emerald-500 to-teal-400" : status == "Berhasil" 
                                       ? "from-emerald-500 to-teal-400" : ""} px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
                                     ${status}
                                     </span>
@@ -171,95 +236,57 @@
           schedule.insertAdjacentHTML('beforeend',content);
           }
         }
-      })
-    };
-    
-    function changeField(e,id_field){
-      let [date,month,year] = document.getElementById('date-booking').innerText.split(" ")
-      let numberMonth =  months.indexOf(month)+1
-      console.log(id_field);
-      $.ajax({
-      url: "./routes/transaction.php?action=get_transaction",
-      type: "POST",
-      data : {
-        date_play : `${year}-0${month}-${date}`,
-        id_field : `${id_field}`
-      },
-      success: function (data){
-        console.log(data);
-        let dataParse = JSON.parse(data)
-        let status = null
-        for (let index = 0; index < dataParse.length; index++) {
-          (dataParse[index]["status"] == "0") ? status = 'Cancel' : dataParse[index]["status"] == "1" ? status = 'Pending' : dataParse[index]["status"] == "2" ? status = 'Goo' : dataParse[index]["status"] == "3" ? status = 'Sudah Bayar' : status = "Belum Diketahui"
-          let content = ` <tr>
-                            <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                              <div class="flex px-2 py-1">
-                                <div class="flex flex-col px-3 justify-center">
-                                  <p class="mb-0 font-semibold  leading-normal text-md">${dataParse[index]["start_time"].slice(0,5)}</p>
-                                </div>
-                              </div>
-                            </td>
-                            <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                              <p class="mb-0 font-semibold leading-normal text-md">${dataParse[index]["end_time"].slice(0,5)}</p>
-                            </td>
-                            <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
-                              <span class="bg-gradient-to-tl ${status == 'Cancel' 
-                                ? 'from-red-500 to-red-400' : status == "Pending" 
-                                ? "from-yellow-500 to-yellow-400" : status == "2" 
-                                ? "from-emerald-500 to-teal-400" : status == "3" 
-                                ? "from-emerald-500 to-teal-400" : ""} px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
-                              ${status}
-                              </span>
-                            </td>
-                          </tr>`;
-        schedule.insertAdjacentHTML('beforeend',content);
-        }
-      }
     })
       
     }
 
     flatpickr("#date-booking", {
       dateFormat: "Y-m-d",
+      position: "auto center",
       onChange: function (selectedDate,dateStr) {
-        schedule.children.forEach(element => {
-          schedule.removeChild(schedule.firstElementChild)
-          schedule.removeChild(schedule.lastElementChild)
-          });
         $.ajax({
         url: "./routes/transaction.php?action=get_transaction",
         type: "POST",
         data : {
-          date_play : "2023-07-28",
+          date_play : dateStr,
           id_field : '1'
         },
         success: function (data){
-          console.log(data);
+          schedule.children.forEach(element => {
+              schedule.removeChild(schedule.firstElementChild)
+              if (schedule.lastElementChild) {
+                schedule.removeChild(schedule.lastElementChild)
+              }
+            });
           let dataParse = JSON.parse(data)
           let status = null
           for (let index = 0; index < dataParse.length; index++) {
-            (dataParse[index]["status"] == "0") ? status = 'Cancel' : dataParse[index]["status"] == "1" ? status = 'Pending' : dataParse[index]["status"] == "2" ? status = 'Goo' : dataParse[index]["status"] == "3" ? status = 'Sudah Bayar' : status = "Belum Diketahui"
+            (dataParse[index]["status"] == "0") ? status = 'Batal' : 
+            (dataParse[index]["status"] == "1") ? status = 'Menunggu Pembayaran' : 
+            (dataParse[index]["status"] == "2") ? status = 'Sedang Ditinjau' : 
+            (dataParse[index]["status"] == "3") ? status = 'Berhasil' : 
+            status = "Belum Diketahui"
             let content = ` <tr>
-                              <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                <div class="flex px-2 py-1">
-                                  <div class="flex flex-col px-3 justify-center">
-                                    <p class="mb-0 font-semibold  leading-normal text-md">${dataParse[index]["start_time"].slice(0,5)}</p>
-                                  </div>
-                                </div>
-                              </td>
-                              <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                <p class="mb-0 font-semibold leading-normal text-md">${dataParse[index]["end_time"].slice(0,5)}</p>
-                              </td>
-                              <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
-                                <span class="bg-gradient-to-tl ${status == 'Cancel' 
-                                  ? 'from-red-500 to-red-400' : status == "Pending" 
-                                  ? "from-yellow-500 to-yellow-400" : status == "2" 
-                                  ? "from-emerald-500 to-teal-400" : status == "3" 
-                                  ? "from-emerald-500 to-teal-400" : ""} px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
-                                ${status}
-                                </span>
-                              </td>
-                            </tr>`;
+                                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                    <div class="flex px-2 py-1">
+                                      <div class="flex flex-col px-3 justify-center">
+                                        <p class="mb-0 font-semibold  leading-normal text-md">${dataParse[index]["start_time"].slice(0,5)}</p>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                    <p class="mb-0 font-semibold leading-normal text-md">${dataParse[index]["end_time"].slice(0,5)}</p>
+                                  </td>
+                                  <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
+                                    <span class="bg-gradient-to-tl ${status == 'Batal' 
+                                      ? 'from-red-500 to-red-400' : status == "Menunggu Pembayaran" 
+                                      ? "from-yellow-500 to-yellow-400" : status == "Sedang Ditinjau" 
+                                      ? "from-emerald-500 to-teal-400" : status == "Berhasil" 
+                                      ? "from-emerald-500 to-teal-400" : ""} px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                    ${status}
+                                    </span>
+                                  </td>
+                                </tr>`;
           schedule.insertAdjacentHTML('beforeend',content);
           }
         }
@@ -302,12 +329,14 @@
             (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
             isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` : 
             price.children[1].innerText = `Rp. ${pricePerHours}`
+            price.children[0].innerText = "Harga : Rp. 100000 / jam"
             price.children[2].value = `${pricePerHours}`
-        }else if (str > "18:00:00" &&  str < "23:59:00") {
+        }else if (str >= "18:00:00" &&  str < "23:59:00") {
             let pricePerHours = 120000 * hours ;
             (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
             isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` :
              price.children[1].innerText = `Rp. ${pricePerHours}`
+             price.children[0].innerText = "Harga : Rp. 120000 / jam"
              price.children[2].value = `${pricePerHours}`
         }else{
               price.children[1].innerText = `Rp. 0`

@@ -1,6 +1,11 @@
 <?php 
+  include_once './layouts/authorize.php';
+  $guest = 'styles.css'; 
   include_once "./layouts/main-header.php";
   include_once "./layouts/main-sidebar.php";
+  include_once "./core/TransactionController.php";
+  $transaction = new TransactionController();
+  $result_transaction = $transaction->show_transaction(['status' => '1','id_user' => $session_user['data']['id_user']]) ;
 ?>
 
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
@@ -29,35 +34,49 @@
                       <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
                         <thead class="align-bottom">
                           <tr>
-                            <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Author</th>
-                            <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Function</th>
+                            <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal Pembelian</th>
+                            <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal Main</th>
                             <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Status</th>
-                            <th class="px-6 py-3 font-semibold capitalize align-middle bg-transparent border-b border-gray-200 border-solid shadow-none tracking-none whitespace-nowrap text-slate-400 opacity-70"></th>
+                            <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aksi</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                              <div class="flex px-2 py-1">
-                                <div>
-                                  <img src="../assets/img/team-2.jpg" class="inline-flex items-center justify-center mr-4 text-white transition-all duration-200 ease-in-out text-sm h-9 w-9 rounded-xl" alt="user1" />
-                                </div>
-                                <div class="flex flex-col justify-center">
-                                  <h6 class="mb-0 leading-normal text-sm">John Michael</h6>
-                                </div>
-                              </div>
-                            </td>
-                            <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                              <p class="mb-0 font-semibold leading-tight text-xs">Manager</p>
-                            </td>
-                            <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
-                              <span class="bg-gradient-to-tl from-emerald-500 to-teal-400 px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Online</span>
-                            </td>
-                            <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
-                              <span class="bg-gradient-to-tl from-emerald-500 to-teal-400 px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Online</span>
-                            </td>
-                          </tr>
-                          
+                          <?php 
+                            foreach ($result_transaction as $result) {
+                          ?>
+                            <tr>
+                              <td class="px-6 py-3 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                <p class="mb-0 font-semibold leading-tight text-xs"><?php 
+                                  $split = explode(" ",$result['date']);
+                                  echo $split[0];
+                                  echo"<br> Jam : "; 
+                                  echo $split[1]; 
+                                ?></p>
+                              </td>
+                              <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                <p class="mb-0 font-semibold leading-tight text-xs"><?= $result['date_play'] ?></p>
+                              </td>
+                              <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                 <p class="mb-0 font-semibold leading-tight text-xs justify-center flex">
+                                  <span class="bg-gradient-to-tl 
+                                 <?= $result['status'] == '0'  ? 'from-red-500 to-red-400' 
+                                  : ($result['status'] == "1" ? "from-yellow-500 to-yellow-400" 
+                                  : ($result['status'] == "2"  ? "from-emerald-500 to-teal-400" 
+                                  : ($result['status'] == "3" ? "from-emerald-500 to-teal-400" : "" )))
+                                ?> px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white"> 
+                                <?= ($result['status'] == '1') ?  "Menunggu Pembayaran" : '' ?> 
+                              </span>
+                              
+                              </p>
+                              </td>
+                              <td class=" p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent flex justify-center gap-5">
+                                <a class="bg-gradient-to-tl from-blue-500 to-blue-400 px-2 text-xs rounded-1.8 py-3 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" href="">Bayar</a>
+                                <a class="bg-gradient-to-tl from-red-500 to-red-400 px-2 text-xs rounded-1.8 py-3 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" href="">Cancel</a>
+                              </td>
+                          </tr> 
+                          <?php
+                            }
+                          ?>
                         </tbody>
                       </table>
                     </div>

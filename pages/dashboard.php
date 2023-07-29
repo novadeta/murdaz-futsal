@@ -3,6 +3,11 @@
   $guest = 'styles.css'; 
   include_once "./layouts/main-header.php";
   include_once "./layouts/main-sidebar.php";
+  include_once "./core/TransactionController.php";
+  include_once "./core/FieldController.php";
+  $transaction = new TransactionController();
+  $field = new FieldController();
+  $field_result = $field->get_field("Aktif");
 ?>
 
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
@@ -16,7 +21,7 @@
             <div class="border-black/12.5 dark:bg-slate-850 dark:shadow-dark-xl shadow-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
               <div class="border-black/12.5 mb-0 rounded-t-2xl border-b-0 border-solid p-6 pt-4 pb-0">
                 <h6 class="capitalize dark:text-white">Jadwal Booking Hari ini</h6>
-                <p class="mb-0 text-sm leading-normal dark:text-white dark:opacity-60">
+                <p id="date-booking" class=" mb-0 text-sm leading-normal py-2 px-2 rounded-3 text-white dark:opacity-60 text-center mx-auto bg-[#5E72E4]" style="width: 120px;">
                   <?= date("d M Y") ?>
                 </p>
               </div>
@@ -28,8 +33,12 @@
                   <div class="flex-auto px-0 pt-0 pb-2">
                     <div class="p-0 overflow-x-auto">
                       <div class="mx-auto flex justify-center gap-5 ">
-                          <button class="py-2 px-3 bg-[#5E72E4] text-white shadow-sm rounded-2 font-semibold">Lapangan A</button>
-                          <button class="py-2 px-3 shadow-sm rounded-2">Lapangan B</button>
+                      <?php 
+                          $no = 0;
+                          foreach ($field_result as $field) {
+                        ?>
+                          <button onclick="changeField(this,<?= $field['id_field'] ?>)" class="btn-field text-slate-500 py-2 px-3  shadow-sm rounded-2 font-semibold"><?= $field['field_name']; ?></button>
+                      <?php }?>
                       </div>
                       <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
                         <thead class="align-bottom">
@@ -40,27 +49,7 @@
                             <th class="px-6 py-3 font-semibold capitalize align-middle bg-transparent border-b border-gray-200 border-solid shadow-none tracking-none whitespace-nowrap text-slate-400 opacity-70"></th>
                           </tr>
                         </thead>
-                        <tbody>
-                          <tr>
-                            <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                              <div class="flex px-2 py-1">
-                                <div>
-                                  <img src="../assets/img/team-2.jpg" class="inline-flex items-center justify-center mr-4 text-white transition-all duration-200 ease-in-out text-sm h-9 w-9 rounded-xl" alt="user1" />
-                                </div>
-                                <div class="flex flex-col justify-center">
-                                  <h6 class="mb-0 leading-normal text-sm">John Michael</h6>
-                                </div>
-                              </div>
-                            </td>
-                            <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                              <p class="mb-0 font-semibold leading-tight text-xs">Manager</p>
-                            </td>
-                            <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
-                              <span class="bg-gradient-to-tl from-emerald-500 to-teal-400 px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Online</span>
-                            </td>
-                          </tr>
-                          
-                        </tbody>
+                        <tbody id="schedule-booking"></tbody>
                       </table>
                     </div>
                   </div>
@@ -148,3 +137,174 @@
 <?php 
   include_once "./layouts/main-footer.php";
 ?>
+
+<script>
+  let picker = document.getElementById('date-booking');
+  let schedule = document.getElementById('schedule-booking');
+  let months = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"]
+  let btnField = document.querySelectorAll('.btn-field')
+    window.onload = function () {
+      picker.innerText = new Date().getDate() 
+      picker.innerText += " " + months[new Date().getMonth()]
+      picker.innerText += " " + new Date().getFullYear()
+      btnField[0].classList.add("bg-[#5E72E4]")
+      btnField[0].classList.add("text-white")
+      $.ajax({
+        url: "./routes/transaction.php?action=get_transaction",
+        type: "POST",
+        data : {
+          date_play : "<?= date("Y-m-d") ?>",
+          id_field : "1"
+        },
+        success: function (data){
+          let dataParse = JSON.parse(data)
+          let status = null
+          for (let index = 0; index < dataParse.length; index++) {
+            (dataParse[index]["status"] == "0") ? status = 'Batal' : 
+            (dataParse[index]["status"] == "1") ? status = 'Menunggu Pembayaran' : 
+            (dataParse[index]["status"] == "2") ? status = 'Sedang Ditinjau' : 
+            (dataParse[index]["status"] == "3") ? status = 'Berhasil' : 
+            status = "Belum Diketahui"
+            console.log(status);
+            let content = ` <tr>
+                                <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                  <div class="flex px-2 py-1">
+                                    <div class="flex flex-col px-3 justify-center">
+                                      <p class="mb-0 font-semibold  leading-normal text-md">${dataParse[index]["start_time"].slice(0,5)}</p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                  <p class="mb-0 font-semibold leading-normal text-md">${dataParse[index]["end_time"].slice(0,5)}</p>
+                                </td>
+                                <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
+                                  <span class="bg-gradient-to-tl ${status == 'Batal' 
+                                    ? 'from-red-500 to-red-400' : status == "Menunggu Pembayaran" 
+                                    ? "from-yellow-500 to-yellow-400" : status == "Sedang Ditinjau" 
+                                    ? "from-emerald-500 to-teal-400" : status == "Berhasil" 
+                                    ? "from-emerald-500 to-teal-400" : ""} px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                  ${status}
+                                  </span>
+                                </td>
+                              </tr>`;
+          schedule.insertAdjacentHTML('beforeend',content);
+          }
+        }
+      })
+    };
+    
+    function changeField(e,id_field){
+      btnField.forEach(btn => {
+        btn.classList.remove('bg-[#5E72E4]')
+        btn.classList.remove('text-white');
+        e.classList.add('bg-[#5E72E4]');
+        e.classList.add('text-white');
+      })
+      let [date,month,year] = document.getElementById('date-booking').innerText.split(" ")
+      let numberOfMonth =  months.indexOf(month)+1
+      schedule.children.forEach(element => {
+          schedule.removeChild(schedule.firstElementChild)
+          if (schedule.lastElementChild) {
+            schedule.removeChild(schedule.lastElementChild)
+          }
+        });
+      $.ajax({
+      url: "./routes/transaction.php?action=get_transaction",
+      type: "POST",
+      data : {
+        date_play : `${year}-${numberOfMonth}-${date}`,
+        id_field : `${id_field}`
+      },
+      success: function (data){
+          let dataParse = JSON.parse(data)
+          let status = null
+          for (let index = 0; index < dataParse.length; index++) {
+            (dataParse[index]["status"] == "0") ? status = 'Batal' : 
+            (dataParse[index]["status"] == "1") ? status = 'Menunggu Pembayaran' : 
+            (dataParse[index]["status"] == "2") ? status = 'Sedang Ditinjau' : 
+            (dataParse[index]["status"] == "3") ? status = 'Berhasil' : 
+            status = "Belum Diketahui"
+            let content = ` <tr>
+                                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                    <div class="flex px-2 py-1">
+                                      <div class="flex flex-col px-3 justify-center">
+                                        <p class="mb-0 font-semibold  leading-normal text-md">${dataParse[index]["start_time"].slice(0,5)}</p>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                    <p class="mb-0 font-semibold leading-normal text-md">${dataParse[index]["end_time"].slice(0,5)}</p>
+                                  </td>
+                                  <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
+                                    <span class="bg-gradient-to-tl ${status == 'Batal' 
+                                      ? 'from-red-500 to-red-400' : status == "Menunggu Pembayaran" 
+                                      ? "from-yellow-500 to-yellow-400" : status == "Sedang Ditinjau" 
+                                      ? "from-emerald-500 to-teal-400" : status == "Berhasil" 
+                                      ? "from-emerald-500 to-teal-400" : ""} px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                    ${status}
+                                    </span>
+                                  </td>
+                                </tr>`;
+          schedule.insertAdjacentHTML('beforeend',content);
+          }
+        }
+    })
+      
+    }
+
+    flatpickr("#date-booking", {
+      dateFormat: "Y-m-d",
+      position: "auto center",
+      onChange: function (selectedDate,dateStr) {
+        $.ajax({
+        url: "./routes/transaction.php?action=get_transaction",
+        type: "POST",
+        data : {
+          date_play : dateStr,
+          id_field : '1'
+        },
+        success: function (data){
+          schedule.children.forEach(element => {
+              schedule.removeChild(schedule.firstElementChild)
+              if (schedule.lastElementChild) {
+                schedule.removeChild(schedule.lastElementChild)
+              }
+            });
+          let dataParse = JSON.parse(data)
+          let status = null
+          for (let index = 0; index < dataParse.length; index++) {
+            (dataParse[index]["status"] == "0") ? status = 'Batal' : 
+            (dataParse[index]["status"] == "1") ? status = 'Menunggu Pembayaran' : 
+            (dataParse[index]["status"] == "2") ? status = 'Sedang Ditinjau' : 
+            (dataParse[index]["status"] == "3") ? status = 'Berhasil' : 
+            status = "Belum Diketahui"
+            let content = ` <tr>
+                                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                    <div class="flex px-2 py-1">
+                                      <div class="flex flex-col px-3 justify-center">
+                                        <p class="mb-0 font-semibold  leading-normal text-md">${dataParse[index]["start_time"].slice(0,5)}</p>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                    <p class="mb-0 font-semibold leading-normal text-md">${dataParse[index]["end_time"].slice(0,5)}</p>
+                                  </td>
+                                  <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
+                                    <span class="bg-gradient-to-tl ${status == 'Batal' 
+                                      ? 'from-red-500 to-red-400' : status == "Menunggu Pembayaran" 
+                                      ? "from-yellow-500 to-yellow-400" : status == "Sedang Ditinjau" 
+                                      ? "from-emerald-500 to-teal-400" : status == "Berhasil" 
+                                      ? "from-emerald-500 to-teal-400" : ""} px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                    ${status}
+                                    </span>
+                                  </td>
+                                </tr>`;
+          schedule.insertAdjacentHTML('beforeend',content);
+          }
+        }
+      })
+        let splitDate = dateStr.split("-").reverse()
+        document.getElementById('date-booking').innerText = `${selectedDate[0].getDate()} ${months[selectedDate[0].getMonth()]} ${selectedDate[0].getFullYear()}`
+      }
+    });
+</script>
