@@ -5,8 +5,10 @@
   include_once "./layouts/main-sidebar.php";
   include_once "./core/TransactionController.php";
   include_once "./core/FieldController.php";
-  $transaction = new TransactionController();
+  $transaction = new TransactionController(); 
   $field = new FieldController();
+  $result_transaction = $transaction->show_transaction(['status' => '1','id_user' => $session_user['data']['id_user']]) ?? [] ;
+  $result_transaction_2 = $transaction->show_transaction(['status' => '2','id_user' => $session_user['data']['id_user']]) ?? [] ;
   $field_result = $field->get_field("Aktif");
 ?>
 
@@ -69,28 +71,36 @@
                   <div class="overflow-x-auto">
                     <table class="items-center w-full mb-4 align-top border-collapse border-gray-200 dark:border-white/40">
                       <tbody>
-                        <tr>
-                          <td class="p-2 align-middle bg-transparent border-b w-3/10 whitespace-nowrap dark:border-white/40">
-                            <div class="flex items-center px-2 py-1">
-                              <div class="ml-6">
-                                <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Tanggal Beli</p>
-                                <h6 class="mb-0 text-sm leading-normal dark:text-white">27 April 2022</h6>
-                              </div>
-                            </div>
-                          </td>
-                          <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                            <div class="text-center">
-                              <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Lapangan:</p>
-                              <h6 class="mb-0 text-sm leading-normal dark:text-white">b</h6>
-                            </div>
-                          </td>
-                          <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                            <div class="text-center">
-                              <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Harga:</p>
-                              <h6 class="mb-0 text-sm leading-normal dark:text-white">Rp 20,000</h6>
-                            </div>
-                          </td>
-                        </tr>
+                      <?php 
+                            foreach ($result_transaction as $result) {
+                          ?>
+                            <tr>
+                              <td class="px-6 py-3 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                <p class="mb-0 font-semibold leading-tight text-xs"><?php 
+                                  $split = explode(" ",$result['date']);
+                                  echo $split[0];
+                                ?></p>
+                              </td>
+                              <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                <p class="mb-0 font-semibold leading-tight text-xs"><?= $result['date_play'] ?></p>
+                              </td>
+                              <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                 <p class="mb-0 font-semibold leading-tight text-xs justify-center flex">
+                                  <span class="bg-gradient-to-tl 
+                                 <?= $result['status'] == '0'  ? 'from-red-500 to-red-400' 
+                                  : ($result['status'] == "1" ? "from-yellow-500 to-yellow-400" 
+                                  : ($result['status'] == "2"  ? "from-emerald-500 to-teal-400" 
+                                  : ($result['status'] == "3" ? "from-emerald-500 to-teal-400" : "" )))
+                                ?> px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white"> 
+                                <?= ($result['status'] == '1') ?  "Menunggu Pembayaran" : '' ?> 
+                              </span>
+                              
+                              </p>
+                              </td>
+                          </tr> 
+                          <?php
+                            }
+                          ?>
                       </tbody>
                     </table>
                   </div>
@@ -108,22 +118,35 @@
                   <div class="overflow-x-auto">
                     <table class="items-center w-full mb-4 align-top border-collapse border-gray-200 dark:border-white/40">
                       <tbody>
-                        <tr>
-                          <td class="p-2 align-middle bg-transparent border-b w-3/10 whitespace-nowrap dark:border-white/40">
-                            <div class="flex items-center px-2 py-1">
-                              <div class="ml-6">
-                                <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Tanggal Beli</p>
-                                <h6 class="mb-0 text-sm leading-normal dark:text-white">27 April 2022</h6>
-                              </div>
-                            </div>
-                          </td>
-                          <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                            <div class="text-center">
-                              <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Harga:</p>
-                              <h6 class="mb-0 text-sm leading-normal dark:text-white">Rp 20,000</h6>
-                            </div>
-                          </td>
-                        </tr>
+                      <?php 
+                            foreach ($result_transaction_2 as $result) {
+                          ?>
+                            <tr>
+                              <td class="px-6 py-3 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                <p class="mb-0 font-semibold leading-tight text-xs"><?php 
+                                  $split = explode(" ",$result['date']);
+                                  echo $split[0];
+                                ?></p>
+                              </td>
+                              <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                <p class="mb-0 font-semibold leading-tight text-xs">Rp. <?= $result['price'] ?></p>
+                              </td>
+                              <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                 <p class="mb-0 font-semibold leading-tight text-xs justify-center flex">
+                                  <span class="bg-gradient-to-tl 
+                                 <?= $result['status'] == '0'  ? 'from-red-500 to-red-400' 
+                                  : ($result['status'] == "1" ? "from-yellow-500 to-yellow-400" 
+                                  : ($result['status'] == "2"  ? "from-emerald-500 to-teal-400" 
+                                  : ($result['status'] == "3" ? "from-emerald-500 to-teal-400" : "" )))
+                                ?> px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white"> 
+                                <?= ($result['status'] == '2') ?  "Diproses" : '' ?> 
+                              </span>
+                              </p>
+                              </td>
+                          </tr> 
+                          <?php
+                            }
+                          ?>
                       </tbody>
                     </table>
                   </div>
@@ -162,8 +185,8 @@
           for (let index = 0; index < dataParse.length; index++) {
             (dataParse[index]["status"] == "0") ? status = 'Batal' : 
             (dataParse[index]["status"] == "1") ? status = 'Menunggu Pembayaran' : 
-            (dataParse[index]["status"] == "2") ? status = 'Sedang Ditinjau' : 
-            (dataParse[index]["status"] == "3") ? status = 'Berhasil' : 
+            (dataParse[index]["status"] == "2") ? status = 'Diproses' : 
+            (dataParse[index]["status"] == "3") ? status = 'Lunas' : 
             status = "Belum Diketahui"
             console.log(status);
             let content = ` <tr>
@@ -180,8 +203,8 @@
                                 <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
                                   <span class="bg-gradient-to-tl ${status == 'Batal' 
                                     ? 'from-red-500 to-red-400' : status == "Menunggu Pembayaran" 
-                                    ? "from-yellow-500 to-yellow-400" : status == "Sedang Ditinjau" 
-                                    ? "from-emerald-500 to-teal-400" : status == "Berhasil" 
+                                    ? "from-yellow-500 to-yellow-400" : status == "Diproses" 
+                                    ? "from-emerald-500 to-teal-400" : status == "Lunas" 
                                     ? "from-emerald-500 to-teal-400" : ""} px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
                                   ${status}
                                   </span>
@@ -221,8 +244,8 @@
           for (let index = 0; index < dataParse.length; index++) {
             (dataParse[index]["status"] == "0") ? status = 'Batal' : 
             (dataParse[index]["status"] == "1") ? status = 'Menunggu Pembayaran' : 
-            (dataParse[index]["status"] == "2") ? status = 'Sedang Ditinjau' : 
-            (dataParse[index]["status"] == "3") ? status = 'Berhasil' : 
+            (dataParse[index]["status"] == "2") ? status = 'Diproses' : 
+            (dataParse[index]["status"] == "3") ? status = 'Lunas' : 
             status = "Belum Diketahui"
             let content = ` <tr>
                                   <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
@@ -238,8 +261,8 @@
                                   <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
                                     <span class="bg-gradient-to-tl ${status == 'Batal' 
                                       ? 'from-red-500 to-red-400' : status == "Menunggu Pembayaran" 
-                                      ? "from-yellow-500 to-yellow-400" : status == "Sedang Ditinjau" 
-                                      ? "from-emerald-500 to-teal-400" : status == "Berhasil" 
+                                      ? "from-yellow-500 to-yellow-400" : status == "Diproses" 
+                                      ? "from-emerald-500 to-teal-400" : status == "Lunas" 
                                       ? "from-emerald-500 to-teal-400" : ""} px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
                                     ${status}
                                     </span>
@@ -275,8 +298,8 @@
           for (let index = 0; index < dataParse.length; index++) {
             (dataParse[index]["status"] == "0") ? status = 'Batal' : 
             (dataParse[index]["status"] == "1") ? status = 'Menunggu Pembayaran' : 
-            (dataParse[index]["status"] == "2") ? status = 'Sedang Ditinjau' : 
-            (dataParse[index]["status"] == "3") ? status = 'Berhasil' : 
+            (dataParse[index]["status"] == "2") ? status = 'Diproses' : 
+            (dataParse[index]["status"] == "3") ? status = 'Lunas' : 
             status = "Belum Diketahui"
             let content = ` <tr>
                                   <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
@@ -292,8 +315,8 @@
                                   <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
                                     <span class="bg-gradient-to-tl ${status == 'Batal' 
                                       ? 'from-red-500 to-red-400' : status == "Menunggu Pembayaran" 
-                                      ? "from-yellow-500 to-yellow-400" : status == "Sedang Ditinjau" 
-                                      ? "from-emerald-500 to-teal-400" : status == "Berhasil" 
+                                      ? "from-yellow-500 to-yellow-400" : status == "Diproses" 
+                                      ? "from-emerald-500 to-teal-400" : status == "Lunas" 
                                       ? "from-emerald-500 to-teal-400" : ""} px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
                                     ${status}
                                     </span>

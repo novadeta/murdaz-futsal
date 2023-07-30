@@ -6,6 +6,7 @@
     include_once "./core/TransactionController.php";
     $transaction = new TransactionController();
     $result_transaction = $transaction->show_transaction(['status' => '3','id_user' => $session_user['data']['id_user']]) ;
+  
 ?>
 
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
@@ -31,6 +32,7 @@
                             <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal Pembelian</th>
                             <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Lapangan</th>
                             <th class="px-6 py-3 pl-2  font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Total Main</th>
+                            <th class="px-6 py-3 pl-2  font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Status</th>
                             <th class="px-6 py-3 pl-2  font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Harga</th>
                           </tr>
                         </thead>
@@ -47,6 +49,9 @@
                               </td>
                               <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                                 <p class="mb-0 font-semibold leading-tight text-xs"><?= $result['date_play'] ?></p>
+                              </td>
+                              <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                <p class="mb-0 font-semibold leading-tight text-xs total_play" >aa</p>
                               </td>
                               <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                                 <span class="bg-gradient-to-tl  from-emerald-500 to-teal-400 px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
@@ -75,3 +80,35 @@
 <?php
   include_once "./layouts/main-footer.php";
 ?>
+
+<script>
+  function convertDate(e){
+    console.log(e);
+  }
+  function convertSecond(time){
+      const [hours,minutes,seconds] = time.split(":")
+      return  parseInt(hours * 3600) + parseInt(minutes * 60) + parseInt(seconds) 
+    }
+   
+  let totalPlay = document.querySelectorAll('.total_play')
+  let convertStartTime = null
+ let convertEndTime = null
+ let differenceTime = null
+ let hours = null
+</script>
+<?php 
+echo "<script>";
+    for ($i = 0; $i < count($result_transaction); $i++) {
+      $start_time = $result_transaction[$i]['start_time'];
+      $end_time = $result_transaction[$i]['end_time'];
+      echo" 
+        convertStartTime = convertSecond('$start_time')
+        convertEndTime = convertSecond('$end_time')
+        differenceTime = convertEndTime - convertStartTime
+        hours = differenceTime / 3600
+        totalPlay[$i].innerText = hours +' Jam'
+    
+        ";
+    }
+echo " </script>";
+  ?>

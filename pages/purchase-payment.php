@@ -13,7 +13,7 @@
       echo "
       <script>
           alert('Berhasil Menambah')
-          document.location.href = './index.php?page=pemesanan/main'
+          document.location.href = './index.php?page=menunggu-pembayaran'
       </script>
       ";
   }
@@ -32,7 +32,23 @@
     <div style="margin-top: 40px;" class="relative flex flex-col w-full mt-15 min-w-0 mb-0 break-words p-4 bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
         <h3 class="text-center mb-8">Form Bayar Pemesanan</h3>
         <form method="POST" class="w-1/2 mx-auto" enctype="multipart/form-data">
-            
+            <div>
+              <p>Tanggal Beli : <?php
+                $split_date = explode(" ",$transaction_result['date']);
+                echo date('d M Y',strtotime($split_date[0]));
+              ?></p>
+            </div>
+            <div>
+              <p>Nama : <?php
+                echo $transaction_result['username'];
+              ?></p>
+            </div>
+            <div>
+              <p>Tanggal Beli : <?php
+                $split_date = explode(" ",$transaction_result['date']);
+                echo date('d M Y',strtotime($split_date[0]));
+              ?></p>
+            </div>
             <input name="id_user" type="hidden" value="<?= $session_user['data']['id_user'];?>"  readonly>
             <input name="id_transaction" type="hidden" value="<?= $transaction_result['id_transaction'] ?>"  readonly>
             <input name="status" type="hidden" value="2"  readonly>
@@ -57,7 +73,6 @@
       </div>
         </div>
       </div>
-      <!-- end cards -->
     </main>
   </div>
 </body>

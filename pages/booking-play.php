@@ -12,6 +12,13 @@
     $request = $_POST;
     $file = $_FILES;
     $result = $transaction->create_transaction($request);
+    if (isset($result['status'])) {
+      echo "<script>
+        alert('Waktu sudah ada yang booking')
+        document.location.href = './index.php?page=pemesanan/main'
+      </script>";
+      return false;
+    }
       echo "
       <script>
           alert('Berhasil Menambah')
@@ -307,9 +314,6 @@
     function convertSecond(time){
       const [hours,minutes,seconds] = time.split(":")
       return  parseInt(hours * 3600) + parseInt(minutes * 60) + parseInt(seconds) 
-    }
-    function convertTime(time){
-      const housr = Math.floor(seconds / 3600)
     }
     flatpickr(".time", {
       dateFormat: "H:i:s",

@@ -58,16 +58,41 @@ class TimeController extends Database{
             return ['message' => 'berhasil transaksi'];
         }
         
-    public function show_time($id_user){   
-        $query = mysqli_query($this->connect, "select * from tbl_times where id_user = '$id_user'");
-        // while($row = mysqli_fetch_array($query)){
-        //     $result[] = $row; 
-        // }
-        return $query->fetch_assoc() ?? [] ;
-    }
-    public function edit_field($request){
-        $query = mysqli_query($this->connect, "update tbl_time set id_user = '$request[id_user]', date = '$request[date]', time =  '$request[time]')");
-        return true;
+        public function show_time($request){
+            if (isset($request['status'])) {
+                $query = mysqli_query($this->connect, "select * from tbl_transactions where id_user = '$request[id_user]' and status = '$request[status]' and id_field = '$request[id_field]'");
+                while($row = mysqli_fetch_array($query)){
+                    $result[] = $row; 
+                }
+                return $result;
+            }else if(isset($request['id_transaction'])){
+                $query = mysqli_query($this->connect, "select * from tbl_transactions inner join tbl_users on tbl_transactions.id_user = tbl_users.id_user where tbl_transactions.id_transaction = '$request[id_transaction]' and tbl_transactions.id_user = '$request[id_user]'");
+                if ($query->num_rows < 1) {
+                    return [];
+                }
+                return $query->fetch_assoc();
+            }
+            $query = mysqli_query($this->connect, "select * from tbl_transactions where id_user = '$request' ");
+            while($row = mysqli_fetch_array($query)){
+                $result[] = $row; 
+            }
+            return $result;
+        }
+    public function edit_transaction($request){
+        if (file_exists($_FILES['payment']['tmp_name'])) {
+            $directory = getcwd();
+            $uploadDirectory = "/public/assets/photo_payments/";
+            $filename = $_FILES['payment']['name'];
+            $explode = explode(".",$filename);
+            $extension = strtolower(end($explode));
+            $fileTmp  = $_FILES['payment']['tmp_name'];
+            $uploadPath = $directory . $uploadDirectory . basename($filename);
+            move_uploaded_file($fileTmp,$uploadPath);
+            $query = mysqli_query($this->connect, "update tbl_transactions set status='$request[status]',payment where id_transaction = '$request[id_transaction]' and id_user = '$request[id_user]' ");
+            return ['message' => 'berhasil kirim'];
+        }
+        $query = mysqli_query($this->connect, "update tbl_transactions set status='$request[status]' where id_transaction = '$request[id_transaction]' and id_user = '$request[id_user]' ");
+        return ['message' => 'berhasil diterima'];
     }
     public function delete_field(){
 

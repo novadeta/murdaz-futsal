@@ -103,7 +103,7 @@
         <div class="py-9 px-[60px] shadow-[0px_0px_50px_0px_rgba(0,0,0,0.25)] rounded-5 bg-white">
             <div class="flex justify-center">
                 <div class="rounded-5 bg-malachite py-2.5 px-9 ">
-                    <h2 id="flat" class="text-xl m-0"><?= date('d M Y') ?></h2>
+                    <h2 id="date-booking" class="text-xl m-0"><?= date('d M Y') ?></h2>
                 </div>
             </div>
             <div class="flex justify-center items-stretch gap-5 mt-12">
@@ -314,8 +314,6 @@
     include_once "./layouts/main-footer.php";
 ?>
  <script>
-    let picker = document.getElementById('flat');
-    let month = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"]
     window.onload = function () {
             picker.innerText = new Date().getDate() 
             picker.innerText += " " + month[new Date().getMonth()]
@@ -346,5 +344,176 @@
             return '<span class="' + className + '">' + (menu[index]) + '</span>';
         }
       },
+    });
+</script>
+
+<script>
+  let picker = document.getElementById('date-booking');
+  let schedule = document.getElementById('schedule-booking');
+  let months = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"]
+  let btnField = document.querySelectorAll('.btn-field')
+    window.onload = function () {
+      picker.innerText = new Date().getDate() 
+      picker.innerText += " " + months[new Date().getMonth()]
+      picker.innerText += " " + new Date().getFullYear()
+      btnField[0].classList.add("bg-[#5E72E4]")
+      btnField[0].classList.add("text-white")
+      $.ajax({
+        url: "./routes/transaction.php?action=get_transaction",
+        type: "POST",
+        data : {
+          date_play : "<?= date("Y-m-d") ?>",
+          id_field : "1"
+        },
+        success: function (data){
+          let dataParse = JSON.parse(data)
+          let status = null
+          for (let index = 0; index < dataParse.length; index++) {
+            (dataParse[index]["status"] == "0") ? status = 'Batal' : 
+            (dataParse[index]["status"] == "1") ? status = 'Menunggu Pembayaran' : 
+            (dataParse[index]["status"] == "2") ? status = 'Diproses' : 
+            (dataParse[index]["status"] == "3") ? status = 'Lunas' : 
+            status = "Belum Diketahui"
+            console.log(status);
+            let content = ` <tr>
+                                <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                  <div class="flex px-2 py-1">
+                                    <div class="flex flex-col px-3 justify-center">
+                                      <p class="mb-0 font-semibold  leading-normal text-md">${dataParse[index]["start_time"].slice(0,5)}</p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                  <p class="mb-0 font-semibold leading-normal text-md">${dataParse[index]["end_time"].slice(0,5)}</p>
+                                </td>
+                                <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
+                                  <span class="bg-gradient-to-tl ${status == 'Batal' 
+                                    ? 'from-red-500 to-red-400' : status == "Menunggu Pembayaran" 
+                                    ? "from-yellow-500 to-yellow-400" : status == "Diproses" 
+                                    ? "from-emerald-500 to-teal-400" : status == "Lunas" 
+                                    ? "from-emerald-500 to-teal-400" : ""} px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                  ${status}
+                                  </span>
+                                </td>
+                              </tr>`;
+          schedule.insertAdjacentHTML('beforeend',content);
+          }
+        }
+      })
+    };
+    
+    function changeField(e,id_field){
+      btnField.forEach(btn => {
+        btn.classList.remove('bg-[#5E72E4]')
+        btn.classList.remove('text-white');
+        e.classList.add('bg-[#5E72E4]');
+        e.classList.add('text-white');
+      })
+      let [date,month,year] = document.getElementById('date-booking').innerText.split(" ")
+      let numberOfMonth =  months.indexOf(month)+1
+      schedule.children.forEach(element => {
+          schedule.removeChild(schedule.firstElementChild)
+          if (schedule.lastElementChild) {
+            schedule.removeChild(schedule.lastElementChild)
+          }
+        });
+      $.ajax({
+      url: "./routes/transaction.php?action=get_transaction",
+      type: "POST",
+      data : {
+        date_play : `${year}-${numberOfMonth}-${date}`,
+        id_field : `${id_field}`
+      },
+      success: function (data){
+          let dataParse = JSON.parse(data)
+          let status = null
+          for (let index = 0; index < dataParse.length; index++) {
+            (dataParse[index]["status"] == "0") ? status = 'Batal' : 
+            (dataParse[index]["status"] == "1") ? status = 'Menunggu Pembayaran' : 
+            (dataParse[index]["status"] == "2") ? status = 'Diproses' : 
+            (dataParse[index]["status"] == "3") ? status = 'Lunas' : 
+            status = "Belum Diketahui"
+            let content = ` <tr>
+                                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                    <div class="flex px-2 py-1">
+                                      <div class="flex flex-col px-3 justify-center">
+                                        <p class="mb-0 font-semibold  leading-normal text-md">${dataParse[index]["start_time"].slice(0,5)}</p>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                    <p class="mb-0 font-semibold leading-normal text-md">${dataParse[index]["end_time"].slice(0,5)}</p>
+                                  </td>
+                                  <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
+                                    <span class="bg-gradient-to-tl ${status == 'Batal' 
+                                      ? 'from-red-500 to-red-400' : status == "Menunggu Pembayaran" 
+                                      ? "from-yellow-500 to-yellow-400" : status == "Diproses" 
+                                      ? "from-emerald-500 to-teal-400" : status == "Lunas" 
+                                      ? "from-emerald-500 to-teal-400" : ""} px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                    ${status}
+                                    </span>
+                                  </td>
+                                </tr>`;
+          schedule.insertAdjacentHTML('beforeend',content);
+          }
+        }
+    })
+      
+    }
+
+    flatpickr("#date-booking", {
+      dateFormat: "Y-m-d",
+      position: "auto center",
+      onChange: function (selectedDate,dateStr) {
+        $.ajax({
+        url: "./routes/transaction.php?action=get_transaction",
+        type: "POST",
+        data : {
+          date_play : dateStr,
+          id_field : '1'
+        },
+        success: function (data){
+          schedule.children.forEach(element => {
+              schedule.removeChild(schedule.firstElementChild)
+              if (schedule.lastElementChild) {
+                schedule.removeChild(schedule.lastElementChild)
+              }
+            });
+          let dataParse = JSON.parse(data)
+          let status = null
+          for (let index = 0; index < dataParse.length; index++) {
+            (dataParse[index]["status"] == "0") ? status = 'Batal' : 
+            (dataParse[index]["status"] == "1") ? status = 'Menunggu Pembayaran' : 
+            (dataParse[index]["status"] == "2") ? status = 'Diproses' : 
+            (dataParse[index]["status"] == "3") ? status = 'Lunas' : 
+            status = "Belum Diketahui"
+            let content = ` <tr>
+                                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                    <div class="flex px-2 py-1">
+                                      <div class="flex flex-col px-3 justify-center">
+                                        <p class="mb-0 font-semibold  leading-normal text-md">${dataParse[index]["start_time"].slice(0,5)}</p>
+                                      </div>
+                                    </div>
+                                  </td>
+                                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                    <p class="mb-0 font-semibold leading-normal text-md">${dataParse[index]["end_time"].slice(0,5)}</p>
+                                  </td>
+                                  <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
+                                    <span class="bg-gradient-to-tl ${status == 'Batal' 
+                                      ? 'from-red-500 to-red-400' : status == "Menunggu Pembayaran" 
+                                      ? "from-yellow-500 to-yellow-400" : status == "Diproses" 
+                                      ? "from-emerald-500 to-teal-400" : status == "Lunas" 
+                                      ? "from-emerald-500 to-teal-400" : ""} px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                    ${status}
+                                    </span>
+                                  </td>
+                                </tr>`;
+          schedule.insertAdjacentHTML('beforeend',content);
+          }
+        }
+      })
+        let splitDate = dateStr.split("-").reverse()
+        document.getElementById('date-booking').innerText = `${selectedDate[0].getDate()} ${months[selectedDate[0].getMonth()]} ${selectedDate[0].getFullYear()}`
+      }
     });
 </script>

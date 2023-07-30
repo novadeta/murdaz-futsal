@@ -25,6 +25,10 @@ class TransactionController extends Database{
         return $result;
     }
     public function create_transaction($request,$file = ""){
+        $isTime = mysqli_query($this->connect, "select * from tbl_transactions where date_play = '$request[date_play]' and start_time = '$request[start_time]'");
+        if ($isTime->num_rows > 1) {
+            return ['status' => 'erro', 'message' => 'Sudah Di booking'];
+        }
         date_default_timezone_set('Asia/Jakarta');
         $date = date("Y-m-d h:i:s");
         if (file_exists($_FILES['payment']['tmp_name'])) {
@@ -38,6 +42,7 @@ class TransactionController extends Database{
             $uploadPath = $directory . $uploadDirectory . basename($filename);
             move_uploaded_file($fileTmp,$uploadPath);
             $query = mysqli_query($this->connect, "insert into tbl_transactions(id_user,id_field,date,date_play,start_time,end_time,price,status) values('$request[id_user]','$request[id_field]','$request[date]','$request[date_play]','$request[start_time]','$request[end_time]','$status')");
+            return ['message' => 'berhasil'];
         }
         $status = "1";
         $query = mysqli_query($this->connect, "insert into tbl_transactions(id_user,id_field,date,date_play,start_time,end_time,price,status) values('$request[id_user]','$request[id_field]','$date','$request[date_play]','$request[start_time]','$request[end_time]','$request[price]','$status')");
@@ -51,7 +56,7 @@ class TransactionController extends Database{
             }
             return $result;
         }else if(isset($request['id_transaction'])){
-            $query = mysqli_query($this->connect, "select * from tbl_transactions where id_transaction = '$request[id_transaction]' and id_user = '$request[id_user]'");
+            $query = mysqli_query($this->connect, "select * from tbl_transactions inner join tbl_users on tbl_transactions.id_user = tbl_users.id_user where tbl_transactions.id_transaction = '$request[id_transaction]' and tbl_transactions.id_user = '$request[id_user]'");
             if ($query->num_rows < 1) {
                 return [];
             }
@@ -64,18 +69,18 @@ class TransactionController extends Database{
         return $result;
     }
     public function edit_transaction($request){
-        if (file_exists($_FILES['payment']['tmp_name'])) {
-            $directory = getcwd();
-            $uploadDirectory = "/public/assets/photo_payments/";
-            $filename = $_FILES['payment']['name'];
-            $explode = explode(".",$filename);
-            $extension = strtolower(end($explode));
-            $fileTmp  = $_FILES['payment']['tmp_name'];
-            $uploadPath = $directory . $uploadDirectory . basename($filename);
-            move_uploaded_file($fileTmp,$uploadPath);
-            $query = mysqli_query($this->connect, "update tbl_transactions set status='$request[status]' where id_transaction = '$request[id_transaction]' and id_user = '$request[id_user]' ");
-            return ['message' => 'berhasil kirim'];
-        }
+        // if (file_exists($_FILES['payment']['tmp_name'])) {
+        //     $directory = getcwd();
+        //     $uploadDirectory = "/public/assets/photo_payments/";
+        //     $filename = $_FILES['payment']['name'];
+        //     $explode = explode(".",$filename);
+        //     $extension = strtolower(end($explode));
+        //     $fileTmp  = $_FILES['payment']['tmp_name'];
+        //     $uploadPath = $directory . $uploadDirectory . basename($filename);
+        //     move_uploaded_file($fileTmp,$uploadPath);
+        //     $query = mysqli_query($this->connect, "update tbl_transactions set status='$request[status]',payment where id_transaction = '$request[id_transaction]' and id_user = '$request[id_user]' ");
+        //     return ['message' => 'berhasil kirim'];
+        // }
         $query = mysqli_query($this->connect, "update tbl_transactions set status='$request[status]' where id_transaction = '$request[id_transaction]' and id_user = '$request[id_user]' ");
         return ['message' => 'berhasil diterima'];
     }
