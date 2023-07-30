@@ -1,7 +1,11 @@
 <?php 
-  $guest = 'styles.css'; 
-  include "./layouts/main-header.php";
-  include_once "./layouts/main-sidebar.php";
+    include_once './layouts/authorize.php';
+    $guest = 'styles.css'; 
+    include_once "./layouts/main-header.php";
+    include_once "./layouts/main-sidebar.php";
+    include_once "./core/TransactionController.php";
+    $transaction = new TransactionController();
+    $result_transaction = $transaction->show_transaction(['status' => '3','id_user' => $session_user['data']['id_user']]) ;
 ?>
 
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
@@ -31,24 +35,32 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                              <div class="flex px-2 py-1">
-                                <div class="flex flex-col justify-center px-3">
-                                  <h6 class="mb-0 leading-normal text-sm"></h6>
-                                </div>
-                              </div>
-                            </td>
-                            <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                              <p class="mb-0 font-semibold leading-tight text-xs">Lapangan</p>
-                            </td>
-                            <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                              <p class="mb-0 font-semibold leading-tight text-xs">Manager</p>
-                            </td>
-                            <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                              <p class="mb-0 font-semibold leading-tight text-xs">Manager</p>
-                            </td>
+                        <?php 
+                            foreach ($result_transaction as $result) {
+                          ?>
+                            <tr>
+                              <td class="px-6 py-3 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                <p class="mb-0 font-semibold leading-tight text-xs"><?php 
+                                  $split = explode(" ",$result['date']);
+                                  echo $split[0];
+                                ?></p>
+                              </td>
+                              <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                <p class="mb-0 font-semibold leading-tight text-xs"><?= $result['date_play'] ?></p>
+                              </td>
+                              <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                <span class="bg-gradient-to-tl  from-emerald-500 to-teal-400 px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                  <?= ($result['status'] == '3') ?  "Lunas" : '' ?> 
+                                </span>
+                              </p>
+                              </td>
+                              <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                  Rp. <?= $result['price']?> 
+                              </td>
                           </tr> 
+                          <?php
+                            }
+                          ?>
                         </tbody>
                       </table>
                     </div>

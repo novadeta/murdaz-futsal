@@ -20,6 +20,9 @@ if (isset($_GET['page'])) {
     case 'pemesanan/main':
       include $url . 'booking-play.php';
       break;
+    case 'pemesanan/bayar-pembelian':
+      include $url . 'purchase-payment.php';
+      break;
     case 'pemesanan/waktu':
       include $url . 'booking-time.php';
       break;
