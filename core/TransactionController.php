@@ -17,15 +17,46 @@ class TransactionController extends Database{
                 $result[] = $row; 
             }
             return $result;
+        }elseif (isset($request['select_date']) ) {
+            if ($request['select_date']== 'month') {
+                $early_date = date('Y-m') . '-01';
+                $last_date = date('Y-m-t', strtotime($early_date));
+                $query = mysqli_query($this->connect,"select price from tbl_transactions where date_play between '$early_date' and '$last_date' and status = '3'");
+                $result = 0;
+                while($row = mysqli_fetch_array($query)){
+                    $convertInteger = intval($row['price']);
+                    $result += $convertInteger;
+                }
+                return $result;
+            }else if($request['select_date']== 'today'){
+                $today = date('Y-m-d') ;
+                $query = mysqli_query($this->connect,"select price from tbl_transactions where date_play = '$today' and status = '3'");
+                $result = 0;
+                while($row = mysqli_fetch_array($query)){
+                    $convertInteger = intval($row['price']);
+                    $result += $convertInteger;
+                }
+                return $result;
+            }else {
+                $query = mysqli_query($this->connect, "select * from tbl_transactions ");
+                while($row = mysqli_fetch_array($query)){
+                    $result[] = $row; 
+                }
+                return $result;
+            }
+        }else {
+            $query = mysqli_query($this->connect, "select * from tbl_transactions ");
+            while($row = mysqli_fetch_array($query)){
+                $result[] = $row; 
+            }
+            return $result;
         }
-        $query = mysqli_query($this->connect, "select * from tbl_transactions ");
-        while($row = mysqli_fetch_array($query)){
-            $result[] = $row; 
-        }
-        return $result;
     }
     public function create_transaction($request,$file = ""){
-        $isTime = mysqli_query($this->connect, "select * from tbl_transactions where date_play = '$request[date_play]' and start_time = '$request[start_time]'");
+        $isTime = mysqli_query($this->connect, "select * from tbl_transactions where date_play = '$request[date_play]' and id_field = '$request[id_field]' and
+        ((start_time <= '$request[start_time]' and end_time > '$request[start_time]') or
+        (start_time < '$request[end_time]' and end_time >= '$request[end_time]') or
+        (start_time >= '$request[start_time]' and end_time <= '$request[end_time]')) ");
         if ($isTime->num_rows > 1) {
             return ['status' => 'erro', 'message' => 'Sudah Di booking'];
         }

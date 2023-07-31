@@ -18,7 +18,7 @@ class UserController extends Database{
                 ];
             }
         }
-        $query_mysql = "select * from tbl_users";
+        $query_mysql = "select * from tbl_users where role = '2'";
         $query = mysqli_query($this->connect, $query_mysql);
         while($row = mysqli_fetch_array($query)){
             $result[] = $row; 
@@ -68,6 +68,9 @@ class UserController extends Database{
     }
     public function delete_user($id_user){  
         $query = mysqli_query($this->connect, "delete from tbl_users where id_user = '$id_user' ");
+    }
+    public function status_user($request){
+        $query = mysqli_query($this->connect, "update tbl_users set status = '$request[status]' where id_user = '$request[id_user]'");
     }
     
 

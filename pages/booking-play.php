@@ -43,7 +43,7 @@
                 <p id="date-booking" class=" mb-0 text-sm leading-normal py-2 px-2 rounded-3 text-white dark:opacity-60 text-center mx-auto bg-[#5E72E4]" style="width: 120px;">
                   <?= date("d M Y") ?>
                 </p>
-                <div class="mx-auto flex justify-center gap-5 my-5">
+                  <div class="mx-auto flex justify-center gap-5 my-5">
                 <?php 
                       $no = 0;
                       foreach ($field_result as $field) {
@@ -302,12 +302,6 @@
         document.getElementById('date-booking').innerText = `${selectedDate[0].getDate()} ${months[selectedDate[0].getMonth()]} ${selectedDate[0].getFullYear()}`
       }
     });
-
-
-
-
-
-
 
     let time = document.querySelectorAll('.time')
     let price = document.getElementById('price')

@@ -225,11 +225,9 @@
       })
       let [date,month,year] = document.getElementById('date-booking').innerText.split(" ")
       let numberOfMonth =  months.indexOf(month)+1
-      schedule.children.forEach(element => {
-          schedule.removeChild(schedule.firstElementChild)
-          if (schedule.lastElementChild) {
-            schedule.removeChild(schedule.lastElementChild)
-          }
+      let array = Array.from(schedule.children)
+        array.forEach(element => {
+          element.remove()
         });
       $.ajax({
       url: "./routes/transaction.php?action=get_transaction",
@@ -287,12 +285,10 @@
           id_field : '1'
         },
         success: function (data){
-          schedule.children.forEach(element => {
-              schedule.removeChild(schedule.firstElementChild)
-              if (schedule.lastElementChild) {
-                schedule.removeChild(schedule.lastElementChild)
-              }
-            });
+          let array = Array.from(schedule.children)
+            array.forEach(element => {
+            element.remove()
+          });
           let dataParse = JSON.parse(data)
           let status = null
           for (let index = 0; index < dataParse.length; index++) {

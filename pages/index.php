@@ -1,5 +1,8 @@
 <?php 
     include_once './layouts/main-header.php';
+    include_once "./core/FieldController.php";
+    $field = new FieldController();
+    $field_result = $field->get_field("Aktif");
 ?>
 <body class="bg-[#F7F7F7]">
     <header class="container">
@@ -110,12 +113,14 @@
                 <div class="w-full">
                     <div class="flex gap-5 flex-col items-center justify-center">
                         <h3 class="text-center">Pilih Lapangan</h3>
+                        <?php 
+                            $no = 0;
+                            foreach ($field_result as $field) {
+                        ?>
                         <div class=" shadow-xxs rounded-4 px-3 py-3 group/1 cursor-pointer">
-                            <h5 class="border-malachite inline-block border text-malachite py-5 px-[50px] m-0 rounded-4 group-hover/1:text-white group-hover/1:bg-malachite ease-in-out duration-150">Lapangan A</h5>
+                            <h5 onclick="changeField(this,<?= $field['id_field'] ?>)" class="border-malachite inline-block border text-malachite btn-field py-5 px-[50px] m-0 rounded-4 group-hover/1:text-white group-hover/1:bg-malachite ease-in-out duration-150"><?= $field['field_name']; ?></h5>
                         </div>
-                        <div class=" shadow-xxs rounded-4 px-3 py-3 group/1 cursor-pointer">
-                            <h5 class="border-malachite inline-block border text-malachite py-5 px-[50px] m-0 rounded-4 group-hover/1:text-white group-hover/1:bg-malachite ease-in-out duration-150">Lapangan B</h5>
-                        </div>
+                        <?php }?>
                     </div>
                 </div>
                 <div class="w-full h-full">
@@ -129,27 +134,8 @@
                                 <th class="border p-2">Status</th>
                             </tr>
                             </thead>
-                            <tbody>
-                                <tr class="border">
-                                    <td class="p-2 text-sm border-b-2 border-malachite font-normal leading-normal text-center">08.00</td>
-                                    <td class="p-2 text-sm border-b-2 border-malachite font-normal leading-normal text-center">09.00</td>
-                                    <td class="p-2 text-sm border-b-2 border-malachite font-normal leading-normal text-center">Pending</td>
-                                </tr>
-                                <tr class="border">
-                                    <td class="p-2 text-sm border-b-2 border-malachite font-normal leading-normal text-center">08.00</td>
-                                    <td class="p-2 text-sm border-b-2 border-malachite font-normal leading-normal text-center">09.00</td>
-                                    <td class="p-2 text-sm border-b-2 border-malachite font-normal leading-normal text-center">Pending</td>
-                                </tr>
-                                <tr class="border">
-                                    <td class="p-2 text-sm border-b-2 border-malachite font-normal leading-normal text-center">08.00</td>
-                                    <td class="p-2 text-sm border-b-2 border-malachite font-normal leading-normal text-center">09.00</td>
-                                    <td class="p-2 text-sm border-b-2 border-malachite font-normal leading-normal text-center">Pending</td>
-                                </tr>
-                                <tr class="border">
-                                    <td class="p-2 text-sm border-b-2 border-malachite font-normal leading-normal text-center">08.00</td>
-                                    <td class="p-2 text-sm border-b-2 border-malachite font-normal leading-normal text-center">09.00</td>
-                                    <td class="p-2 text-sm border-b-2 border-malachite font-normal leading-normal text-center">Pending</td>
-                                </tr>
+                            <tbody id="schedule-booking">
+                                
                             </tbody>
                         </table>
                         </div>
@@ -356,7 +342,7 @@
       picker.innerText = new Date().getDate() 
       picker.innerText += " " + months[new Date().getMonth()]
       picker.innerText += " " + new Date().getFullYear()
-      btnField[0].classList.add("bg-[#5E72E4]")
+      btnField[0].classList.add("bg-malachite")
       btnField[0].classList.add("text-white")
       $.ajax({
         url: "./routes/transaction.php?action=get_transaction",
@@ -375,19 +361,15 @@
             (dataParse[index]["status"] == "3") ? status = 'Lunas' : 
             status = "Belum Diketahui"
             console.log(status);
-            let content = ` <tr>
-                                <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                  <div class="flex px-2 py-1">
-                                    <div class="flex flex-col px-3 justify-center">
-                                      <p class="mb-0 font-semibold  leading-normal text-md">${dataParse[index]["start_time"].slice(0,5)}</p>
-                                    </div>
-                                  </div>
+            let content = ` <tr class="border">
+                                <td class="p-2 text-sm border-b-2 border-malachite font-normal leading-normal text-center">
+                                    <p class="mb-0 font-semibold  leading-normal text-md">${dataParse[index]["start_time"].slice(0,5)}</p>
                                 </td>
-                                <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                  <p class="mb-0 font-semibold leading-normal text-md">${dataParse[index]["end_time"].slice(0,5)}</p>
+                                <td class="p-2 text-sm border-b-2 border-malachite font-normal leading-normal text-center">
+                                    <p class="mb-0 font-semibold leading-normal text-md">${dataParse[index]["end_time"].slice(0,5)}</p>
                                 </td>
-                                <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
-                                  <span class="bg-gradient-to-tl ${status == 'Batal' 
+                                <td class="p-2 text-sm border-b-2 border-malachite font-normal leading-normal text-center">
+                                    <span class="bg-gradient-to-tl ${status == 'Batal' 
                                     ? 'from-red-500 to-red-400' : status == "Menunggu Pembayaran" 
                                     ? "from-yellow-500 to-yellow-400" : status == "Diproses" 
                                     ? "from-emerald-500 to-teal-400" : status == "Lunas" 
@@ -404,9 +386,9 @@
     
     function changeField(e,id_field){
       btnField.forEach(btn => {
-        btn.classList.remove('bg-[#5E72E4]')
+        btn.classList.remove('bg-malachite')
         btn.classList.remove('text-white');
-        e.classList.add('bg-[#5E72E4]');
+        e.classList.add('bg-malachite');
         e.classList.add('text-white');
       })
       let [date,month,year] = document.getElementById('date-booking').innerText.split(" ")
@@ -433,27 +415,23 @@
             (dataParse[index]["status"] == "2") ? status = 'Diproses' : 
             (dataParse[index]["status"] == "3") ? status = 'Lunas' : 
             status = "Belum Diketahui"
-            let content = ` <tr>
-                                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                    <div class="flex px-2 py-1">
-                                      <div class="flex flex-col px-3 justify-center">
-                                        <p class="mb-0 font-semibold  leading-normal text-md">${dataParse[index]["start_time"].slice(0,5)}</p>
-                                      </div>
-                                    </div>
-                                  </td>
-                                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+            let content = ` <tr class="border">
+                                <td class="p-2 text-sm border-b-2 border-malachite font-normal leading-normal text-center">
+                                    <p class="mb-0 font-semibold  leading-normal text-md">${dataParse[index]["start_time"].slice(0,5)}</p>
+                                </td>
+                                <td class="p-2 text-sm border-b-2 border-malachite font-normal leading-normal text-center">
                                     <p class="mb-0 font-semibold leading-normal text-md">${dataParse[index]["end_time"].slice(0,5)}</p>
-                                  </td>
-                                  <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
+                                </td>
+                                <td class="p-2 text-sm border-b-2 border-malachite font-normal leading-normal text-center">
                                     <span class="bg-gradient-to-tl ${status == 'Batal' 
-                                      ? 'from-red-500 to-red-400' : status == "Menunggu Pembayaran" 
-                                      ? "from-yellow-500 to-yellow-400" : status == "Diproses" 
-                                      ? "from-emerald-500 to-teal-400" : status == "Lunas" 
-                                      ? "from-emerald-500 to-teal-400" : ""} px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
-                                    ${status}
-                                    </span>
-                                  </td>
-                                </tr>`;
+                                    ? 'from-red-500 to-red-400' : status == "Menunggu Pembayaran" 
+                                    ? "from-yellow-500 to-yellow-400" : status == "Diproses" 
+                                    ? "from-emerald-500 to-teal-400" : status == "Lunas" 
+                                    ? "from-emerald-500 to-teal-400" : ""} px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                  ${status}
+                                  </span>
+                                </td>
+                              </tr>`;
           schedule.insertAdjacentHTML('beforeend',content);
           }
         }
@@ -487,27 +465,23 @@
             (dataParse[index]["status"] == "2") ? status = 'Diproses' : 
             (dataParse[index]["status"] == "3") ? status = 'Lunas' : 
             status = "Belum Diketahui"
-            let content = ` <tr>
-                                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                    <div class="flex px-2 py-1">
-                                      <div class="flex flex-col px-3 justify-center">
-                                        <p class="mb-0 font-semibold  leading-normal text-md">${dataParse[index]["start_time"].slice(0,5)}</p>
-                                      </div>
-                                    </div>
-                                  </td>
-                                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+            let content = ` <tr class="border">
+                                <td class="p-2 text-sm border-b-2 border-malachite font-normal leading-normal text-center">
+                                    <p class="mb-0 font-semibold  leading-normal text-md">${dataParse[index]["start_time"].slice(0,5)}</p>
+                                </td>
+                                <td class="p-2 text-sm border-b-2 border-malachite font-normal leading-normal text-center">
                                     <p class="mb-0 font-semibold leading-normal text-md">${dataParse[index]["end_time"].slice(0,5)}</p>
-                                  </td>
-                                  <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
+                                </td>
+                                <td class="p-2 text-sm border-b-2 border-malachite font-normal leading-normal text-center">
                                     <span class="bg-gradient-to-tl ${status == 'Batal' 
-                                      ? 'from-red-500 to-red-400' : status == "Menunggu Pembayaran" 
-                                      ? "from-yellow-500 to-yellow-400" : status == "Diproses" 
-                                      ? "from-emerald-500 to-teal-400" : status == "Lunas" 
-                                      ? "from-emerald-500 to-teal-400" : ""} px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
-                                    ${status}
-                                    </span>
-                                  </td>
-                                </tr>`;
+                                    ? 'from-red-500 to-red-400' : status == "Menunggu Pembayaran" 
+                                    ? "from-yellow-500 to-yellow-400" : status == "Diproses" 
+                                    ? "from-emerald-500 to-teal-400" : status == "Lunas" 
+                                    ? "from-emerald-500 to-teal-400" : ""} px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
+                                  ${status}
+                                  </span>
+                                </td>
+                              </tr>`;
           schedule.insertAdjacentHTML('beforeend',content);
           }
         }
