@@ -1,5 +1,19 @@
 <?php 
+  include_once './layouts/authorize-guest.php';
   include_once "./layouts/guest-header.php";
+  $guest = 'styles.css'; 
+  include_once "./core/TransactionController.php";
+  $transaction = new TransactionController();
+  $result_transaction = $transaction->get_transaction(['status' => 'validation']) ?? [] ;
+  if(isset($_GET['action']) && $_GET['action'] == 'cancel'){
+    $delete_transaction = $transaction->delete_transaction(['id_transaction' => $_GET['id_transaction'],'id_user' => $_GET['id_user']]) ;
+    echo "
+    <script>
+      alert('Berhasil Menghapus Transaksi')
+      document.location.href = './index.php?page=guest/validasi'
+    </script>
+    ";
+  }
 ?>
     <main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
       <!-- Navbar -->
@@ -107,10 +121,12 @@
               </div>
               <div class="flex-auto p-4 pt-6">
                 <ul class="flex flex-col pl-0 mb-0 rounded-lg">
-
-                  <li class="relative flex p-6 mt-4 mb-2 border-0 rounded-b-inherit rounded-xl bg-gray-50 dark:bg-slate-850">
+                  <?php 
+                    foreach ($result_transaction as $result) {
+                    ?>
+                      <li class="relative flex p-6 mt-4 mb-2 border-0 rounded-b-inherit rounded-xl bg-gray-50 dark:bg-slate-850">
                     <div class="flex flex-col">
-                      <h6 class="mb-4 text-sm leading-normal dark:text-white">Ethan James</h6>
+                      <h6 class="mb-4 text-sm leading-normal dark:text-white"><?= $result['username'] ?></h6>
                       <span class="mb-2 text-xs leading-tight dark:text-white/80">Tanggal Beli: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2">Fiber Notion</span></span>
                       <span class="mb-2 text-xs leading-tight dark:text-white/80">Tanggal Bermain: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2">Fiber Notion</span></span>
                       <span class="mb-2 text-xs leading-tight dark:text-white/80">Waktu Mulai: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2">ethan@fiber.com</span></span>
@@ -121,6 +137,9 @@
                       <a class="inline-block dark:text-white px-4 py-2.5 mb-0 font-bold text-center align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer leading-normal text-sm ease-in bg-150 hover:-translate-y-px active:opacity-85 bg-x-25 text-slate-700" href="javascript:;"><i class="mr-2 fas fa-pencil-alt text-slate-700" aria-hidden="true"></i>Edit</a>
                     </div>
                   </li>
+                    <?php
+                    }
+                  ?>
                 </ul>
               </div>
             </div>

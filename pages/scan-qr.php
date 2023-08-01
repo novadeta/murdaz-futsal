@@ -1,4 +1,5 @@
 <?php 
+  $url = "http://" . $_SERVER['SERVER_NAME'] . "/futsal/public";
   $guest = 'styles.css'; 
   include_once "./layouts/main-header.php";
   include_once "./layouts/main-sidebar.php";
@@ -21,6 +22,7 @@
                     <div class="p-2 overflow-x-auto">
                     <div style="width: 100%; height: 500px; max-width: 610px; " class="mx-auto border-none" id="reader"></div>
                     </div>
+                    <button onclick="downloadImage()">Klik</button>
                 </div>
             </div>    
         </div>
@@ -50,23 +52,22 @@ let html5QrcodeScanner = new Html5QrcodeScanner(
     fps: 10, 
     qrbox: {width: 300, height: 300},
     supportedScanTypes: [ Html5QrcodeScanType.SCAN_TYPE_CAMERA ],
-  },
-  
-  /* verbose= */ false);
+  }, false);
 html5QrcodeScanner.render(onScanSuccess, onScanFailure);
 
-// function downloadImage(){
-//   const api = "https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=form-waktu.php";
-//   fetch(api)
-//   .then(e => e.blob())
-//   .then(blob => {
-//     const blobUrl = URL.createObjectURL(blob)
-//     const link = document.createElement('a');
-//     link.href = blobUrl
-//     link.download = "Lapangan 1.png";
-//     link.click()
-//     URL.revokeObjectURL(blobUrl)
-//   }).catch(e => console.log(e))
-// }
+function downloadImage(){
+  let url = encodeURIComponent('<?= $url ?>')
+  const api = 'https://chart.googleapis.com/chart?chs=400x400&cht=qr&chl='+ url;
+  fetch(api)
+  .then(e => e.blob())
+  .then(blob => {
+    const blobUrl = URL.createObjectURL(blob)
+    const link = document.createElement('a');
+    link.href = blobUrl
+    link.download = "Lapangan 1.png";
+    link.click()
+    URL.revokeObjectURL(blobUrl)
+  }).catch(e => console.log(e))
+}
 
 </script>

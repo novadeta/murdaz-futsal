@@ -21,7 +21,7 @@ class TransactionController extends Database{
             if ($request['select_date']== 'month') {
                 $early_date = date('Y-m') . '-01';
                 $last_date = date('Y-m-t', strtotime($early_date));
-                $query = mysqli_query($this->connect,"select price from tbl_transactions where date_play between '$early_date' and '$last_date' and status = '3'");
+                $query = mysqli_query($this->connect,"select price from tbl_transactions where date between '$early_date 00:00:00' and '$last_date 23:59:59' and status = '3'");
                 $result = 0;
                 while($row = mysqli_fetch_array($query)){
                     $convertInteger = intval($row['price']);
@@ -44,7 +44,16 @@ class TransactionController extends Database{
                 }
                 return $result;
             }
-        }else {
+        }elseif (isset($request['status'])) {
+           if ($request['status'] == 'validation') {
+            $query = mysqli_query($this->connect, "select * from tbl_transactions where status = '2'");
+            while($row = mysqli_fetch_array($query)){
+                $result[] = $row; 
+            }
+            return $result;
+           }
+        }
+        else {
             $query = mysqli_query($this->connect, "select * from tbl_transactions ");
             while($row = mysqli_fetch_array($query)){
                 $result[] = $row; 
@@ -74,6 +83,11 @@ class TransactionController extends Database{
             move_uploaded_file($fileTmp,$uploadPath);
             $query = mysqli_query($this->connect, "insert into tbl_transactions(id_user,id_field,date,date_play,start_time,end_time,price,status) values('$request[id_user]','$request[id_field]','$request[date]','$request[date_play]','$request[start_time]','$request[end_time]','$status')");
             return ['message' => 'berhasil'];
+        }
+        if (isset($request['role']) && $request['role'] == '1') {
+            $status = "3";
+            $query = mysqli_query($this->connect, "insert into tbl_transactions(id_user,id_field,date,date_play,start_time,end_time,price,status) values('$request[id_user]','$request[id_field]','$date','$request[date_play]','$request[start_time]','$request[end_time]','$request[price]','$status')");
+            return ['message' => 'berhasil transaksi'];
         }
         $status = "1";
         $query = mysqli_query($this->connect, "insert into tbl_transactions(id_user,id_field,date,date_play,start_time,end_time,price,status) values('$request[id_user]','$request[id_field]','$date','$request[date_play]','$request[start_time]','$request[end_time]','$request[price]','$status')");

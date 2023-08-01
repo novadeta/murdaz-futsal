@@ -51,8 +51,14 @@ if (isset($_GET['page'])) {
     case 'guest/lapangan':
       include 'guest/field.php';
       break;
+    case 'guest/lapangan/edit':
+      include 'guest/edit-field.php';
+      break;
     case 'guest/pengguna':
       include 'guest/users.php';
+      break;
+    case 'guest/pengguna/detail':
+      include 'guest/detail-user.php';
       break;
     case 'guest/profil':
       include 'guest/profile.php';

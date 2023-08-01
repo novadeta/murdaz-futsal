@@ -21,7 +21,7 @@ class FieldController extends Database{
         return $result;
     }
     public function create_field($request){
-        $query = mysqli_query($this->connect, "insert into tbl_fields(field_code,field_name,status) VALUE('$request[field_code]','$request[field_name]','$request[status]')");
+        $query = mysqli_query($this->connect, "insert into tbl_fields(field_code,field_name,status,qrcode) VALUE('$request[field_code]','$request[field_name]','$request[status]','$request[qrcode]')");
         return true;
     }
     public function show_field(){
@@ -34,8 +34,9 @@ class FieldController extends Database{
     public function edit_field(){
         
     }
-    public function delete_field(){
-
+    public function delete_field($request){
+        $query = mysqli_query($this->connect, "delete from tbl_fields where id_field = '$request[id_field]'");
+        return true;
     }
     
 
