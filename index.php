@@ -1,6 +1,12 @@
 <?php 
 $url = './pages/';
 $page = '';
+
+if (isset($_GET['qrcode'])) {
+  include $url . 'input-qrcode.php';
+  return;
+}
+
 if (isset($_GET['page'])) {
   $page = $_GET['page'];
   switch ($page) {
@@ -34,6 +40,9 @@ if (isset($_GET['page'])) {
       break;
     case 'scan-qr':
       include $url . 'scan-qr.php';
+      break;
+    case 'form-qrcode':
+      include $url . 'input-qrcode.php';
       break;
     // admin
     case 'guest/dashboard':

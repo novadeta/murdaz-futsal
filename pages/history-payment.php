@@ -5,7 +5,7 @@
     include_once "./layouts/main-sidebar.php";
     include_once "./core/TransactionController.php";
     $transaction = new TransactionController();
-    $result_transaction = $transaction->show_transaction(['status' => '3','id_user' => $session_user['data']['id_user']]) ;
+    $result_transaction = $transaction->show_transaction(['status' => '3','id_user' => $session_user['data']['id_user']]) ?? [];
   
 ?>
 

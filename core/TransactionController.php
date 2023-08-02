@@ -50,7 +50,7 @@ class TransactionController extends Database{
             while($row = mysqli_fetch_array($query)){
                 $result[] = $row; 
             }
-            return $result;
+            return $result ?? [];
            }
         }
         else {
@@ -61,6 +61,8 @@ class TransactionController extends Database{
             return $result;
         }
     }
+
+
     public function create_transaction($request,$file = ""){
         $isTime = mysqli_query($this->connect, "select * from tbl_transactions where date_play = '$request[date_play]' and id_field = '$request[id_field]' and
         ((start_time <= '$request[start_time]' and end_time > '$request[start_time]') or
@@ -81,7 +83,7 @@ class TransactionController extends Database{
             $fileTmp  = $_FILES['payment']['tmp_name'];
             $uploadPath = $directory . $uploadDirectory . basename($filename);
             move_uploaded_file($fileTmp,$uploadPath);
-            $query = mysqli_query($this->connect, "insert into tbl_transactions(id_user,id_field,date,date_play,start_time,end_time,price,status) values('$request[id_user]','$request[id_field]','$request[date]','$request[date_play]','$request[start_time]','$request[end_time]','$status')");
+            $query = mysqli_query($this->connect, "insert into tbl_transactions(id_user,id_field,date,date_play,start_time,end_time,price,status) values('$request[id_user]','$request[id_field]','$request[date]','$request[date_play]','$request[start_time]','$request[end_time]','$filename','$request[price]','$status')");
             return ['message' => 'berhasil'];
         }
         if (isset($request['role']) && $request['role'] == '1') {
@@ -93,6 +95,8 @@ class TransactionController extends Database{
         $query = mysqli_query($this->connect, "insert into tbl_transactions(id_user,id_field,date,date_play,start_time,end_time,price,status) values('$request[id_user]','$request[id_field]','$date','$request[date_play]','$request[start_time]','$request[end_time]','$request[price]','$status')");
         return ['message' => 'berhasil transaksi'];
     }
+
+
     public function show_transaction($request){
         if (isset($request['status'])) {
             $query = mysqli_query($this->connect, "select * from tbl_transactions where id_user = '$request[id_user]' and status = '$request[status]' ");

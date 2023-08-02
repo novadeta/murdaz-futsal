@@ -3,16 +3,47 @@
   include_once "./layouts/guest-header.php";
   $guest = 'styles.css'; 
   include_once "./core/TransactionController.php";
+  include_once "./core/TimeController.php";
   $transaction = new TransactionController();
-  $result_transaction = $transaction->get_transaction(['status' => 'validation']) ?? [] ;
-  if(isset($_GET['action']) && $_GET['action'] == 'cancel'){
-    $delete_transaction = $transaction->delete_transaction(['id_transaction' => $_GET['id_transaction'],'id_user' => $_GET['id_user']]) ;
+  $time = new TimeController();
+  $result_transaction = $transaction->get_transaction(['status' => 'validation']) ;
+  $result_time = $time->get_time(['status' => 'validation']) ?? [] ;
+  if(isset($_GET['action']) && $_GET['action'] == 'hapus'){
+    $request = $_GET;
+    $file = $_FILES;
+    $delete_transaction = $time->delete_time($request,$file) ;
     echo "
     <script>
-      alert('Berhasil Menghapus Transaksi')
-      document.location.href = './index.php?page=guest/validasi'
+    alert('Berhasil Menghapus Transaksi')
+    document.location.href = './index.php?page=guest/validasi'
     </script>
     ";
+  }
+  if($_SERVER["REQUEST_METHOD"] == "POST"){
+    if (isset($_POST['id_transaction'])) {
+      $request = $_POST;
+      $file = $_FILES;
+      $edit_time = $time->edit_time($request,$file);
+      // echo "
+      // <script>
+      // alert('Berhasil Menghapus Transaksi')
+      // document.location.href = './index.php?page=guest/validasi'
+      // </script>
+      // ";
+    }
+    if (isset($_POST['id_time'])) {
+      $request = $_POST;
+      $file = $_FILES;
+      $edit_time = $time->edit_time($request,$file);
+      // echo "
+      // <script>
+      // alert('Berhasil Menghapus Transaksi')
+      // document.location.href = './index.php?page=guest/validasi'
+      // </script>
+      // ";
+    }
+  }
+  elseif (isset($_GET['action']) && $_GET['action'] == 'terima') {
   }
 ?>
     <main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
@@ -151,20 +182,28 @@
               </div>
               <div class="flex-auto p-4 pt-6">
                 <ul class="flex flex-col pl-0 mb-0 rounded-lg">
-
+                <?php 
+                    foreach ($result_time as $result) {
+                    ?>
                   <li class="relative flex p-6 mt-4 mb-2 border-0 rounded-b-inherit rounded-xl bg-gray-50 dark:bg-slate-850">
                     <div class="flex flex-col">
-                      <h6 class="mb-4 text-sm leading-normal dark:text-white">Ethan James</h6>
-                      <span class="mb-2 text-xs leading-tight dark:text-white/80">Tanggal Beli: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2">Fiber Notion</span></span>
-                      <span class="mb-2 text-xs leading-tight dark:text-white/80">Jam yang dibeli: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2">ethan@fiber.com</span></span>
-                      <span class="text-xs leading-tight dark:text-white/80">Cuaca: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2">FRB1235476</span></span>
-                      <span class="text-xs leading-tight dark:text-white/80">Harga: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2">FRB1235476</span></span>
+                      <h6 class="mb-4 text-sm leading-normal dark:text-white"></h6>
+                      <span class="mb-2 text-xs leading-tight dark:text-white/80">Tanggal Beli: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2"><?= date("d-m-Y", strtotime($result['date'])) ?></span></span>
+                      <span class="mb-2 text-xs leading-tight dark:text-white/80">Jam yang dibeli: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2"><?= explode(":",$result['purchased_time'])[0] ?> Jam </span></span>
+                      <span class="text-xs leading-tight dark:text-white/80">Harga: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2"><?= $result['price'] ?? '0' ?></span></span>
                     </div>
                     <div class="ml-auto text-right">
-                      <a class="relative z-10 inline-block px-4 py-2.5 mb-0 font-bold text-center text-transparent align-middle transition-all border-0 rounded-lg shadow-none cursor-pointer leading-normal text-sm ease-in bg-150 bg-gradient-to-tl from-red-600 to-orange-600 hover:-translate-y-px active:opacity-85 bg-x-25 bg-clip-text" href="javascript:;"><i class="mr-2 far fa-trash-alt bg-150 bg-gradient-to-tl from-red-600 to-orange-600 bg-x-25 bg-clip-text"></i>Delete</a>
-                      <a class="inline-block dark:text-white px-4 py-2.5 mb-0 font-bold text-center align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer leading-normal text-sm ease-in bg-150 hover:-translate-y-px active:opacity-85 bg-x-25 text-slate-700" href="javascript:;"><i class="mr-2 fas fa-pencil-alt text-slate-700" aria-hidden="true"></i>Edit</a>
+                      <a class="relative z-10 inline-block px-4 py-2.5 mb-0 font-bold text-center text-transparent align-middle transition-all border-0 rounded-lg shadow-none cursor-pointer leading-normal text-sm ease-in bg-150 bg-gradient-to-tl from-red-600 to-orange-600 hover:-translate-y-px active:opacity-85 bg-x-25 bg-clip-text" href="index.php?page=guest/validasi&action=hapus&id_time=<?= $result['id_time'] ?>"><i class="mr-2 far fa-trash-alt bg-150 bg-gradient-to-tl from-red-600 to-orange-600 bg-x-25 bg-clip-text"></i>Batal</a>
+                      <form method="POST">
+                        <input type="hidden" name="id_time" value="<?= $result['id_time'] ?>" readonly>
+                        <input type="hidden" name="purchased_time" value="<?= $result['purchased_time'] ?>" readonly>
+                        <button type="submit" class="inline-block dark:text-white px-4 py-2.5 mb-0 font-bold text-center align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer leading-normal text-sm ease-in bg-150 hover:-translate-y-px active:opacity-85 bg-x-25 text-slate-700"><i class="mr-2 fas fa-pencil-alt text-slate-700" aria-hidden="true"></i>Terima</button>
+                      </form>
                     </div>
                   </li>
+                  <?php
+                    }
+                  ?>
                 </ul>
               </div>
           </div>

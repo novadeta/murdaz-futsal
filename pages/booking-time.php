@@ -5,8 +5,11 @@
   include_once "./layouts/main-sidebar.php";
   include_once "./core/TimeController.php";
   $time = new TimeController();
-  $time_result = $time->show_time($session_user['data']['id_user']);
-  $date = date("h",strtotime($time_result['time']));
+  $time_result = $time->get_time(['id_user' => $session_user['data']['id_user']]) ?? [];
+  if (count($time_result) >= 1) {
+    $date = date("h",strtotime($time_result['time']));
+  }
+  $date = 0;
   $convertDate = intval($date);
   if($_SERVER["REQUEST_METHOD"] == "POST"){
     $request = $_POST;
@@ -42,6 +45,27 @@
                               </div>
                             </td>
                           </tr>
+                          <?php 
+                              if (count($time_result) >= 1 ) {
+                                ?>
+                                  <tr>
+                                    <td class="p-2 mt-2 align-middle bg-transparent whitespace-nowrap shadow-transparent" colspan="3">
+                                      <div class="flex px-2 gap-5 items-center  justify-center">
+                                      <span class="bg-gradient-to-tl 
+                                        <?= $time_result['status_payment'] == '0'  ? 'from-red-500 to-red-400' 
+                                          : ($time_result['status_payment'] == "1" ? "from-yellow-500 to-yellow-400" 
+                                          : ($time_result['status_payment'] == "2"  ? "from-emerald-500 to-teal-400" : "" ))
+                                        ?> px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white"> 
+                                        <?= ($time_result['status_payment'] == '1') ?  "Menunggu Pembayaran" : '' ?> 
+                                        <?= ($time_result['status_payment'] == '2') ?  "Menunggu Validasi" : '' ?> 
+                                      </span> :
+                                          <p class="mb-0 font-semibold text-center leading-normal text-md"><?= date('h', strtotime($time_result['purchased_time'])) ?? '0' ?>  Jam</p>
+                                      </div>
+                                    </td>
+                                  </tr>
+                              <?php
+                              }
+                              ?>
                         </tbody>
                       </table>
                     </div>
@@ -72,7 +96,6 @@
       </div>
         </div>
       </div>
-      <!-- end cards -->
     </main>
   </div>
 </body>

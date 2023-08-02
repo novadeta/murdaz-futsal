@@ -22,7 +22,7 @@
                     <div class="p-2 overflow-x-auto">
                     <div style="width: 100%; height: 500px; max-width: 610px; " class="mx-auto border-none" id="reader"></div>
                     </div>
-                    <button onclick="downloadImage()">Klik</button>
+                    <!-- <button onclick="downloadImage()">Klik</button> -->
                 </div>
             </div>    
         </div>
@@ -39,7 +39,8 @@
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 <script>
   function onScanSuccess(decodedText, decodedResult) {
-  console.log(`Code matched = ${decodedText}`, decodedResult);
+    console.log(decodedText);
+  // document.location = decodedText;
 }
 
 function onScanFailure(error) {
@@ -55,19 +56,6 @@ let html5QrcodeScanner = new Html5QrcodeScanner(
   }, false);
 html5QrcodeScanner.render(onScanSuccess, onScanFailure);
 
-function downloadImage(){
-  let url = encodeURIComponent('<?= $url ?>')
-  const api = 'https://chart.googleapis.com/chart?chs=400x400&cht=qr&chl='+ url;
-  fetch(api)
-  .then(e => e.blob())
-  .then(blob => {
-    const blobUrl = URL.createObjectURL(blob)
-    const link = document.createElement('a');
-    link.href = blobUrl
-    link.download = "Lapangan 1.png";
-    link.click()
-    URL.revokeObjectURL(blobUrl)
-  }).catch(e => console.log(e))
-}
+
 
 </script>
