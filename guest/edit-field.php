@@ -6,14 +6,13 @@
   if (!isset($_GET['id_field'])) {
     header('Location: index.php?page=not-found');
   }
-  $id_field = $_GET['id_field'];
-  $query = $field->show_field() ?? [];
+  $result_field = $field->show_field($_GET) ?? [];
   if($_SERVER["REQUEST_METHOD"] == "POST"){
     $request = $_POST;
-      $result = $field->create_field($request);
+      $result = $field->edit_field($request);
       echo "
       <script>
-          alert('Berhasil Menambah')
+          alert('Berhasil Mengubah Data Lapangan')
           document.location.href = './index.php?page=guest/lapangan'
       </script>
       ";
@@ -30,28 +29,39 @@
         <div class="flex flex-wrap mt-6 -mx-3">
           <div class="w-full max-w-full px-3 mt-0 lg:w-12/12 lg:flex-none">
             <div style="margin-top: 40px;" class="relative flex flex-col w-full mt-15 min-w-0 mb-0 break-words p-4 bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
-                <h3 class="text-center mb-8">Form Pesan Booking</h3>
-                <form action="" id="field" class="w-1/2 mx-auto" method="POST">
+                <h3 class="text-center mb-8">Ubah Lapangan</h3>
+                <form id="field" class="w-1/2 mx-auto" method="POST">
+                    <input id="field_code" name="id_field" type="hidden" value="<?= $result_field['id_field'] ?>" class=" without_ampm focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"></input>
                     <div class="flex flex-col w-full items-start mx-auto" style="gap: 10px;">
                         <label for="field_code">Kode Lapangan</label>
-                        <input id="field_code" name="field_code" type="text" placeholder="KD-1" class=" without_ampm focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"></input>
+                        <input id="field_code" name="field_code" type="text" value="<?= $result_field['field_code'] ?>" class=" without_ampm focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"></input>
                     </div>
                     <div class="flex justify-center mt-4" style="gap: 10px;">
                     <div class="flex flex-col w-full items-start mx-auto" style="gap: 10px;">
                         <label for="field_name">Nama Lapangan</label>
-                        <input id="field_name" name="field_name" type="text" placeholder="Lapangan B" class="without_ampm focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"></input>
+                        <input id="field_name" name="field_name" type="text" value="<?= $result_field['field_name'] ?>"  class="without_ampm focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"></input>
                     </div>
                     <div class="flex flex-col w-full items-start mx-auto" style="gap: 10px;">
                         <label for="status">Status</label>
                         <select required name="status" id="status" class="focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none">
                             <option value="">Silahkan Pilih</option>
-                            <option value="Aktif">Aktif</option>
+                          <?php if ($result_field['status'] == 'Aktif') {
+                           ?> 
+                            <option value="Aktif" selected >Aktif</option>
                             <option value="Tidak Aktif">Tidak Aktif</option>
+                            <?php
+                            } else{
+                              ?>
+                            <option  value="Aktif">Aktif</option>
+                            <option selected value="Tidak Aktif">Tidak Aktif</option>
+                            <?php
+                            }
+                            ?>
                         </select>
                         </div>
                     </div>
                     <div class="flex flex-col w-1/5 items-start mx-auto mt-4">
-                        <button id="button" type="submit" class="bg-blue-500 text-md w-full ease  mx-auto rounded-lg text-white px-3 py-2">Buat</button>
+                        <button id="button" type="submit" class="bg-blue-500 text-md w-full ease  mx-auto rounded-lg text-white px-3 py-2">Ubah</button>
                     </div>
                 </form>
                 </div>

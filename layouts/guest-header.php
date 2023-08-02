@@ -59,13 +59,13 @@
                 </div>
                 <ul class="ml-1">
                   <li class=" py-2 duration-300 opacity-100  ease text-xs">
-                    <a href="index.php?page=guest/pemesanan" class="">Data Pemesanan</a>
-                  </li>
-                  <li class=" py-2 duration-300 opacity-100  ease text-xs">
                     <a href="index.php?page=guest/booking" class="">Booking</a>
                   </li>
                   <li class=" py-2 duration-300 opacity-100  ease text-xs">
                     <a href="index.php?page=guest/validasi" class="">Menunggu Validasi</a>
+                  </li>
+                  <li class=" py-2 duration-300 opacity-100  ease text-xs">
+                    <a href="index.php?page=guest/pemesanan" class="">Riwayat Transaksi</a>
                   </li>
                 </ul>
               </div>

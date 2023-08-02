@@ -26,7 +26,16 @@ class UserController extends Database{
         return $result;
     }
     public function checkuser($request){
-        $query = mysqli_query($this->connect, "select * from tbl_users where username = '$request[username]' and password = '$request[password]' and role = '$request[role]'");
+        $query = mysqli_query($this->connect, "select * from tbl_users where username = '$request[username]' and password = '$request[password]' and role = '$request[role]' ");
+        $status = mysqli_query($this->connect, "select * from tbl_users where username = '$request[username]' and password = '$request[password]' and role = '$request[role]' and status = 'Aktif' ");
+        $count_status =  mysqli_num_rows($status);
+        $count =  mysqli_num_rows($query);
+        if ($count_status < 1) {
+            return [
+                'status' => 'akun',
+                'message' => 'Akunmu Dinonaktifkan',
+            ];
+        }
         $count =  mysqli_num_rows($query);
         if ($count < 1) {
             return [
@@ -60,11 +69,12 @@ class UserController extends Database{
             'message' => 'Berhasil membuat akun',
         ];
     }
-    public function show_user($id_user){
-        $query = mysqli_query($this->connect, "delete from tbl_users where id_user = '$id_user' ");
+    public function show_user($request = ""){
+        $query = mysqli_query($this->connect, "select * from tbl_users where id_user = '$request[id_user]' ");
+        return $query->fetch_assoc();
     }
     public function edit_user($id_user){
-        $query = mysqli_query($this->connect, "delete from tbl_users where id_user = '$id_user' ");
+        $query = mysqli_query($this->connect, "select * from tbl_users where id_user = '$id_user' ");
     }
     public function delete_user($id_user){  
         $query = mysqli_query($this->connect, "delete from tbl_users where id_user = '$id_user' ");
@@ -72,10 +82,5 @@ class UserController extends Database{
     public function status_user($request){
         $query = mysqli_query($this->connect, "update tbl_users set status = '$request[status]' where id_user = '$request[id_user]'");
     }
-    
-
 }
-return json_encode([
-    "halo" => "halo"
-]);
 ?>

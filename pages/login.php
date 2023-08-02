@@ -112,10 +112,10 @@
                     }).then(e => {
                       document.location.href = './index.php?page=dashboard'
                     })
-                  }else {
+                  }else if(dataParse.status == 'akun') {
                     Swal.fire({
-                      title: 'Username atau password salah',
-                      text : 'Pastikan masukkan username dan password dengan benar',
+                      title: 'Kesalahan Akun',
+                      text : 'Maaf akunmu dinonaktifkan :(',
                       icon: 'error'
                       })
                   }

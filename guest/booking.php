@@ -13,7 +13,7 @@
     $result = $transaction->create_transaction($request);
     if (isset($result['status'])) {
       echo "<script>
-        alert('Waktu sudah ada yang booking')
+        alert('$result[message]')
         document.location.href = './index.php?page=guest/booking'
       </script>";
       return false;

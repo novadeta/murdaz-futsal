@@ -4,7 +4,7 @@
   include_once "./layouts/guest-header.php";
   $field = new FieldController();
   $randomqr = uniqid('Qrcode-');
-  $result_field = $field->show_field() ?? [];
+  $result_field = $field->get_field() ?? [];
    if(isset($_GET['action'])){
     if ($_GET['action'] == 'hapus') {
         $delete_user = $field->delete_field(['id_field' => $_GET['id_field']]) ;
@@ -83,7 +83,7 @@
                               <p class="mb-0 font-semibold leading-normal text-md">Download </p>
                             </td>
                             <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
-                              <a href class="bg-gradient-to-tl from-blue-500 to-blue-400 px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" href="./index.php?page=guest/lapangan/detail&id_field=<?= $result['id_field'] ?>">
+                              <a  class="bg-gradient-to-tl from-blue-500 to-blue-400 px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" href="./index.php?page=guest/lapangan/edit&id_field=<?= $result['id_field'] ?>">
                                 Edit
                               </a>
 

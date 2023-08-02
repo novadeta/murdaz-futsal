@@ -49,7 +49,7 @@ if (isset($_GET['page'])) {
       include 'guest/dashboard.php';
       break; 
     case 'guest/pemesanan':
-      include 'guest/data_booking.php';
+      include 'guest/history-transaction.php';
       break; 
     case 'guest/booking':
       include 'guest/booking.php';
@@ -72,9 +72,12 @@ if (isset($_GET['page'])) {
     case 'guest/profil':
       include 'guest/profile.php';
       break;  
+    case 'guest/profil/edit':
+      include 'guest/edit-profile.php';
+      break;  
     case 'guest/logout':
       include 'guest/logout.php';
-      break;  
+      break;   
     default:
       include $url . 'not-found.php';
       break;

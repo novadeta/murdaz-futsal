@@ -40,7 +40,7 @@
 <script>
   function onScanSuccess(decodedText, decodedResult) {
     console.log(decodedText);
-  // document.location = decodedText;
+  document.location = decodedText;
 }
 
 function onScanFailure(error) {

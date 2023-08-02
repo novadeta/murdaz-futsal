@@ -46,12 +46,20 @@ class TransactionController extends Database{
             }
         }elseif (isset($request['status'])) {
            if ($request['status'] == 'validation') {
-            $query = mysqli_query($this->connect, "select * from tbl_transactions where status = '2'");
+            $query = mysqli_query($this->connect, "select * from tbl_transactions join tbl_users on tbl_transactions.id_user = tbl_users.id_user where tbl_transactions.status = '2'");
             while($row = mysqli_fetch_array($query)){
                 $result[] = $row; 
             }
             return $result ?? [];
-           }
+        }elseif ($request['status'] == 'history') {
+            $query = mysqli_query($this->connect, "select * from tbl_transactions join tbl_users on tbl_transactions.id_user = tbl_users.id_user where tbl_transactions.status = '3'");
+            while($row = mysqli_fetch_array($query)){
+                $result[] = $row; 
+            }
+            return $result ?? [];
+        }else{
+            return false;
+        }
         }
         else {
             $query = mysqli_query($this->connect, "select * from tbl_transactions ");
@@ -64,36 +72,39 @@ class TransactionController extends Database{
 
 
     public function create_transaction($request,$file = ""){
+        if ($request['start_time'] == $request['end_time']) {
+            return ['status' => 'error', 'message' => 'Harus selisih 1 Jam'];
+        }
         $isTime = mysqli_query($this->connect, "select * from tbl_transactions where date_play = '$request[date_play]' and id_field = '$request[id_field]' and
         ((start_time <= '$request[start_time]' and end_time > '$request[start_time]') or
         (start_time < '$request[end_time]' and end_time >= '$request[end_time]') or
         (start_time >= '$request[start_time]' and end_time <= '$request[end_time]')) ");
-        if ($isTime->num_rows > 1) {
-            return ['status' => 'erro', 'message' => 'Sudah Di booking'];
+        if ($isTime->num_rows >= 1) {
+            return ['status' => 'error', 'message' => 'Waktu Sudah ada yang booking'];
         }
-        date_default_timezone_set('Asia/Jakarta');
-        $date = date("Y-m-d h:i:s");
-        if (file_exists($_FILES['payment']['tmp_name'])) {
-            $status = "2";
-            $directory = getcwd();
-            $uploadDirectory = "/public/assets/photo_payments/";
-            $filename = $_FILES['payment']['name'];
-            $explode = explode(".",$filename);
-            $extension = strtolower(end($explode));
-            $fileTmp  = $_FILES['payment']['tmp_name'];
-            $uploadPath = $directory . $uploadDirectory . basename($filename);
-            move_uploaded_file($fileTmp,$uploadPath);
-            $query = mysqli_query($this->connect, "insert into tbl_transactions(id_user,id_field,date,date_play,start_time,end_time,price,status) values('$request[id_user]','$request[id_field]','$request[date]','$request[date_play]','$request[start_time]','$request[end_time]','$filename','$request[price]','$status')");
-            return ['message' => 'berhasil'];
-        }
-        if (isset($request['role']) && $request['role'] == '1') {
-            $status = "3";
-            $query = mysqli_query($this->connect, "insert into tbl_transactions(id_user,id_field,date,date_play,start_time,end_time,price,status) values('$request[id_user]','$request[id_field]','$date','$request[date_play]','$request[start_time]','$request[end_time]','$request[price]','$status')");
-            return ['message' => 'berhasil transaksi'];
-        }
-        $status = "1";
-        $query = mysqli_query($this->connect, "insert into tbl_transactions(id_user,id_field,date,date_play,start_time,end_time,price,status) values('$request[id_user]','$request[id_field]','$date','$request[date_play]','$request[start_time]','$request[end_time]','$request[price]','$status')");
-        return ['message' => 'berhasil transaksi'];
+        // date_default_timezone_set('Asia/Jakarta');
+        // $date = date("Y-m-d h:i:s");
+        // if (file_exists($_FILES['payment']['tmp_name'])) {
+        //     $status = "2";
+        //     $directory = getcwd();
+        //     $uploadDirectory = "/public/assets/photo_payments/";
+        //     $filename = $_FILES['payment']['name'];
+        //     $explode = explode(".",$filename);
+        //     $extension = strtolower(end($explode));
+        //     $fileTmp  = $_FILES['payment']['tmp_name'];
+        //     $uploadPath = $directory . $uploadDirectory . basename($filename);
+        //     move_uploaded_file($fileTmp,$uploadPath);
+        //     $query = mysqli_query($this->connect, "insert into tbl_transactions(id_user,id_field,date,date_play,start_time,end_time,price,status) values('$request[id_user]','$request[id_field]','$request[date]','$request[date_play]','$request[start_time]','$request[end_time]','$filename','$request[price]','$status')");
+        //     return ['message' => 'berhasil'];
+        // }
+        // if (isset($request['role']) && $request['role'] == '1') {
+        //     $status = "3";
+        //     $query = mysqli_query($this->connect, "insert into tbl_transactions(id_user,id_field,date,date_play,start_time,end_time,price,status) values('$request[id_user]','$request[id_field]','$date','$request[date_play]','$request[start_time]','$request[end_time]','$request[price]','$status')");
+        //     return ['message' => 'berhasil transaksi'];
+        // }
+        // $status = "1";
+        // $query = mysqli_query($this->connect, "insert into tbl_transactions(id_user,id_field,date,date_play,start_time,end_time,price,status) values('$request[id_user]','$request[id_field]','$date','$request[date_play]','$request[start_time]','$request[end_time]','$request[price]','$status')");
+        // return ['message' => 'berhasil transaksi'];
     }
 
 

@@ -21,7 +21,7 @@ class TimeController extends Database{
         if (isset($request['id_user'])) {
             $query = mysqli_query($this->connect, "select * from tbl_times where id_user = '$request[id_user]'");
             $result = $query->fetch_assoc();
-            return $result;
+            return $result ?? [];
         }
     }
 
@@ -65,7 +65,7 @@ class TimeController extends Database{
         }
         // if not payment
         $status_payment = "1";
-        $query = mysqli_query($this->connect, "update tbl_times set  date = '$date', purchased_time = '$request[time]','$status_payment')");
+        $query = mysqli_query($this->connect, "update tbl_times set date = '$date', purchased_time = '$request[time]','$status_payment')");
         return ['message' => 'berhasil transaksi'];
     }
         

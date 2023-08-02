@@ -1920,6 +1920,11 @@ h6 {
   background-color: rgb(245 57 57 / 0.3);
 }
 
+.bg-red-500 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(245 57 57 / var(--tw-bg-opacity));
+}
+
 .bg-slate-700 {
   --tw-bg-opacity: 1;
   background-color: rgb(52 71 103 / var(--tw-bg-opacity));

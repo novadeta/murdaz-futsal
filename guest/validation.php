@@ -155,18 +155,19 @@
                   <?php 
                     foreach ($result_transaction as $result) {
                     ?>
-                      <li class="relative flex p-6 mt-4 mb-2 border-0 rounded-b-inherit rounded-xl bg-gray-50 dark:bg-slate-850">
-                    <div class="flex flex-col">
-                      <h6 class="mb-4 text-sm leading-normal dark:text-white"><?= $result['username'] ?></h6>
-                      <span class="mb-2 text-xs leading-tight dark:text-white/80">Tanggal Beli: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2">Fiber Notion</span></span>
-                      <span class="mb-2 text-xs leading-tight dark:text-white/80">Tanggal Bermain: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2">Fiber Notion</span></span>
-                      <span class="mb-2 text-xs leading-tight dark:text-white/80">Waktu Mulai: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2">ethan@fiber.com</span></span>
-                      <span class="text-xs leading-tight dark:text-white/80">Waktu Berakhir: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2">FRB1235476</span></span>
-                    </div>
-                    <div class="ml-auto text-right">
-                      <a class="relative z-10 inline-block px-4 py-2.5 mb-0 font-bold text-center text-transparent align-middle transition-all border-0 rounded-lg shadow-none cursor-pointer leading-normal text-sm ease-in bg-150 bg-gradient-to-tl from-red-600 to-orange-600 hover:-translate-y-px active:opacity-85 bg-x-25 bg-clip-text" href="javascript:;"><i class="mr-2 far fa-trash-alt bg-150 bg-gradient-to-tl from-red-600 to-orange-600 bg-x-25 bg-clip-text"></i>Delete</a>
-                      <a class="inline-block dark:text-white px-4 py-2.5 mb-0 font-bold text-center align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer leading-normal text-sm ease-in bg-150 hover:-translate-y-px active:opacity-85 bg-x-25 text-slate-700" href="javascript:;"><i class="mr-2 fas fa-pencil-alt text-slate-700" aria-hidden="true"></i>Edit</a>
-                    </div>
+                   <li class="relative flex p-6 mt-4 mb-2 border-0 rounded-b-inherit rounded-xl bg-gray-50 dark:bg-slate-850">
+                      <div class="flex flex-col">
+                        <h6 class="mb-4 text-sm leading-normal dark:text-white"><?= $result['username'] ?></h6>
+                        <span class="mb-2 text-xs leading-tight dark:text-white/80">Tanggal Beli: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2"><?= date("d-m-Y", strtotime($result['date'])) ?></span></span>
+                        <span class="mb-2 text-xs leading-tight dark:text-white/80">Tanggal Bermain: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2"><?= date("d-m-Y",strtotime($result['date_play'])) ?></span></span>
+                        <span class="mb-2 text-xs leading-tight dark:text-white/80">Waktu Mulai: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2"><?= $result['start_time'] ?></span></span>
+                        <span class="mb-2 text-xs leading-tight dark:text-white/80">Waktu Berakhir: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2"></span><?= $result['end_time'] ?></span>
+                        <span class="mb-2 text-xs leading-tight dark:text-white/80">Total Harga: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2"></span><?= $result['price'] ?></span>
+                      </div>
+                      <div class="ml-auto text-right">
+                        <a class="relative z-10 inline-block px-4 py-2.5 mb-0 font-bold text-center text-transparent align-middle transition-all border-0 rounded-lg shadow-none cursor-pointer leading-normal text-sm ease-in bg-150 bg-gradient-to-tl from-red-600 to-orange-600 hover:-translate-y-px active:opacity-85 bg-x-25 bg-clip-text" href="javascript:;"><i class="mr-2 far fa-trash-alt bg-150 bg-gradient-to-tl from-red-600 to-orange-600 bg-x-25 bg-clip-text"></i>Delete</a>
+                        <a class="inline-block dark:text-white px-4 py-2.5 mb-0 font-bold text-center align-middle transition-all bg-transparent border-0 rounded-lg shadow-none cursor-pointer leading-normal text-sm ease-in bg-150 hover:-translate-y-px active:opacity-85 bg-x-25 text-slate-700" href="javascript:;"><i class="mr-2 fas fa-pencil-alt text-slate-700" aria-hidden="true"></i>Edit</a>
+                      </div>
                   </li>
                     <?php
                     }

@@ -1,12 +1,21 @@
 <?php 
 $guest = 'styles.css';
-include_once './layouts/authorize-guest.php';
 include_once "./core/UserController.php";
 include_once "./layouts/guest-header.php";
 $user = new UserController();
-$result_user = $user->show_user($session_user['data']) ?? [];
-if (!isset($result_user)) {
-  header('Location: index.php');
+$result_user = $user->show_user($_GET) ?? [];
+if (!isset($_GET['id_user'])) {
+  header('Location: index.php?page=not-found');
+}
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $request = $_POST;
+    $result = $field->edit_user($request['id_user']);
+    echo "
+    <script>
+        alert('Berhasil Mengubah Data Lapangan')
+        document.location.href = './index.php?page=guest/profil'
+    </script>
+    ";
 }
 ?>
    <main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
@@ -33,7 +42,6 @@ if (!isset($result_user)) {
               <div class="border-black/12.5 rounded-t-2xl border-b-0 border-solid p-6 pb-0">
                 <div class="flex items-center">
                   <p class="mb-0 dark:text-white/80">Profil Pengguna </p>
-                  <a class="inline-block px-8 py-2 mb-4 ml-auto font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md cursor-pointer text-xs tracking-tight-rem hover:shadow-xs hover:-translate-y-px active:opacity-85" href="./index.php?page=guest/profil/edit&id_user=<?= $result_user['id_user']; ?>">Edit</a>
                 </div>
               </div>
               <div class="flex-auto p-6">
@@ -42,15 +50,15 @@ if (!isset($result_user)) {
                   <div class="w-full max-w-full px-3 shrink-0  md:flex-0">
                     <div class="mb-4">
                       <label for="username" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Username</label>
-                      <input type="text" name="username" value="<?= $result_user['username']; ?>" class="focus:shadow-primary-outline  dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" readonly/>
+                      <input type="text" name="username" value="<?= $result_user['username']; ?>" class="focus:shadow-primary-outline  dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"/>
                     </div>
                     <div class="mb-4">
-                      <label for="password" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Password</label>
-                      <input type="password" name="password" value="<?= $result_user['password']; ?>" class="focus:shadow-primary-outline  dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" readonly/>
+                      <label for="username" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Password</label>
+                      <input type="text" name="password" value="<?= $result_user['password']; ?>" class="focus:shadow-primary-outline  dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"/>
                     </div>
                     <div class="mb-4">
-                      <label for="fullname" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Nama</label>
-                      <input type="text" name="fullname" value="<?= $result_user['fullname']; ?>" class="focus:shadow-primary-outline  dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" readonly/>
+                      <label for="username" class="inline-block mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80">Nama</label>
+                      <input type="text" name="username" value="<?= $result_user['fullname']; ?>" class="focus:shadow-primary-outline  dark:bg-slate-850 dark:text-white text-sm leading-5.6 ease block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"/>
                     </div>
                   </div>
                 </div>
@@ -74,6 +82,24 @@ if (!isset($result_user)) {
                   </div>
                 <hr class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
               </div>
+                <div class="flex flex-wrap -mx-3">
+                  <div class="w-full max-w-full px-3 shrink-0 md:w-1/2 md:flex-0">
+                    <div class="mb-4">
+                    <div class="flex flex-col w-full items-start mx-auto mt-4">
+                        <button id="button" type="submit" class="bg-blue-500 text-md w-full ease  mx-auto rounded-lg text-white px-3 py-2">Ubah</button>
+                    </div>
+                    </div>
+                  </div>
+                  <div class="w-full max-w-full px-3 shrink-0 md:w-1/2 md:flex-0">
+                    <div class="mb-4">
+                    <div class="flex flex-col w-full items-start mx-auto mt-4">
+                        <a href="./index.php?page=guest/profil" class="bg-red-500 text-md w-full ease text-center mx-auto rounded-lg text-white px-3 py-2">Batal</a>
+                    </div>
+                    
+                    </div>
+                  </div>
+                <hr class="h-px mx-0 my-4 bg-transparent border-0 opacity-25 bg-gradient-to-r from-transparent via-black/40 to-transparent dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent " />
+              </div>
             </div>
           </div>
           <div class="w-full max-w-full px-3 mt-6 shrink-0 md:w-4/12 md:flex-0 md:mt-0">
@@ -92,6 +118,7 @@ if (!isset($result_user)) {
               <div class="flex-auto p-6 pt-0">
                 <div class="flex flex-wrap -mx-3">
                   <div class="w-full max-w-full px-3 flex-1-0">
+                    
                   </div>
                 </div>
                 
