@@ -18,7 +18,14 @@ class TimeController extends Database{
                 return $result ?? [];
             }
             if ($request['status'] == 'validation_user') {
-                $query = mysqli_query($this->connect, "select * from tbl_times inner join tbl_users on tbl_times.id_user = tbl_users.id_user where tbl_times.status_payment = '3' and tbl_times.id_user = '$request[id_user]'");
+                $query = mysqli_query($this->connect, "select * from tbl_times inner join tbl_users on tbl_times.id_user = tbl_users.id_user where tbl_times.status_payment = '2' and tbl_times.id_user = '$request[id_user]'");
+                while($row = mysqli_fetch_array($query)){
+                    $result[] = $row; 
+                }
+                return $result ?? [];
+            }
+            if ($request['status'] == 'waiting_payment') {
+                $query = mysqli_query($this->connect, "select * from tbl_times inner join tbl_users on tbl_times.id_user = tbl_users.id_user where tbl_times.status_payment = '1' and tbl_times.id_user = '$request[id_user]'");
                 while($row = mysqli_fetch_array($query)){
                     $result[] = $row; 
                 }
@@ -27,18 +34,25 @@ class TimeController extends Database{
         }  
         if (isset($request['id_user'])) {
             $query = mysqli_query($this->connect, "select * from tbl_times where id_user = '$request[id_user]'");
-            $result = $query->fetch_assoc();
+            while($row = mysqli_fetch_array($query)){
+                $result[] = $row; 
+            }
             return $result ?? [];
         }
     }
 
 
     public function create_time($request,$file = ""){
-        $validate_purchased = mysqli_query($this->connect, "select * from tbl_times where id_user = '$request[id_user]' and purchased_time = '00:00:00'");
-        if ($validate_purchased->num_rows > 1) {
+        $validate_purchased = mysqli_query($this->connect, "select * from tbl_times where id_user = '$request[id_user]' and type_price = '$request[type_price]'");
+        if ($validate_purchased->num_rows >= 1) {
             return ['error' => 'Hanya bisa memesan satu kali, silahkan tunggu hingga di terima'];
+            // if time exists request example 18:00:00
+            if (isset($validate_purchased->fetch_all()['purchased_time']) &&  $validate_purchased->fetch_all()['purchased_time'] !== "00:00:00") {
+                return ['error' => 'Hanya bisa memesan satu kali, silahkan tunggu hingga di terima'];
+    
+            }
         }
-        $isUser = mysqli_query($this->connect, "select * from tbl_times where id_user = '$request[id_user]' and type_price = '$request[]'");
+        $isUser = mysqli_query($this->connect, "select * from tbl_times where id_user = '$request[id_user]' and type_price = '$request[type_price]'");
         date_default_timezone_set('Asia/Jakarta');
         $date = date("Y-m-d h:i:s");
         if ($isUser->num_rows < 1) {
@@ -52,11 +66,11 @@ class TimeController extends Database{
                 $fileTmp  = $file['payment']['tmp_name'];
                 $uploadPath = $directory . $uploadDirectory . basename($filename);
                 move_uploaded_file($fileTmp,$uploadPath);
-                $query = mysqli_query($this->connect, "insert into tbl_times(id_user,date,time,purchased_time,payment,status_payment) VALUE('$request[id_user]','$date',time = '00:00:00','$request[time]','$filename','$status_payment')");
+                $query = mysqli_query($this->connect, "insert into tbl_times(id_user,date,time,purchased_time,price,type_price,payment,status_payment) VALUE('$request[id_user]','$date',time = '00:00:00','$request[purchased_time]','$request[price]','$request[type_price]','$filename','$status_payment')");
                 return ['message' => 'berhasil transaksi'];
             }
             $status_payment = "1";
-            $query = mysqli_query($this->connect, "insert into tbl_times(id_user,date,time,purchased_time,status_payment) VALUE('$request[id_user]','$date',time = '00:00:00','$request[time]','$status_payment')");
+            $query = mysqli_query($this->connect, "insert into tbl_times(id_user,date,time,purchased_time,price,type_price,status_payment) VALUE('$request[id_user]','$date',time = '00:00:00','$request[purchased_time]','$request[price]','$request[type_price]','$status_payment')");
             return ['message' => 'berhasil transaksi'];
         }
 
@@ -76,7 +90,7 @@ class TimeController extends Database{
         }
         // if not payment
         $status_payment = "1";
-        $query = mysqli_query($this->connect, "update tbl_times set date = '$date', purchased_time = '$request[time]',price = '$request[price]', type_price = '$request[type_price]', status_payment = '$status_payment' where id_time = $request[id_time]");
+        // $query = mysqli_query($this->connect, "update tbl_times set date = '$date', purchased_time = '$request[purchased_time]',price = '$request[price]', type_price = '$request[type_price]', status_payment = '$status_payment' where id_time = $request[id_time]");
         return ['message' => 'berhasil transaksi'];
     }
         

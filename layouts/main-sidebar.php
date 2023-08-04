@@ -52,7 +52,7 @@
               <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
                 <i class="relative top-0 text-sm leading-normal text-blue-500 fas fa-wallet"></i>
               </div>
-              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Menunggu Pembayaran</span>
+              <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Transaksi</span>
             </a>
           </li>
 

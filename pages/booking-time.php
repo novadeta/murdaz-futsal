@@ -2,11 +2,11 @@
   $guest = 'styles.css';
   include_once "./layouts/authorize.php";
   include_once "./layouts/main-header.php";
-  include_once "./layouts/main-sidebar.php";
+  // include_once "./layouts/main-sidebar.php";
   include_once "./core/TimeController.php";
   $time = new TimeController();
   $time_result = $time->get_time(['id_user' => $session_user['data']['id_user']]) ?? [];
-  if (count($time_result) >= 1) {
+  if (count($time_result) >= 1 && isset($time_result['purchased_time'])) {
     $date = date("h",strtotime($time_result['purchased_time']));
   }
   $date = 0;
@@ -15,7 +15,7 @@
     $request = $_POST;
     $file = $_FILES;
     $result = $time->create_time($request,$file);
-    if ($result['error']) {
+    if (isset($result['error'])) {
       echo "
       <script>
         alert('$result[error]')
@@ -52,24 +52,28 @@
                             </td>
                           </tr>
                           <?php 
-                              if ($time_result['purchased_time'] !== "00:00:00" && count($time_result) >= 1 ) {
+                          foreach ($time_result as $result) {
+                          
+                              if ($result['purchased_time'] !== "00:00:00" && count($result) >= 1 ) {
                                 ?>
                                   <tr>
                                     <td class="p-2 mt-2 align-middle bg-transparent whitespace-nowrap shadow-transparent" colspan="3">
                                       <div class="flex px-2 gap-5 items-center  justify-center">
+                                        <p class="mb-0 font-semibold text-center leading-normal text-md"><?=   $result['type_price'] ?> : </p>
                                       <span class="bg-gradient-to-tl 
-                                        <?= $time_result['status_payment'] == '0'  ? 'from-red-500 to-red-400' 
-                                          : ($time_result['status_payment'] == "1" ? "from-yellow-500 to-yellow-400" 
-                                          : ($time_result['status_payment'] == "2"  ? "from-emerald-500 to-teal-400" : "" ))
+                                        <?= $result['status_payment'] == '0'  ? 'from-red-500 to-red-400' 
+                                          : ($result['status_payment'] == "1" ? "from-yellow-500 to-yellow-400" 
+                                          : ($result['status_payment'] == "2"  ? "from-emerald-500 to-teal-400" : "" ))
                                         ?> px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white"> 
-                                        <?= ($time_result['status_payment'] == '1') ?  "Menunggu Pembayaran" : '' ?> 
-                                        <?= ($time_result['status_payment'] == '2') ?  "Menunggu Validasi" : '' ?> 
+                                        <?= ($result['status_payment'] == '1') ?  "Menunggu Pembayaran" : '' ?> 
+                                        <?= ($result['status_payment'] == '2') ?  "Menunggu Validasi" : '' ?> 
                                       </span> :
-                                          <p class="mb-0 font-semibold text-center leading-normal text-md"><?=   $time_result['purchased_time'] == "00:00:00" ? "00" : date('h', strtotime($time_result['purchased_time'])) ?>  Jam</p>
+                                        <p class="mb-0 font-semibold text-center leading-normal text-md"><?=   $result['purchased_time'] == "00:00:00" ? "00" : date('h', strtotime($result['purchased_time'])) ?>  Jam</p>
                                       </div>
                                     </td>
                                   </tr>
                               <?php
+                              }
                               }
                               ?>
                         </tbody>
@@ -86,7 +90,7 @@
             <input name="id_time" type="hidden" value="<?= $time_result['id_time'] ?? []?>"  readonly>
             <div class="flex flex-col w-full items-start mx-auto" style="gap: 10px;">
                 <label for="time">Masukkan Jumlah jam yang ingin dibeli</label>
-                <input id="time" name="time" type="time" placeholder="08.00" class="time focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"></input>
+                <input id="time" name="purchased_time" type="time" placeholder="08.00" class="time focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"></input>
             </div>
             <div class="flex gap-5 mt-4">
               <div>
@@ -111,7 +115,7 @@
             <div id="price" class="flex flex-col mt-4 w-full items-start mx-auto" style="gap: 10px;">
               <p>Harga</p>
               <h4 >Rp. 0</h4>
-              <input type="hidden" name="price" readonly>
+              <input type="text"  class="hidden" name="price" >
             </div>
             <label class="block mt-4" for="payment">Masukkan Bukti Pembayaran
                 <input name="payment" id="payment" class="block w-full text-sm text-slate-500 mt-4 file:mr-4 file:py-2 file:px-4
@@ -172,25 +176,29 @@
           isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` : 
           price.children[1].innerText = `Rp. ${pricePerHours}`
           price.children[0].innerText = "Harga : Rp. 100000 / jam"
+          price.children[2].value = `${pricePerHours}`
         }else if(e.value == 'Malam'){
           let pricePerHours = hour * 120000;
-            (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
-            isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` : 
-            price.children[1].innerText = `Rp. ${pricePerHours}`
-            price.children[0].innerText = "Harga : Rp. 120000 / jam"
-        
+          (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
+          isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` : 
+          price.children[1].innerText = `Rp. ${pricePerHours}`
+          price.children[0].innerText = "Harga : Rp. 120000 / jam"
+          price.children[2].value = `${pricePerHours}`
+          
         }else if(e.value == 'Libur'){
           let pricePerHours = hour * 150000;
-            (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
-            isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` : 
-            price.children[1].innerText = `Rp. ${pricePerHours}`
-            price.children[0].innerText = "Harga : Rp. 150000 / jam"
+          (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
+          isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` : 
+          price.children[1].innerText = `Rp. ${pricePerHours}`
+          price.children[0].innerText = "Harga : Rp. 150000 / jam"
+          price.children[2].value = `${pricePerHours}`
         }else{
           let pricePerHours = 0;
-            (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
-            isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` : 
-            price.children[1].innerText = `Rp. ${pricePerHours}`
-            price.children[0].innerText = "Harga : Rp. 0 / jam"
+          (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
+          isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` : 
+          price.children[1].innerText = `Rp. ${pricePerHours}`
+          price.children[0].innerText = "Harga : Rp. 0 / jam"
+          price.children[2].value = `${pricePerHours}`
         }
       }
     })
@@ -213,19 +221,21 @@
             isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` : 
             price.children[1].innerText = `Rp. ${pricePerHours}`
             price.children[0].innerText = "Harga : Rp. 100000 / jam"
-
+            price.children[2].value = `${pricePerHours}`
           }else if(e.value == 'Malam'){
             let pricePerHours = hour * 12000;
             (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
             isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` : 
             price.children[1].innerText = `Rp. ${pricePerHours}`
             price.children[0].innerText = "Harga : Rp. 120000 / jam"
+            price.children[2].value = `${pricePerHours}`
           }else{
             let pricePerHours = hour * 150000;
             (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
             isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` : 
             price.children[1].innerText = `Rp. ${pricePerHours}`
             price.children[0].innerText = "Harga : Rp. 150000 / jam"
+            price.children[2].value = `${pricePerHours}`
           }
         }
       })

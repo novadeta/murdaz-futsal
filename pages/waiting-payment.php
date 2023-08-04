@@ -7,8 +7,10 @@
   include_once "./core/TimeController.php";
   $transaction = new TransactionController();
   $time = new TimeController();
-  $result_transaction = $transaction->show_transaction(['status' => '1','id_user' => $session_user['data']['id_user']]) ?? [] ;
+  $result_transaction = $transaction->show_transaction(['status' => '2','id_user' => $session_user['data']['id_user']]) ?? [] ;
+  $waiting_transaction = $transaction->show_transaction(['status' => '1','id_user' => $session_user['data']['id_user']]) ?? [] ;
   $result_time = $time->get_time(['status' => 'validation_user','id_user' => $session_user['data']['id_user']]) ?? [] ;
+  $waiting_time = $time->get_time(['status' => 'waiting_payment','id_user' => $session_user['data']['id_user']]) ?? [] ;
   if(isset($_GET['action']) && $_GET['action'] == 'batal-pembelian'){
     $delete_transaction = $transaction->delete_transaction(['id_transaction' => $_GET['id_transaction'],'id_user' => $session_user['data']['id_user']]) ;
     echo "
@@ -33,7 +35,6 @@
   <div class="absolute w-full bg-blue-500 dark:hidden min-h-75"></div>
     <main class="relative h-full flex max-h-screen transition-all duration-200 ease-in-out xl:ml-68 rounded-xl">
 
-      <!-- cards -->
       <div class="w-full px-6  mx-auto">
         <div class="flex flex-wrap mt-6 -mx-3">
           <div class="w-full max-w-full px-3 mt-0 lg:flex-none">
@@ -60,7 +61,7 @@
                         </thead>
                         <tbody>
                           <?php 
-                            foreach ($result_transaction as $result) {
+                            foreach ($waiting_transaction as $result) {
                           ?>
                             <tr>
                               <td class="px-6 py-3 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
@@ -124,14 +125,14 @@
                         <thead class="align-bottom">
                           <tr>
                             <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal Pembelian</th>
-                            <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal Main</th>
+                            <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Jam yang Dibeli</th>
                             <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Status</th>
                             <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aksi</th>
                           </tr>
                         </thead>
                         <tbody>
                           <?php 
-                            foreach ($result_time as $result) {
+                            foreach ($waiting_time as $result) {
                           ?>
                             <tr>
                               <td class="px-6 py-3 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
@@ -200,7 +201,6 @@
                             <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal Pembelian</th>
                             <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal Main</th>
                             <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Status</th>
-                            <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aksi</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -235,10 +235,6 @@
                               
                               </p>
                               </td>
-                              <td class=" p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent flex justify-center gap-5">
-                                <a class="bg-gradient-to-tl from-blue-500 to-blue-400 px-2 text-xs rounded-1.8 py-3 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" href="index.php?page=pemesanan/bayar-pembelian&id_transaction=<?= $result['id_transaction']; ?>">Bayar</a>
-                                <a class="bg-gradient-to-tl from-red-500 to-red-400 px-2 text-xs rounded-1.8 py-3 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" href="index.php?page=menunggu-pembayaran&action=batal-pembelian&id_transaction=<?= $result['id_transaction']; ?>" onclick="javascript: return confirm ('Apakah Anda Ingin Menghapus Data Ini ?')" >Cancel</a>
-                              </td>
                           </tr> 
                           <?php
                             }
@@ -269,9 +265,8 @@
                         <thead class="align-bottom">
                           <tr>
                             <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal Pembelian</th>
-                            <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal Main</th>
+                            <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Jam yang Dibeli</th>
                             <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Status</th>
-                            <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Aksi</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -305,10 +300,6 @@
                               </span>
                               
                               </p>
-                              </td>
-                              <td class=" p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent flex justify-center gap-5">
-                                <a class="bg-gradient-to-tl from-blue-500 to-blue-400 px-2 text-xs rounded-1.8 py-3 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" href="index.php?page=pemesanan/bayar-pembelian-waktu&id_time=<?= $result['id_time']; ?>">Bayar</a>
-                                <a class="bg-gradient-to-tl from-red-500 to-red-400 px-2 text-xs rounded-1.8 py-3 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" href="index.php?page=menunggu-pembayaran&action=batal-pembelian-waktu&id_time=<?= $result['id_time']; ?>" onclick="javascript: return confirm ('Apakah Anda Ingin Membatalkan Transaksi ?')" >Cancel</a>
                               </td>
                           </tr> 
                           <?php

@@ -91,7 +91,7 @@
                     <img src="./public/assets/img/hero-1.png" alt="">
                 </div>
                 <div class="rounded-5 overflow-hidden relative bottom-16 drop-shadow-[0px_0px_50px_rgba(0,0,0,0.25)]">
-                    <img src="./public/assets/img/hero-2.png" alt="">
+                    <img width="210" src="./public/assets/img/hero-2.png" alt="">
                 </div>
                 <div class="rounded-5 overflow-hidden drop-shadow-[0px_0px_50px_rgba(0,0,0,0.25)]">
                     <img src="./public/assets/img/hero-3.png" alt="">
