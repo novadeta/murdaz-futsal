@@ -5,7 +5,7 @@
     include_once "./layouts/main-sidebar.php";
     include_once "./core/TransactionController.php";
     $transaction = new TransactionController();
-    $result_transaction = $transaction->show_transaction(['status' => '3','id_user' => $session_user['data']['id_user']]) ?? [];
+    $result_transaction = $transaction->show_transaction($session_user['data']['id_user']) ?? [];
   
 ?>
 
@@ -54,9 +54,17 @@
                                 <p class="mb-0 font-semibold leading-tight text-xs total_play" >aa</p>
                               </td>
                               <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                <span class="bg-gradient-to-tl  from-emerald-500 to-teal-400 px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">
-                                  <?= ($result['status'] == '3') ?  "Lunas" : '' ?> 
-                                </span>
+                              <span class="bg-gradient-to-tl 
+                                 <?= $result['status'] == '0'  ? 'from-red-500 to-red-400' 
+                                  : ($result['status'] == "1" ? "from-yellow-500 to-yellow-400" 
+                                  : ($result['status'] == "2"  ? "from-emerald-500 to-teal-400" 
+                                  : ($result['status'] == "3" ? "from-emerald-500 to-teal-400" : "" )))
+                                ?> px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white"> 
+                                <?= ($result['status'] == '0') ?  "Dibatalkan" : '' ?> 
+                                <?= ($result['status'] == '1') ?  "Menunggu Pembayaran" : '' ?> 
+                                <?= ($result['status'] == '2') ?  "Menunggu Validasi" : '' ?> 
+                                <?= ($result['status'] == '3') ?  "Lunas" : '' ?> 
+                              </span>
                               </p>
                               </td>
                               <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">

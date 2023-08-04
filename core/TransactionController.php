@@ -9,14 +9,14 @@ class TransactionController extends Database{
     }
     public function get_transaction($request = ""){
         if (isset($request['date_play'])) {
-            $query = mysqli_query($this->connect, "select * from tbl_transactions where date_play = '$request[date_play]' and id_field = '$request[id_field]'");
+            $query = mysqli_query($this->connect, "select * from tbl_transactions where date_play = '$request[date_play]' and id_field = '$request[id_field]' and status IN ('1','2','3') ORDER BY start_time ASC");
             if ($query->num_rows < 1) {
                 return ["data" => "Tidak ada data"];
             }
             while($row = mysqli_fetch_array($query)){
                 $result[] = $row; 
             }
-            return $result;
+            return $result ?? [];
         }elseif (isset($request['select_date']) ) {
             if ($request['select_date']== 'month') {
                 $early_date = date('Y-m') . '-01';
@@ -78,10 +78,10 @@ class TransactionController extends Database{
         $isTime = mysqli_query($this->connect, "select * from tbl_transactions where date_play = '$request[date_play]' and id_field = '$request[id_field]' and
         ((start_time <= '$request[start_time]' and end_time > '$request[start_time]') or
         (start_time < '$request[end_time]' and end_time >= '$request[end_time]') or
-        (start_time >= '$request[start_time]' and end_time <= '$request[end_time]')) ");
+        (start_time >= '$request[start_time]' and end_time <= '$request[end_time]')) and status IN ('1','2','3') ");
         if ($isTime->num_rows >= 1) {
             return ['status' => 'error', 'message' => 'Waktu Sudah ada yang booking'];
-        }
+        }           
         date_default_timezone_set('Asia/Jakarta');
         $date = date("Y-m-d h:i:s");
         if (file_exists($_FILES['payment']['tmp_name'])) {
@@ -94,7 +94,7 @@ class TransactionController extends Database{
             $fileTmp  = $_FILES['payment']['tmp_name'];
             $uploadPath = $directory . $uploadDirectory . basename($filename);
             move_uploaded_file($fileTmp,$uploadPath);
-            $query = mysqli_query($this->connect, "insert into tbl_transactions(id_user,id_field,date,date_play,start_time,end_time,price,status) values('$request[id_user]','$request[id_field]','$request[date]','$request[date_play]','$request[start_time]','$request[end_time]','$filename','$request[price]','$status')");
+            $query = mysqli_query($this->connect, "insert into tbl_transactions(id_user,id_field,date,date_play,start_time,end_time,payment,price,status) values('$request[id_user]','$request[id_field]','$date','$request[date_play]','$request[start_time]','$request[end_time]','$filename','$request[price]','$status')");
             return ['message' => 'berhasil'];
         }
         if (isset($request['role']) && $request['role'] == '1') {
@@ -114,7 +114,7 @@ class TransactionController extends Database{
             while($row = mysqli_fetch_array($query)){
                 $result[] = $row; 
             }
-            return $result;
+            return $result ?? [];
         }else if(isset($request['id_transaction'])){
             $query = mysqli_query($this->connect, "select * from tbl_transactions inner join tbl_users on tbl_transactions.id_user = tbl_users.id_user where tbl_transactions.id_transaction = '$request[id_transaction]' and tbl_transactions.id_user = '$request[id_user]'");
             if ($query->num_rows < 1) {
@@ -122,30 +122,30 @@ class TransactionController extends Database{
             }
             return $query->fetch_assoc();
         }
-        $query = mysqli_query($this->connect, "select * from tbl_transactions where id_user = '$request' ");
+        $query = mysqli_query($this->connect, "select * from tbl_transactions where status IN ('0','3') and id_user = '$request' ");
         while($row = mysqli_fetch_array($query)){
             $result[] = $row; 
         }
         return $result;
     }
     public function edit_transaction($request){
-        // if (file_exists($_FILES['payment']['tmp_name'])) {
-        //     $directory = getcwd();
-        //     $uploadDirectory = "/public/assets/photo_payments/";
-        //     $filename = $_FILES['payment']['name'];
-        //     $explode = explode(".",$filename);
-        //     $extension = strtolower(end($explode));
-        //     $fileTmp  = $_FILES['payment']['tmp_name'];
-        //     $uploadPath = $directory . $uploadDirectory . basename($filename);
-        //     move_uploaded_file($fileTmp,$uploadPath);
-        //     $query = mysqli_query($this->connect, "update tbl_transactions set status='$request[status]',payment where id_transaction = '$request[id_transaction]' and id_user = '$request[id_user]' ");
-        //     return ['message' => 'berhasil kirim'];
-        // }
-        $query = mysqli_query($this->connect, "update tbl_transactions set status='$request[status]' where id_transaction = '$request[id_transaction]' and id_user = '$request[id_user]' ");
+        if (file_exists($_FILES['payment']['tmp_name'])) {
+            $directory = getcwd();
+            $uploadDirectory = "/public/assets/photo_payments/";
+            $filename = $_FILES['payment']['name'];
+            $explode = explode(".",$filename);
+            $extension = strtolower(end($explode));
+            $fileTmp  = $_FILES['payment']['tmp_name'];
+            $uploadPath = $directory . $uploadDirectory . basename($filename);
+            move_uploaded_file($fileTmp,$uploadPath);
+            $query = mysqli_query($this->connect, "update tbl_transactions set status='$request[status]',payment = '$filename' where id_transaction = '$request[id_transaction]' ");
+            return ['message' => 'berhasil kirim'];
+        }
+        $query = mysqli_query($this->connect, "update tbl_transactions set status='3' where id_transaction = '$request[id_transaction]' ");
         return ['message' => 'berhasil diterima'];
     }
     public function delete_transaction($request){  
-        $query = mysqli_query($this->connect, "delete from tbl_transactions where id_transaction = '$request[id_transaction]' and id_user = '$request[id_user]' ");
+        $query = mysqli_query($this->connect, "update tbl_transactions set status='0' where id_transaction = '$request[id_transaction]' ");
     }
     
 

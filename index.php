@@ -29,9 +29,12 @@ if (isset($_GET['page'])) {
     case 'pemesanan/bayar-pembelian':
       include $url . 'purchase-payment.php';
       break;
-    case 'pemesanan/waktu':
-      include $url . 'booking-time.php';
-      break;
+      case 'pemesanan/waktu':
+        include $url . 'booking-time.php';
+        break;
+      case 'pemesanan/bayar-pembelian-waktu':
+        include $url . 'purchase-payment-time.php';
+        break;
     case 'riwayat-pemesanan':
       include $url . 'history-payment.php';
       break;

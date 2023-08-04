@@ -152,7 +152,7 @@
                     murah daripada yang lain!
                 </p>
             </div>
-            <div class="flex w-full gap-5">
+            <div class="flex w-full gap-5 shadow-xl rounded-5">
                 <div class="flex flex-col items-center px-6 w-full border border-malachite rounded-5 py-6 bg-white">
                     <h3 class="w-full relative text-center font-bold">Malam</h3>
                     <div class="w-1/2 h-1.2 bg-malachite "></div>

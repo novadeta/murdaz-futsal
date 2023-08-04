@@ -3,13 +3,13 @@
   include_once "./layouts/authorize.php";
   include_once "./layouts/main-header.php";
   include_once "./layouts/main-sidebar.php";
-  include_once "./core/TransactionController.php";
-  $transaction = new TransactionController();
-  $transaction_result = $transaction->show_transaction(["id_transaction" => $_GET['id_transaction'], 'id_user' => $session_user['data']['id_user']]);
+  include_once "./core/TimeController.php";
+  $time = new TimeController();
+  $time_result = $time->show_time(["id_time" => $_GET['id_time']]);
   if($_SERVER["REQUEST_METHOD"] == "POST"){
     $request = $_POST;
     $file = $_FILES;
-    $result = $transaction->edit_transaction($request);
+    $result = $time->edit_time($request,$file);
       echo "
       <script>
           alert('Berhasil Membayar')
@@ -34,29 +34,39 @@
         <form method="POST" class="w-1/2 mx-auto" enctype="multipart/form-data">
             <div>
               <p>Tanggal Beli : <?php
-                $split_date = explode(" ",$transaction_result['date']);
+                $split_date = explode(" ",$time_result['date']);
                 echo date('d M Y',strtotime($split_date[0]));
               ?></p>
             </div>
             <div>
               <p>Nama : <?php
-                echo $transaction_result['username'];
+                echo $time_result['username'];
               ?></p>
             </div>
             <div>
               <p>Tanggal Beli : <?php
-                $split_date = explode(" ",$transaction_result['date']);
+                $split_date = explode(" ",$time_result['date']);
                 echo date('d M Y',strtotime($split_date[0]));
               ?></p>
             </div>
+            <div>
+              <p>Jenis Waktu yang Dibeli : <?php
+                echo $time_result['type_price'];
+              ?></p>
+            </div>
+            <div>
+              <p>Waktu yang Dibeli : <?php
+                echo $time_result['purchased_time'];
+              ?></p>
+            </div>
             <input name="id_user" type="hidden" value="<?= $session_user['data']['id_user'];?>"  readonly>
-            <input name="id_transaction" type="hidden" value="<?= $transaction_result['id_transaction'] ?>"  readonly>
+            <input name="id_time" type="hidden" value="<?= $time_result['id_time'] ?>"  readonly>
             <input name="status" type="hidden" value="2"  readonly>
             <div class="flex flex-col w-full mt-4 items-start mx-auto" style="gap: 10px;">
             <div id="price" class="flex flex-col mt-4 w-full items-start mx-auto" style="gap: 10px;">
               <p>Total yang harus dibayar</p>
-              <h4 >Rp. <?= $transaction_result['price'] ?></h4>
-              <input type="hidden" name="price" readonly>
+              <h4 >Rp. <?= $time_result['price'] ?></h4>
+              <input type="hidden" name="price"  readonly>
             </div>
             <label class="block mt-4" for="payment">Masukkan Bukti Pembayaran
                 <input required name="payment" id="payment" class="block w-full text-sm text-slate-500 mt-4 file:mr-4 file:py-2 file:px-4

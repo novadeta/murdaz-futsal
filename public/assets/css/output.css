@@ -1948,6 +1948,11 @@ h6{
   color: rgb(0 0 0 / var(--tw-text-opacity));
 }
 
+.text-blue-700{
+  --tw-text-opacity: 1;
+  color: rgb(17 113 239 / var(--tw-text-opacity));
+}
+
 .text-forest{
   --tw-text-opacity: 1;
   color: rgb(6 70 16 / var(--tw-text-opacity));
@@ -2479,6 +2484,26 @@ h6{
 }
 
 .group\/\31:hover .group-hover\/1\:text-white{
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.peer:checked ~ .peer-checked\:bg-\[\#5E72E4\]{
+  --tw-bg-opacity: 1;
+  background-color: rgb(94 114 228 / var(--tw-bg-opacity));
+}
+
+.peer\/radio:checked ~ .peer-checked\/radio\:bg-\[\#5E72E4\]{
+  --tw-bg-opacity: 1;
+  background-color: rgb(94 114 228 / var(--tw-bg-opacity));
+}
+
+.peer:checked ~ .peer-checked\:text-white{
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.peer\/radio:checked ~ .peer-checked\/radio\:text-white{
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }

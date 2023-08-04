@@ -87,7 +87,7 @@
                                 Edit
                               </a>
 
-                              <a class="bg-gradient-to-tl from-red-500 to-red-400 px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" href="./index.php?page=guest/lapangan&action=hapus&id_field=<?= $result['id_field'] ?>" onclick="javascript: return confirm('Apakah ingin mengapus?')">Hapus</a>
+                              <a class="bg-gradient-to-tl from-red-500 to-red-400 px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" href="./index.php?page=guest/lapangan&action=hapus&id_field=<?= $result['id_field'] ?>" onclick="javascript: return confirm('Apakah ingin menghapus?')">Hapus</a>
                             </td>
                           </tr>
                           <?php 
