@@ -6,7 +6,6 @@
     include_once "./core/TransactionController.php";
     $transaction = new TransactionController();
     $result_transaction = $transaction->show_transaction($session_user['data']['id_user']) ?? [];
-  
 ?>
 
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
@@ -30,6 +29,7 @@
                         <thead class="align-bottom">
                           <tr>
                             <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal Pembelian</th>
+                            <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Tanggal Main</th>
                             <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Lapangan</th>
                             <th class="px-6 py-3 pl-2  font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Total Main</th>
                             <th class="px-6 py-3 pl-2  font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Status</th>
@@ -51,7 +51,10 @@
                                 <p class="mb-0 font-semibold leading-tight text-xs"><?= $result['date_play'] ?></p>
                               </td>
                               <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                <p class="mb-0 font-semibold leading-tight text-xs total_play" >aa</p>
+                                <p class="mb-0 font-semibold leading-tight text-xs"><?= $result['field_name'] ?></p>
+                              </td>
+                              <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                <p class="mb-0 font-semibold leading-tight text-xs total_play" ></p>
                               </td>
                               <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                               <span class="bg-gradient-to-tl 
@@ -115,7 +118,6 @@ echo "<script>";
         differenceTime = convertEndTime - convertStartTime
         hours = differenceTime / 3600
         totalPlay[$i].innerText = hours +' Jam'
-    
         ";
     }
 echo " </script>";

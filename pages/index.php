@@ -158,21 +158,21 @@
                     <div class="w-1/2 h-1.2 bg-malachite "></div>
                     <h4 class="text-secondary my-5">18.00 - 00.00</h4>
                     <p class="text-5 font-bold text-forest my-10">Rp <span class="text-12">100.000</span> /jam</p>
-                    <a class="mt-8 rounded-5 border-malachite border font-bold text-6 py-5 w-full text-center text-malachite hover:bg-malachite hover:text-white duration-100 ease-in" href="">Pesan Sekarang</a>
+                    <a class="mt-8 rounded-5 border-malachite border font-bold text-6 py-5 w-full text-center text-malachite hover:bg-malachite hover:text-white duration-100 ease-in" href="./index.php?page=login">Pesan Sekarang</a>
                 </div>
                 <div class="flex flex-col items-center px-6 w-full border border-malachite rounded-5 py-6 bg-white">
                     <h3 class="w-full relative text-center font-bold">Normal</h3>
                     <div class="w-1/2 h-1.2 bg-malachite "></div>
                     <h4 class="text-secondary my-5">08.00 - 17.59</h4>
                     <p class="text-5 font-bold text-forest my-10">Rp <span class="text-12">120.000</span> /jam</p>
-                    <a class="mt-8 rounded-5 border-malachite border font-bold text-6 py-5 w-full text-center text-malachite hover:bg-malachite hover:text-white duration-100 ease-in" href="">Pesan Sekarang</a>
+                    <a class="mt-8 rounded-5 border-malachite border font-bold text-6 py-5 w-full text-center text-malachite hover:bg-malachite hover:text-white duration-100 ease-in" href="./index.php?page=login">Pesan Sekarang</a>
                 </div>
                 <div class="flex flex-col items-center px-6 w-full border border-malachite rounded-5 py-6 bg-white">
                     <h3 class="w-full relative text-center font-bold">Hari Libur</h3>
                     <div class="w-1/2 h-1.2 bg-malachite "></div>
                     <h4 class="text-secondary my-5">Sabtu - Minggu</h4>
                     <p class="text-5 font-bold text-forest my-10">Rp <span class="text-12">150.000</span> /jam</p>
-                    <a class="mt-8 rounded-5 border-malachite border font-bold text-6 py-5 w-full text-center text-malachite hover:bg-malachite hover:text-white duration-100 ease-in" href="">Pesan Sekarang</a>
+                    <a class="mt-8 rounded-5 border-malachite border font-bold text-6 py-5 w-full text-center text-malachite hover:bg-malachite hover:text-white duration-100 ease-in" href="./index.php?page=login">Pesan Sekarang</a>
                 </div>
             </div>
         </section>

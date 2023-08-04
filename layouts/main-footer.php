@@ -17,6 +17,6 @@
     dateFormat: "H:i:s",
     enableTime: true,
     noCalendar: true,
-    time_24hr: true
+    time_24hr: true,
   });
 </script>

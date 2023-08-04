@@ -668,10 +668,6 @@ h6{
   display :none;
 }
 
-#reader__scan_region  {
-  /* min-height: 400px !important; */
-}
-
 #reader{
   overflow: hidden;
   border-radius: 1.25rem;
@@ -1424,10 +1420,6 @@ h6{
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
-.bg-\[url\(\'https\:\/\/raw\.githubusercontent\.com\/creativetimofficial\/public-assets\/master\/argon-dashboard-pro\/assets\/img\/signin-ill\.jpg\'\)\]{
-  background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-ill.jpg');
-}
-
 .bg-\[url\(\'https\:\/\/raw\.githubusercontent\.com\/creativetimofficial\/public-assets\/master\/argon-dashboard-pro\/assets\/img\/signup-cover\.jpg\'\)\]{
   background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signup-cover.jpg');
 }
@@ -1574,11 +1566,6 @@ h6{
 
 .bg-x-25{
   background-position: 25% 0;
-}
-
-.object-cover{
-  -o-object-fit: cover;
-     object-fit: cover;
 }
 
 .p-0{

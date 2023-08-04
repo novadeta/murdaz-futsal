@@ -169,12 +169,22 @@
   window.onload = function () {
   btnPrice.forEach(e => {
     if (e.checked) {
+      let hour = 1
       if (e.value ==  'Normal') {
+          let pricePerHours = hour * 100000;
+          price.children[1].innerText = `Rp. 0`
           price.children[0].innerText = "Harga : Rp. 100000 / jam"
+          price.children[2].value = `${pricePerHours}`
         }else if(e.value == 'Malam'){
+          let pricePerHours = hour * 120000;
+          price.children[1].innerText = `Rp. 0`
           price.children[0].innerText = "Harga : Rp. 120000 / jam"
+          price.children[2].value = `${pricePerHours}`
         }else{
+          let pricePerHours = hour * 150000;
+          price.children[1].innerText = `Rp. 0`
           price.children[0].innerText = "Harga : Rp. 150000 / jam"
+          price.children[2].value = `${pricePerHours}`
         }
     }
   })

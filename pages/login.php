@@ -1,5 +1,15 @@
 <?php 
+  $root = dirname(__DIR__);
+  include_once "$root/core/UserController.php";
   $title = "Login Akun";
+  $user = new UserController();
+  session_start();
+  if ($_SESSION) {
+    $validate_user = $user->get_user(['username' => $_SESSION['username']]);
+    if (isset($_SESSION['username']) && $validate_user['data']['role'] == '2') {
+        header('Location: ./index.php?page=dashboard');
+    }
+  }
   include_once "./layouts/main-header.php";
   $role = '2';
 ?>

@@ -8,7 +8,7 @@
         <td style="font-size: 16; margin:0 auto; text-align: center;" ><b style="text-align: center;">MURDAZ FUTSAL</b></td>
     </tr>
     <tr>
-        <td align="center" style="font-size: 16; margin:0 auto; text-align: center;"><b>Jl. Kesambi No. 202, Kel. Drajat, Kec. Kesambi, Kota Cirebon, Prov. Jawa Barat</b></td>
+        <td align="center" style="font-size: 16; margin:0 auto; text-align: center;"><b>Jl. K.H. Zaenal Arifin No.44, Cikulak, Kec. Waled, Kabupaten Cirebon, Jawa Barat, 45187</b></td>
     </tr>
 </table><br>
 <div style="border-bottom: 3px dotted gray;"></div><br>

@@ -13,7 +13,7 @@
     .swiper-pagination {
     }
     .swiper-pagination-bullet {
-        padding: 10000px 10px;
+        padding: 100px 10px;
         border-radius: 0;
         width: auto;
         height: 30px;
@@ -26,13 +26,10 @@
     }
     .swiper-pagination-bullet-active {
         color:#fff;
-        background: #007aff;
+        background: #fff !important;
     }
     #reader__scan_region img {
         display :none;
-    }
-    #reader__scan_region  {
-        /* min-height: 400px !important; */
     }
     #reader{
         @apply overflow-hidden  rounded-5 ;

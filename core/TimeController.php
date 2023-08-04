@@ -43,13 +43,12 @@ class TimeController extends Database{
 
 
     public function create_time($request,$file = ""){
-        $validate_purchased = mysqli_query($this->connect, "select * from tbl_times where id_user = '$request[id_user]' and type_price = '$request[type_price]'");
+        $validate_purchased = mysqli_query($this->connect, "select * from tbl_times where id_user = '$request[id_user]' and type_price = '$request[type_price]' and purchased_time = '00:00:00'");
         if ($validate_purchased->num_rows >= 1) {
             return ['error' => 'Hanya bisa memesan satu kali, silahkan tunggu hingga di terima'];
             // if time exists request example 18:00:00
             if (isset($validate_purchased->fetch_all()['purchased_time']) &&  $validate_purchased->fetch_all()['purchased_time'] !== "00:00:00") {
                 return ['error' => 'Hanya bisa memesan satu kali, silahkan tunggu hingga di terima'];
-    
             }
         }
         $isUser = mysqli_query($this->connect, "select * from tbl_times where id_user = '$request[id_user]' and type_price = '$request[type_price]'");
@@ -143,6 +142,9 @@ class TimeController extends Database{
         $query = mysqli_query($this->connect, "update tbl_times set status_payment = '0', purchased_time = '00:00:00' where id_time = '$request[id_time]'");
     }
     
+    public function time_qrcode($request){
+
+    } 
 
 }
 ?>
