@@ -2,7 +2,7 @@
   $guest = 'styles.css';
   include_once "./layouts/authorize.php";
   include_once "./layouts/main-header.php";
-  // include_once "./layouts/main-sidebar.php";
+  include_once "./layouts/main-sidebar.php";
   include_once "./core/TimeController.php";
   $time = new TimeController();
   $time_result = $time->get_time(['id_user' => $session_user['data']['id_user']]) ?? [];
@@ -20,6 +20,15 @@
       <script>
         alert('$result[error]')
       </script>";
+    }else if(isset($result['message'])){
+      echo "
+      <script>
+       alert('Berhasil Memesan Waktu')
+       document.location.href = './index.php?page=pemesanan/waktu'
+      </script>
+      ";
+    }else{
+      return false;
     }
   }
 ?>
@@ -40,17 +49,28 @@
                     <div class="p-0 overflow-x-auto">
                       <table class="items-center w-full mb-0 align-top  text-slate-500">
                         <thead class="align-bottom">
+                          <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Jam Normal</th>
+                          <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Jam Malam</th>
+                          <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Hari Libur</th>
                         </thead>
                         <tbody>
                           <tr>
-                            <td class="p-2 align-middle bg-transparent whitespace-nowrap shadow-transparent" colspan="3">
+                            <?php 
+                          foreach ($time_result as $result) {
+                            ?>
+                            <td class="p-2 align-middle bg-transparent whitespace-nowrap shadow-transparent">
                               <div class="flex px-2 py-1 justify-center">
                                 <div class="flex flex-col justify-center">
-                                  <h2 class="mb-0 font-semibold text-center leading-normal text-md"><?= $convertDate; ?> Jam</h2>
+                                  <h2 class="mb-0 font-semibold text-center leading-normal text-md"><?= $result['time'][0] .''. $result['time'][1] ?> Jam</h2>
                                 </div>
                               </div>
                             </td>
+                          <?php
+                            }
+                            ?>
                           </tr>
+                        </tbody>
+                      </table>
                           <?php 
                           foreach ($time_result as $result) {
                           
@@ -76,8 +96,6 @@
                               }
                               }
                               ?>
-                        </tbody>
-                      </table>
                     </div>
                 </div>
             </div>    
@@ -239,27 +257,6 @@
           }
         }
       })
-      // let startTime = time[0].value + "0"
-      // let convertStartTime = convertSecond(startTime)
-      // const hours = convertStartTime / 3600
-      // if (str > "08:00:00" &&  str < "17:59:00") {
-      //     let pricePerHours = 100000 * hours ;
-      //     (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
-      //     isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` : 
-      //     price.children[1].innerText = `Rp. ${pricePerHours}`
-      //     price.children[0].innerText = "Harga : Rp. 100000 / jam"
-      //     price.children[2].value = `${pricePerHours}`
-      // }else if (str >= "18:00:00" &&  str < "23:59:00") {
-      //     let pricePerHours = 120000 * hours ;
-      //     (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
-      //     isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` :
-      //       price.children[1].innerText = `Rp. ${pricePerHours}`
-      //       price.children[0].innerText = "Harga : Rp. 120000 / jam"
-      //       price.children[2].value = `${pricePerHours}`
-      // }else{
-      //       price.children[1].innerText = `Rp. 0`
-      //       price.children[2].value = `0`
-      // }
     }
   });
 </script>

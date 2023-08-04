@@ -24,23 +24,23 @@
       $request = $_POST;
       $file = $_FILES;
       $edit_time = $transaction->edit_transaction($request,$file);
-      // echo "
-      // <script>
-      // alert('Berhasil Menghapus Transaksi')
-      // document.location.href = './index.php?page=guest/validasi'
-      // </script>
-      // ";
+      echo "
+      <script>
+      alert('Berhasil Menghapus Transaksi')
+      document.location.href = './index.php?page=guest/validasi'
+      </script>
+      ";
     }
     if (isset($_POST['id_time'])) {
       $request = $_POST;
       $file = $_FILES;
       $edit_time = $time->edit_time($request,$file);
-      // echo "
-      // <script>
-      // alert('Berhasil Menghapus Transaksi')
-      // document.location.href = './index.php?page=guest/validasi'
-      // </script>
-      // ";
+      echo "
+      <script>
+      alert('Berhasil Menghapus Transaksi')
+      document.location.href = './index.php?page=guest/validasi'
+      </script>
+      ";
     }
   }
   elseif (isset($_GET['action']) && $_GET['action'] == 'terima') {
@@ -184,7 +184,7 @@
                           <span class="mb-2 text-xs leading-tight dark:text-white/80">Total Harga: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2"></span><?= $result['price'] ?></span>
                         </div>
                         <div>
-                          <img src="<?= $url .'/'. $result['payment'] ?>" alt="" srcset="">
+                          <img width="200"  src="<?= $url .'/assets/photo_payments/'. $result['payment'] ?>" alt="" srcset="">
                         </div>
                       </div>
                       <div class="ml-auto text-right">
@@ -215,6 +215,9 @@
                       <span class="mb-2 text-xs leading-tight dark:text-white/80">Tanggal Beli: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2"><?= date("d-m-Y", strtotime($result['date'])) ?></span></span>
                       <span class="mb-2 text-xs leading-tight dark:text-white/80">Jam yang dibeli: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2"><?= explode(":",$result['purchased_time'])[0] ?> Jam </span></span>
                       <span class="text-xs leading-tight dark:text-white/80">Harga: <span class="font-semibold text-slate-700 dark:text-white sm:ml-2"><?= $result['price'] ?? '0' ?></span></span>
+                      <div class="mt-5">
+                        <img width="200"  src="<?= $url .'/assets/photo_payments/'. $result['payment'] ?>" alt="" srcset="">
+                        </div>
                     </div>
                     <div class="ml-auto text-right">
                       <a class="relative z-10 inline-block px-4 py-2.5 mb-0 font-bold text-center text-transparent align-middle transition-all border-0 rounded-lg shadow-none cursor-pointer leading-normal text-sm ease-in bg-150 bg-gradient-to-tl from-red-600 to-orange-600 hover:-translate-y-px active:opacity-85 bg-x-25 bg-clip-text" href="index.php?page=guest/validasi&action=hapus_time&id_time=<?= $result['id_time'] ?>"><i class="mr-2 far fa-trash-alt bg-150 bg-gradient-to-tl from-red-600 to-orange-600 bg-x-25 bg-clip-text"></i>Batal</a>
