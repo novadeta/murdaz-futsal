@@ -135,6 +135,10 @@
               <h4 >Rp. 0</h4>
               <input type="text"  class="hidden" name="price" >
             </div>
+            <div class="flex flex-col w-full items-start mx-auto" style="gap: 10px;">
+                  <label for="norek">Silahkan Transfer ke Rekening BCA</label>
+                  <p id="norek" class="focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none">88271922</p>
+              </div>
             <label class="block mt-4" for="payment">Masukkan Bukti Pembayaran
                 <input name="payment" id="payment" class="block w-full text-sm text-slate-500 mt-4 file:mr-4 file:py-2 file:px-4
                     file:rounded-full file:border-0

@@ -63,7 +63,7 @@ class UserController extends Database{
             ];
         }
         
-        $result = mysqli_query($this->connect, "insert into tbl_users(username,password,role) values('$request[username]','$request[password]','$request[role]')");
+        $result = mysqli_query($this->connect, "insert into tbl_users(username,password,role,fullname,gender,status,address) values('$request[username]','$request[password]','$request[role]','$request[fullname]','$request[gender]','Aktif','$request[address]')");
         return [
             'status' => 'success',
             'message' => 'Berhasil membuat akun',

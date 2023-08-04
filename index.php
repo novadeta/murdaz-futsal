@@ -54,6 +54,9 @@ if (isset($_GET['page'])) {
     case 'guest/pemesanan':
       include 'guest/history-transaction.php';
       break; 
+    case 'guest/pemesanan/laporan':
+      include 'guest/report-transaction.php';
+      break; 
     case 'guest/booking':
       include 'guest/booking.php';
       break; 

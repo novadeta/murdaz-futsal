@@ -25,8 +25,8 @@
       <div class="h-19">
         <i class="absolute top-0 right-0 p-4 opacity-50 cursor-pointer fas fa-times dark:text-white text-slate-400 xl:hidden" sidenav-close></i>
         <a class="block px-8 py-6 m-0 text-sm whitespace-nowrap dark:text-white text-slate-700" href="./index.php">
-          <img src="<?= $url ?>/assets/img/logo-ct-dark.png" class="inline h-full max-w-full transition-all duration-200 dark:hidden ease-nav-brand max-h-8" alt="main_logo" />
-          <img src="<?= $url ?>/assets/img/logo-ct.png" class="hidden h-full max-w-full transition-all duration-200 dark:inline ease-nav-brand max-h-8" alt="main_logo" />
+          <img src="<?= $url ?>/assets/img/logo.png" class="inline h-full max-w-full transition-all duration-200 dark:hidden ease-nav-brand max-h-8" alt="main_logo" />
+          <img src="<?= $url ?>/assets/img/logo.png" class="hidden h-full max-w-full transition-all duration-200 dark:inline ease-nav-brand max-h-8" alt="main_logo" />
           <span class="ml-1 font-semibold transition-all duration-200 ease-nav-brand">Sistem Murdaz Futsal</span>
         </a>
       </div>
@@ -62,10 +62,10 @@
                     <a href="index.php?page=guest/booking" class="">Booking</a>
                   </li>
                   <li class=" py-2 duration-300 opacity-100  ease text-xs">
-                    <a href="index.php?page=guest/validasi" class="">Menunggu Validasi</a>
+                    <a href="index.php?page=guest/validasi" class="">Validasi Pemesanan</a>
                   </li>
                   <li class=" py-2 duration-300 opacity-100  ease text-xs">
-                    <a href="index.php?page=guest/pemesanan" class="">Riwayat Transaksi</a>
+                    <a href="index.php?page=guest/pemesanan" class="">Laporan Transaksi</a>
                   </li>
                 </ul>
               </div>
