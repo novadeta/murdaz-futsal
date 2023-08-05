@@ -51,7 +51,14 @@ class TransactionController extends Database{
                 $result[] = $row; 
             }
             return $result ?? [];
-        }elseif ($request['status'] == 'history') {
+        }elseif($request['status'] == 'search') {
+            $query = mysqli_query($this->connect, "select * from tbl_transactions join tbl_users on tbl_transactions.id_user = tbl_users.id_user where tbl_users.username LIKE '%$request[search]%' or tbl_users.fullname LIKE '%$request[search]%'");
+            while($row = mysqli_fetch_array($query)){
+                $result[] = $row; 
+            }
+            return $result ?? [];
+        }
+        elseif ($request['status'] == 'history') {
             $query = mysqli_query($this->connect, "select * from tbl_transactions join tbl_users on tbl_transactions.id_user = tbl_users.id_user where tbl_transactions.status = '3'");
             while($row = mysqli_fetch_array($query)){
                 $result[] = $row; 

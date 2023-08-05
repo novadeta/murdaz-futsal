@@ -329,6 +329,8 @@
     var menu = ['Slide 1', 'Slide 2', 'Slide 3','Slide 4']
       var swiper = new Swiper(".swiper-container", {
       spaceBetween: 100,
+      autoplay: true,
+      loop : true,
       pagination: {
         el: ".swiper-pagination",
         clickable: true,

@@ -84,7 +84,7 @@ class TimeController extends Database{
             $fileTmp  = $file['payment']['tmp_name'];
             $uploadPath = $directory . $uploadDirectory . basename($filename);
             move_uploaded_file($fileTmp,$uploadPath);
-            $query = mysqli_query($this->connect, "update tbl_times set date = '$date',time = '00:00:00', purchased_time = '$request[purchased_time]', payment = '$filename', status_payment = '$status_payment' where id_time = '$id_time')");
+            $query = mysqli_query($this->connect, "update tbl_times set date = '$date', purchased_time = '$request[purchased_time]', payment = '$filename', status_payment = '$status_payment' where id_time = '$id_time[id_time]'");
             return ['message' => 'berhasil membeli waktu'];
         }
         // if not payment

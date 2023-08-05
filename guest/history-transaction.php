@@ -3,7 +3,11 @@
   include_once "./core/TransactionController.php";
   include_once "./layouts/guest-header.php";
   $transaction = new TransactionController();
-  $result_transaction = $transaction->get_transaction(['status' => 'history']) ?? [];
+  if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $result_transaction = $transaction->get_transaction(['status' => 'search','search' => $_POST['search']]) ?? [];
+  }else{
+    $result_transaction = $transaction->get_transaction(['status' => 'history']) ?? [];
+  }
 ?>
 
 <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
@@ -21,10 +25,19 @@
                 <p class="mb-0 text-sm leading-normal dark:text-white dark:opacity-60 text-center">
                   <?= date("d M Y") ?>
                 </p>
-                <div class="flex justify-end">
-                  <a class="bg-gradient-to-tl  from-blue-500 to-blue-400 px-2 text-xs mx-2 rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" href="./index.php?page=guest/pemesanan/laporan">
-                      Cetak Laporan
-                  </a>
+                <div class="flex justify-between">
+                <div class="col-mid-4">
+                  <form method="post" class="flex items-center gap-2">
+                    <label>Masukkan Kata Kunci</label>
+                    <input type="text" name="search" class="border-2 border-blue-500 rounded-1">
+                    <button type="submit" class="bg-gradient-to-tl  from-blue-500 to-blue-400 px-2 text-xs mx-2 rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" href="./index.php?page=guest/pemesanan/laporan">
+                      Cari
+                    </button>
+                  </form>
+                </div>
+                <a class="bg-gradient-to-tl  from-blue-500 to-blue-400 px-2 text-xs  rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" href="./index.php?page=guest/pemesanan/laporan">
+                  Cetak Laporan
+                </a>
                 </div>
               </div>
               <div class="flex-auto p-4">
@@ -77,7 +90,8 @@
                               <p class="mb-0 font-semibold leading-normal text-md"><?= $result['price'] ?></p>
                             </td>
                             <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                              <p class="mb-0 font-semibold leading-normal text-md"><?= $result['payment'] ?></p>
+              <img width="100" src="<?= $url .'/assets/photo_payments/'.$result['payment'] ?>" alt="" srcset=""></td>
+                            <!-- <p class="mb-0 font-semibold leading-normal text-md"><?= $result['payment'] ?></p> -->
                             </td>
                           </tr>
                           <?php 

@@ -26,7 +26,7 @@
       $edit_time = $transaction->edit_transaction($request,$file);
       echo "
       <script>
-      alert('Berhasil Menghapus Transaksi')
+      alert('Berhasil Menerima Transaksi')
       document.location.href = './index.php?page=guest/validasi'
       </script>
       ";
@@ -37,7 +37,7 @@
       $edit_time = $time->edit_time($request,$file);
       echo "
       <script>
-      alert('Berhasil Menghapus Transaksi')
+      alert('Berhasil Menerima Transaksi')
       document.location.href = './index.php?page=guest/validasi'
       </script>
       ";

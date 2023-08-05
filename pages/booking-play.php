@@ -324,7 +324,7 @@
         let convertEndTime = convertSecond(endTime)
         let differenceTime = convertEndTime - convertStartTime
         const hours = differenceTime / 3600
-        if (date.toLowerCase() == 'sunday') {
+        if (date.toLowerCase() == 'sunday' || date.toLowerCase() == 'minggu') {
             let pricePerHours = 150000 * hours ;
             (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
             isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` : 
@@ -368,7 +368,7 @@
         let convertEndTime = convertSecond(endTime)
         let differenceTime = convertEndTime - convertStartTime
         const hours = differenceTime / 3600
-        if (date.toLowerCase() == 'sunday') {
+        if (date.toLowerCase() == 'sunday'  || date.toLowerCase() == 'minggu'){
             let pricePerHours = 150000 * hours ;
             (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
             isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` : 
