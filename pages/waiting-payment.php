@@ -21,7 +21,7 @@
     ";
   }
   if(isset($_GET['action']) && $_GET['action'] == 'batal-pembelian-waktu'){
-    $delete_time = $time->delete_time(['id_time' => $_GET['id_transaction'],'id_user' => $session_user['data']['id_user']]) ;
+    $delete_time = $time->delete_time(['id_time' => $_GET['id_time'],'id_user' => $session_user['data']['id_user']]) ;
     echo "
     <script>
       alert('Berhasil Menghapus Transaksi Waktu')
@@ -68,8 +68,6 @@
                                 <p class="mb-0 font-semibold leading-tight text-xs"><?php 
                                   $split = explode(" ",$result['date']);
                                   echo $split[0];
-                                  echo"<br> Jam : "; 
-                                  echo $split[1]; 
                                 ?></p>
                               </td>
                               <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
@@ -139,8 +137,6 @@
                                 <p class="mb-0 font-semibold leading-tight text-xs"><?php 
                                   $split = explode(" ",$result['date']);
                                   echo $split[0];
-                                  echo"<br> Jam : "; 
-                                  echo $split[1]; 
                                 ?></p>
                               </td>
                               <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
@@ -212,8 +208,6 @@
                                 <p class="mb-0 font-semibold leading-tight text-xs"><?php 
                                   $split = explode(" ",$result['date']);
                                   echo $split[0];
-                                  echo"<br> Jam : "; 
-                                  echo $split[1]; 
                                 ?></p>
                               </td>
                               <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
@@ -278,8 +272,6 @@
                                 <p class="mb-0 font-semibold leading-tight text-xs"><?php 
                                   $split = explode(" ",$result['date']);
                                   echo $split[0];
-                                  echo"<br> Jam : "; 
-                                  echo $split[1]; 
                                 ?></p>
                               </td>
                               <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 02, 2023 at 05:22 AM
+-- Generation Time: Aug 05, 2023 at 12:21 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -35,6 +35,15 @@ CREATE TABLE `tbl_fields` (
   `qrcode` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `tbl_fields`
+--
+
+INSERT INTO `tbl_fields` (`id_field`, `field_code`, `field_name`, `status`, `qrcode`) VALUES
+(1, 'KD-1', 'Lapangan A', 'Aktif', 'http://localhost/futsal?qrcode=Qrcode-64c9d77c55856'),
+(2, 'KD-2', 'Lapangan B', 'Aktif', 'http://localhost/futsal?qrcode=Qrcode-64ccf56140b6b'),
+(3, 'KD-3', 'Lapangan C', 'Aktif', 'http://localhost/futsal?qrcode=Qrcode-64cd9b99d85ba');
+
 -- --------------------------------------------------------
 
 --
@@ -48,7 +57,7 @@ CREATE TABLE `tbl_times` (
   `time` time DEFAULT NULL,
   `purchased_time` time DEFAULT NULL,
   `price` varchar(30) DEFAULT NULL,
-  `type_price` enum('Pagi','Siang','Libur') DEFAULT NULL,
+  `type_price` enum('Normal','Malam','Libur') DEFAULT NULL,
   `payment` text DEFAULT NULL,
   `status_payment` enum('0','1','2','3') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -83,17 +92,22 @@ CREATE TABLE `tbl_users` (
   `username` varchar(30) NOT NULL,
   `password` varchar(30) NOT NULL,
   `role` enum('1','2') NOT NULL,
-  `token` varchar(30) DEFAULT NULL,
-  `status` enum('Aktif','Tidak Aktif') NOT NULL
+  `fullname` varchar(30) DEFAULT NULL,
+  `gender` enum('Laki-laki','Perempuan') DEFAULT NULL,
+  `status` enum('Aktif','Tidak Aktif') DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  `photo` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_users`
 --
 
-INSERT INTO `tbl_users` (`id_user`, `username`, `password`, `role`, `token`, `status`) VALUES
-(1, 'admin', '12345', '1', '', 'Aktif'),
-(2, 'ade123', '123', '2', 'Aktif', 'Aktif');
+INSERT INTO `tbl_users` (`id_user`, `username`, `password`, `role`, `fullname`, `gender`, `status`, `address`, `photo`) VALUES
+(1, 'admin', '12345', '1', 'Rendy', 'Laki-laki', 'Aktif', 'Pabuaran, Jawa Barat', ''),
+(2, 'ade123', '123', '2', 'Girgura', 'Laki-laki', 'Aktif', 'Jl. SUdirman No. 54, Gambiran, Jawa', ''),
+(3, 'ade456', 'ade', '2', 'Jl. Kalitanjung', 'Laki-laki', 'Aktif', '', NULL),
+(4, 'ade2324', 'ade', '2', 'Ade Oktaviano', 'Laki-laki', 'Aktif', 'Jl. K', NULL);
 
 --
 -- Indexes for dumped tables
@@ -131,7 +145,7 @@ ALTER TABLE `tbl_users`
 -- AUTO_INCREMENT for table `tbl_fields`
 --
 ALTER TABLE `tbl_fields`
-  MODIFY `id_field` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_field` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tbl_times`
@@ -149,7 +163,7 @@ ALTER TABLE `tbl_transactions`
 -- AUTO_INCREMENT for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

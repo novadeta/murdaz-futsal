@@ -255,7 +255,7 @@
                     Kami siap melayani anda
                 </p>
                 <div class="flex items-center justify-center">
-                    <a href="" class="font-bold rounded-1.2 flex items-center justify-center gap-5 px-6 py-4 bg-[rgba(255,255,255,.9)]"> 
+                    <a href="https://wa.me/6281336156031" target="_blank" class="font-bold rounded-1.2 flex items-center justify-center gap-5 px-6 py-4 bg-[rgba(255,255,255,.9)]"> 
                         <img src="./public/assets/img/whatssapp.svg" alt="" srcset="">
                         Hubungi Kami
                     </a>

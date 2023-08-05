@@ -72,7 +72,7 @@
         </div>
     </div>
     <div style="margin-top: 40px;" class="relative flex flex-col w-full mt-15 min-w-0 mb-0 break-words p-4 bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
-        <h3 class="text-center mb-8">Form Pesan Booking</h3>
+        <h3 class="text-center mb-8">Booking Lapangan</h3>
         <form method="POST" class="w-1/2 mx-auto" enctype="multipart/form-data">
             <input name="id_user" type="hidden" value="<?= $session_user['data']['id_user'];?>"  readonly>
             <div class="flex flex-col w-full items-start mx-auto" style="gap: 10px;">
