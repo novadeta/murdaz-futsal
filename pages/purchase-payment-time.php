@@ -30,7 +30,7 @@
           <div class="w-full max-w-full px-3 mt-0 lg:w-12/12 lg:flex-none">
             <div class="border-black/12.5 dark:bg-slate-850 dark:shadow-dark-xl shadow-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
     <div style="margin-top: 40px;" class="relative flex flex-col w-full mt-15 min-w-0 mb-0 break-words p-4 bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
-        <h3 class="text-center mb-8">Form Bayar Pemesanan</h3>
+        <h3 class="text-center mb-8">Bayar Pemesanan Anda</h3>
         <form method="POST" class="w-1/2 mx-auto" enctype="multipart/form-data">
             <div>
               <p>Tanggal Beli : <?php
@@ -63,7 +63,11 @@
             <input name="id_time" type="hidden" value="<?= $time_result['id_time'] ?>"  readonly>
             <input name="status" type="hidden" value="2"  readonly>
             <div class="flex flex-col w-full mt-4 items-start mx-auto" style="gap: 10px;">
-            <div id="price" class="flex flex-col mt-4 w-full items-start mx-auto" style="gap: 10px;">
+            <div class="flex flex-col w-full items-start mx-auto" style="gap: 10px;">
+              <label for="norek">Silahkan Transfer ke Rekening BCA</label>
+              <p id="norek" class="focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none">88271922</p>
+            </div>
+            <div id="price" class="flex flex-col w-full items-start mx-auto" style="gap: 10px;">
               <p>Total yang harus dibayar</p>
               <h4 >Rp. <?= $time_result['price'] ?></h4>
               <input type="hidden" name="price"  readonly>

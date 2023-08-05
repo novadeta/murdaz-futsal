@@ -80,7 +80,6 @@
                             
                             <td class="p-2 align-middle flex flex-col items-center justify-center bg-transparent border-b whitespace-nowrap shadow-transparent mx-auto">
                               <img onclick="downloadQRcode(this,'<?= $result['field_code'] ?>')" class="cursor-pointer" src="https://chart.googleapis.com/chart?chs=400x400&cht=qr&chl=<?= $result['qrcode'] ?>" width="150" height="150" alt="">
-                              <p class="mb-0 font-semibold leading-normal text-md">Download </p>
                             </td>
                             <td class="px-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
                               <a  class="bg-gradient-to-tl from-blue-500 to-blue-400 px-2 text-xs rounded-1.8 py-2.2 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" href="./index.php?page=guest/lapangan/edit&id_field=<?= $result['id_field'] ?>">
@@ -101,7 +100,7 @@
         </div>
     </div>
     <div style="margin-top: 40px;" class="relative flex flex-col w-full mt-15 min-w-0 mb-0 break-words p-4 bg-white border-0 border-transparent border-solid shadow-xl rounded-2xl bg-clip-border">
-        <h3 class="text-center mb-8">Form Lapangan</h3>
+        <h3 class="text-center mb-8">Tambah Lapangan</h3>
         <form id="form_field" class="w-1/2 mx-auto" method="POST">
             <div class="flex flex-col w-full items-start mx-auto" style="gap: 10px;">
                 <label for="field_code">Kode Lapangan</label>

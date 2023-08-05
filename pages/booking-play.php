@@ -77,7 +77,7 @@
             <input name="id_user" type="hidden" value="<?= $session_user['data']['id_user'];?>"  readonly>
             <div class="flex flex-col w-full items-start mx-auto" style="gap: 10px;">
                 <label for="date">Masukkan Tanggal Main</label>
-                <input id="date" name="date_play" type="date"  class="flat focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" value="<?= date('Y m d') ?>" />
+                <input id="date" name="date_play" type="date"  class="flats focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none" value="<?= date('Y m d') ?>" />
             </div>
             <div class="flex justify-center mt-4" style="gap: 10px;">
               <div class="flex flex-col w-full items-start mx-auto" style="gap: 10px;">
@@ -313,6 +313,46 @@
       const [hours,minutes,seconds] = time.split(":")
       return  parseInt(hours * 3600) + parseInt(minutes * 60) + parseInt(seconds) 
     }
+    flatpickr(".flats", {
+      dateFormat: "Y-m-d",
+      minDate: "today",
+      onChange: function(selected,str){
+        let date = new Date(selected).toLocaleString('default',{weekday: 'long'})
+        let startTime = time[0].value + "0"
+        let endTime = time[1].value + "0"
+        let convertStartTime = convertSecond(startTime)
+        let convertEndTime = convertSecond(endTime)
+        let differenceTime = convertEndTime - convertStartTime
+        const hours = differenceTime / 3600
+        if (date.toLowerCase() == 'sunday') {
+            let pricePerHours = 150000 * hours ;
+            (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
+            isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` : 
+            price.children[1].innerText = `Rp. ${pricePerHours}`
+            price.children[0].innerText = "Harga : Rp. 150000 / jam"
+            price.children[2].value = `${pricePerHours}`
+        }else{
+          if (str >= "08:00:00" &&  str < "17:59:00") {
+              let pricePerHours = 100000 * hours ;
+              (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
+              isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` : 
+              price.children[1].innerText = `Rp. ${pricePerHours}`
+              price.children[0].innerText = "Harga : Rp. 100000 / jam"
+              price.children[2].value = `${pricePerHours}`
+          }else if (str >= "18:00:00" &&  str < "23:59:00") {
+              let pricePerHours = 120000 * hours ;
+              (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
+              isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` :
+              price.children[1].innerText = `Rp. ${pricePerHours}`
+              price.children[0].innerText = "Harga : Rp. 120000 / jam"
+              price.children[2].value = `${pricePerHours}`
+          }else{
+                price.children[1].innerText = `Rp. 0`
+                price.children[2].value = `0`
+          }
+        }
+      }
+    });
     flatpickr(".time", {
       dateFormat: "H:i:s",
       enableTime: true,
@@ -320,29 +360,40 @@
       time_24hr: true,
       minTime: "08:00",
       onChange: function(selected,str) {
+        let flats = document.querySelector('.flats');
+        let date = new Date(flats.value).toLocaleString('default',{weekday: 'long'})
         let startTime = time[0].value + "0"
         let endTime = time[1].value + "0"
         let convertStartTime = convertSecond(startTime)
         let convertEndTime = convertSecond(endTime)
         let differenceTime = convertEndTime - convertStartTime
         const hours = differenceTime / 3600
-        if (str >= "08:00:00" &&  str < "17:59:00") {
-            let pricePerHours = 100000 * hours ;
+        if (date.toLowerCase() == 'sunday') {
+            let pricePerHours = 150000 * hours ;
             (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
             isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` : 
             price.children[1].innerText = `Rp. ${pricePerHours}`
-            price.children[0].innerText = "Harga : Rp. 100000 / jam"
+            price.children[0].innerText = "Harga : Rp. 150000 / jam"
             price.children[2].value = `${pricePerHours}`
-        }else if (str >= "18:00:00" &&  str < "23:59:00") {
-            let pricePerHours = 120000 * hours ;
-            (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
-            isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` :
-             price.children[1].innerText = `Rp. ${pricePerHours}`
-             price.children[0].innerText = "Harga : Rp. 120000 / jam"
-             price.children[2].value = `${pricePerHours}`
         }else{
-              price.children[1].innerText = `Rp. 0`
-              price.children[2].value = `0`
+          if (str >= "08:00:00" &&  str < "17:59:00") {
+              let pricePerHours = 100000 * hours ;
+              (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
+              isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` : 
+              price.children[1].innerText = `Rp. ${pricePerHours}`
+              price.children[0].innerText = "Harga : Rp. 100000 / jam"
+              price.children[2].value = `${pricePerHours}`
+          }else if (str >= "18:00:00" &&  str < "23:59:00") {
+              let pricePerHours = 120000 * hours ;
+              (pricePerHours < 0) ?  price.children[1].innerText = `Rp. 0` :
+              isNaN(pricePerHours) ? price.children[1].innerText = `Rp. 0` :
+              price.children[1].innerText = `Rp. ${pricePerHours}`
+              price.children[0].innerText = "Harga : Rp. 120000 / jam"
+              price.children[2].value = `${pricePerHours}`
+          }else{
+                price.children[1].innerText = `Rp. 0`
+                price.children[2].value = `0`
+          }
         }
       }
   });

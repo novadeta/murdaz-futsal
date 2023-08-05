@@ -29,8 +29,8 @@ class TransactionController extends Database{
                 }
                 return $result;
             }else if($request['select_date']== 'today'){
-                $today = date('Y-m-d') ;
-                $query = mysqli_query($this->connect,"select price from tbl_transactions where date_play = '$today' and status = '3'");
+                $today = date('Y-m-d h:i:s') ;
+                $query = mysqli_query($this->connect,"select price from tbl_transactions where date >= '$today' and status = '3'");
                 $result = 0;
                 while($row = mysqli_fetch_array($query)){
                     $convertInteger = intval($row['price']);

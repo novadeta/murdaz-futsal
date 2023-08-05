@@ -53,7 +53,11 @@
             <input name="id_transaction" type="hidden" value="<?= $transaction_result['id_transaction'] ?>"  readonly>
             <input name="status" type="hidden" value="2"  readonly>
             <div class="flex flex-col w-full mt-4 items-start mx-auto" style="gap: 10px;">
-            <div id="price" class="flex flex-col mt-4 w-full items-start mx-auto" style="gap: 10px;">
+            <div class="flex flex-col w-full items-start mx-auto" style="gap: 10px;">
+              <label for="norek">Silahkan Transfer ke Rekening BCA</label>
+              <p id="norek" class="focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none">88271922</p>
+            </div>
+            <div id="price" class="flex flex-col w-full items-start mx-auto" style="gap: 10px;">
               <p>Total yang harus dibayar</p>
               <h4 >Rp. <?= $transaction_result['price'] ?></h4>
               <input type="hidden" name="price" readonly>

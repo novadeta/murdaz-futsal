@@ -71,12 +71,21 @@
                           </tr>
                         </tbody>
                       </table>
+                      <table class=" mx-auto">
+                        <thead>
+                          <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                      <tbody>
                           <?php 
                           foreach ($time_result as $result) {
                           
                               if ($result['purchased_time'] !== "00:00:00" && count($result) >= 1 ) {
                                 ?>
-                                  <tr>
+                                  <tr >
                                     <td class="p-2 mt-2 align-middle bg-transparent whitespace-nowrap shadow-transparent" colspan="3">
                                       <div class="flex px-2 gap-5 items-center  justify-center">
                                         <p class="mb-0 font-semibold text-center leading-normal text-md"><?=   $result['type_price'] ?> : </p>
@@ -96,6 +105,8 @@
                               }
                               }
                               ?>
+                      </tbody>
+                      </table>
                     </div>
                 </div>
             </div>    
@@ -105,7 +116,6 @@
         <h3 class="text-center mb-8">Form Pesan Jam</h3>
         <form method="POST" class="w-1/2 mx-auto" enctype="multipart/form-data">
             <input name="id_user" type="hidden" value="<?= $session_user['data']['id_user'];?>"  readonly>
-            <input name="id_time" type="hidden" value="<?= $time_result['id_time'] ?? []?>"  readonly>
             <div class="flex flex-col w-full items-start mx-auto" style="gap: 10px;">
                 <label for="time">Masukkan Jumlah jam yang ingin dibeli</label>
                 <input id="time" name="purchased_time" type="time" placeholder="08.00" class="time focus:shadow-primary-outline w-full text-sm leading-5.6 ease block  mx-auto appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"></input>
