@@ -6,13 +6,21 @@
 ?>
 <body class="bg-[#F7F7F7]">
     <header class="container">
-        <nav class="mt-[30px] flex justify-between items-center">
-            <ul class="flex gap-5 text-forest font-bold justify-between items-center py-4 text-[]">
+        <nav class="mt-[30px] flex justify-between items-center">  
+        <ul class="flex gap-5 text-forest font-bold justify-between items-center py-4">
+                <li class="mr-5">
+                <a class="block m-0 text-sm whitespace-nowrap dark:text-white text-slate-700" href="" >
+                    <img width="50"  src="<?= $url ?>/assets/img/logo.png" class="  max-w-full transition-all duration-200 dark:inline ease-nav-brand " alt="main_logo" />
+                </a>  
+                </li>
                 <li>
                     <a href="#">Beranda</a>
                 </li>
                 <li>
                     <a href="#jadwal">Jadwal Booking</a>
+                </li>
+                <li>
+                    <a href="#harga">Harga</a>
                 </li>
                 <li>
                     <a href="#fasilitas">Fasilitas</a>
@@ -111,8 +119,8 @@
             </div>
             <div class="flex justify-center items-stretch gap-5 mt-12">
                 <div class="w-full">
-                    <div class="flex gap-5 flex-col items-center justify-center">
-                        <h3 class="text-center">Pilih Lapangan</h3>
+                    <h3 class="text-center mb-5">Pilih Lapangan</h3>
+                    <div class="flex py-10 my-10 max-h-80 overflow-x-scroll gap-5 flex-col items-center justify-center">
                         <?php 
                             $no = 0;
                             foreach ($field_result as $field) {
@@ -144,7 +152,7 @@
             </div>
             </div> 
         </section>
-        <section id="jadwal" class="my-[250px]">
+        <section id="harga" class="my-[250px]">
             <div class="flex flex-col justify-center items-center gap-10 my-[50px]">
                 <h2 class="text-xl rounded-5 m-0 border border-malachite text-malachite    py-2.5 px-9">Harga</h2>
                 <p class="font-bold text-forest max-w-xl text-10 text-center">
@@ -157,14 +165,14 @@
                     <h3 class="w-full relative text-center font-bold">Malam</h3>
                     <div class="w-1/2 h-1.2 bg-malachite "></div>
                     <h4 class="text-secondary my-5">18.00 - 00.00</h4>
-                    <p class="text-5 font-bold text-forest my-10">Rp <span class="text-12">100.000</span> /jam</p>
+                    <p class="text-5 font-bold text-forest my-10">Rp <span class="text-12">120.000</span> /jam</p>
                     <a class="mt-8 rounded-5 border-malachite border font-bold text-6 py-5 w-full text-center text-malachite hover:bg-malachite hover:text-white duration-100 ease-in" href="./index.php?page=login">Pesan Sekarang</a>
                 </div>
                 <div class="flex flex-col items-center px-6 w-full border border-malachite rounded-5 py-6 bg-white">
                     <h3 class="w-full relative text-center font-bold">Normal</h3>
                     <div class="w-1/2 h-1.2 bg-malachite "></div>
                     <h4 class="text-secondary my-5">08.00 - 17.59</h4>
-                    <p class="text-5 font-bold text-forest my-10">Rp <span class="text-12">120.000</span> /jam</p>
+                    <p class="text-5 font-bold text-forest my-10">Rp <span class="text-12">100.000</span> /jam</p>
                     <a class="mt-8 rounded-5 border-malachite border font-bold text-6 py-5 w-full text-center text-malachite hover:bg-malachite hover:text-white duration-100 ease-in" href="./index.php?page=login">Pesan Sekarang</a>
                 </div>
                 <div class="flex flex-col items-center px-6 w-full border border-malachite rounded-5 py-6 bg-white">
@@ -176,7 +184,7 @@
                 </div>
             </div>
         </section>
-        <section class="my-[250px]">
+        <section id="fasilitas" class="my-[250px]">
             <div class="flex flex-col justify-center items-center gap-10 my-[50px]">
                 <h2 class="text-xl rounded-5 m-0 border border-malachite text-malachite  py-2.5 px-9">Fasilitas</h2>
                 <p class="font-bold text-forest text-10 text-center">Fasilitas Apa Yang Diperoleh</p>
@@ -221,24 +229,23 @@
                     </div>
                     <div class="swiper-slide">
                         <div class="">
-                            <img class="w-full" src="./public/assets/img/toilet.png" alt="" srcset="">
+                            <img class="w-full" src="./public/assets/img/warung.png" alt="" srcset="">
                         </div>
                     </div>
                     <div class="swiper-slide">
                         <div class="">
-                            <img class="w-full" src="./public/assets/img/toilet.png" alt="" srcset="">
+                            <img class="w-full" src="./public/assets/img/tempat_ibadah.png" alt="" srcset="">
                         </div>
                     </div>
                     <div class="swiper-slide">
                         <div class="">
-                            <img class="w-full" src="./public/assets/img/toilet.png" alt="" srcset="">
+                            <img class="w-full" src="./public/assets/img/parkir.png" alt="" srcset="">
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="swiper-pagination">a</div>
         </section>
-        <section class="my-[250px]">
+        <section id="kontak" class="my-[250px]">
             <div class="flex flex-col justify-center items-center gap-10 my-[50px]">
                 <h2 class="text-xl rounded-5 m-0 border border-malachite text-malachite  py-2.5 px-9">Kontak</h2>
             </div>
@@ -260,12 +267,11 @@
       <div class="container">
         <div class="flex flex-wrap -mx-3">
           <div class="flex-shrink-0 w-full max-w-full mx-auto mb-6 text-center lg:flex-0 lg:w-8/12">
-            <a href="javascript:;" target="_blank" class="mb-2 mr-4 text-slate-400 sm:mb-0 xl:mr-12"> Beranda </a>
-            <a href="javascript:;" target="_blank" class="mb-2 mr-4 text-slate-400 sm:mb-0 xl:mr-12"> Jadwal Booking </a>
-            <a href="javascript:;" target="_blank" class="mb-2 mr-4 text-slate-400 sm:mb-0 xl:mr-12"> Harga </a>
-            <a href="javascript:;" target="_blank" class="mb-2 mr-4 text-slate-400 sm:mb-0 xl:mr-12"> Fasilitas     </a>
-            <a href="javascript:;" target="_blank" class="mb-2 mr-4 text-slate-400 sm:mb-0 xl:mr-12"> Kontak </a>
-            <a href="javascript:;" target="_blank" class="mb-2 mr-4 text-slate-400 sm:mb-0 xl:mr-12"> Tentang Kita </a>
+            <a href="#"  class="mb-2 mr-4 text-slate-400 sm:mb-0 xl:mr-12"> Beranda </a>
+            <a href="#jadwal"  class="mb-2 mr-4 text-slate-400 sm:mb-0 xl:mr-12"> Jadwal Booking </a>
+            <a href="#harga" class="mb-2 mr-4 text-slate-400 sm:mb-0 xl:mr-12"> Harga </a>
+            <a href="#fasilitas" class="mb-2 mr-4 text-slate-400 sm:mb-0 xl:mr-12"> Fasilitas</a>
+            <a href="#kontak" class="mb-2 mr-4 text-slate-400 sm:mb-0 xl:mr-12"> Kontak </a>
           </div>
           <div class="flex-shrink-0 w-full max-w-full mx-auto mt-2 mb-6 text-center lg:flex-0 lg:w-8/12">
             <a href="javascript:;" target="_blank" class="mr-6 text-slate-400">
